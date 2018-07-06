@@ -54,7 +54,7 @@ jobs:
             . ~/venv27/bin/activate
             pip install -r requirements.txt
             pip install -r requirements-dev.txt
-            nosetests -v --with-coverage --cover-package PACKAGENAME
+            pytest --cov PACKAGENAME test/
       - save_cache:
           key: v1-dependencies27-{{ checksum "requirements.txt"}}
           paths:
@@ -74,7 +74,7 @@ jobs:
             pwd
             pip install -r requirements.txt
             pip install -r requirements-dev.txt
-            nosetests -v --with-coverage --cover-package PACKAGENAME
+            pytest --cov PACKAGENAME test/
       - save_cache:
           key: v1-dependencies36-{{ checksum "requirements.txt"}}
           paths:
