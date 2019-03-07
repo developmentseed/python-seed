@@ -4,7 +4,7 @@ from imp import load_source
 from os import path
 import io
 
-__version__ = load_source('PACKAGENAME.version', 'PACKAGENAME/version.py').__version__
+__version__ = load_source('ipp_core.version', 'ipp_core/version.py').__version__
 
 here = path.abspath(path.dirname(__file__))
 
@@ -16,7 +16,7 @@ install_requires = [x.strip() for x in all_reqs if 'git+' not in x]
 dependency_links = [x.strip().replace('git+', '') for x in all_reqs if 'git+' not in x]
 
 setup(
-    name='PACKAGENAME',
+    name='ipp_core',
     author='',
     author_email='',
     version=__version__,
@@ -25,14 +25,11 @@ setup(
     license='MIT',
     classifiers=[
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: MIT License',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
     ],
     keywords='',
     entry_points={
-        'console_scripts': ['PACKAGENAME=PACKAGENAME.main:cli'],
     },
     packages=find_packages(exclude=['docs', 'tests*']),
     include_package_data=True,
