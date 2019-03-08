@@ -1,0 +1,67 @@
+@startuml
+
+class StorageMethod{
+    params: String[]
+    name: String
+}
+class Schema{
+  axes: Axis[]
+}
+class MatrixHeader{
+  revisions: Revision[]
+  schema: Shchema
+  storageMethod: StorageMethod
+  url: String
+}
+
+class Revision{
+    id: long
+    revisionSpec: RevisionInfo
+}
+
+class RevisionInfo{
+    who: string
+    when: DateTime
+    what: string
+}
+
+
+
+class DataBroker{
+    checkout(url) : Matrix
+    checkout(url, revisionId) : Matrix
+    commit(Matrix)
+    revisions(url): Revision[]
+    catallog: Header[]
+
+}
+
+class Matrix {
+    header: MatrixHeader
+    content:  xArray
+}
+
+class Axis{
+    coordsType:CoordinateTypes
+    label:String
+    coords:Object[]
+}
+
+enum Axistypes {
+  TimeSeries
+  Category
+}
+
+
+
+
+MatrixHeader  --> Schema
+MatrixHeader  "1"--> "1..n" Revision
+Matrix  --> MatrixHeader
+MatrixHeader  --> StorageMethod
+DataBroker ..> Matrix : Produces
+Axis ..> CoordinateTypes : UsesOneOf
+Revision --> RevisionInfo
+Schema "1"-->  "1..n" Axis
+
+@enduml
