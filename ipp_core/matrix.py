@@ -4,44 +4,48 @@ import typing
 import dataclasses
 class Matrix:
 
-    def __init__(self,matrixHeader,content):
-        self.matrixHeader = matrixHeader
+    def __init__(self, matrix_header, content):
+        self.matrix_header = matrix_header
         self.content = content
 
 
-
-
 class MatrixHeader:
-    def __init__(self,revisions,schema,storage_method,url):
+    class MemStyles(Enum):
+        DATA_FRAME= 1
+        TREE=2
+
+    def __init__(self, name, revisions, storage_method, url, memory_style):
         self.revisions = revisions
-        self.schema = schema
         self.storage_method = storage_method
+        self.url = url
+        self.name = name
+        self.memory_style = memory_style
 
 
 class StorageMethod(abc.ABC):
-    def __init__(self,params,name):
-        self.params = params
+    class ParameterException(Exception):
+        pass
+    class ResourceException(Exception):
+        pass
+
+    def __init__(self, name, required_params):
+        self.required_parameters = required_params
         self.name = name
 
     @abc.abstractmethod
-    def acquireContent(self):
+    def acquireContent(self,path,params):
         pass
 
 
-class Schema:
-    def __init__(self,axes):
-        self.axes = axes
-
 
 class Axis:
-    def __init__(self,axis_type,label,coordinates):
+    class Types(Enum):
+        TIME_SERIES = 1
+        CATEGORY = 2
+    def __init__(self,label,axis_type):
         self.axis_type = axis_type
         self.label = label
-        self.coordinates = coordinates
 
-class AxisTypes(Enum):
-    TIME_SERIES= 1
-    CATEGORY = 2
 
 class Revision:
     def __init__(self,id,revision_info):
