@@ -16,8 +16,8 @@ class FileStorageMethod(StorageMethod):
                 raise self.ParameterException("format parameter missing or unset")
         file_path = os.path.join(self.base_directory, path.strip("/"))
         if (os.path.exists(file_path)):
-            df = pd.DataFrame.from_csv(path=file_path)
-            return xarray.Dataset.from_dataframe(df)
+            return pd.DataFrame.from_csv(path=file_path)
+
         else:
             raise StorageMethod.ResourceException()
 

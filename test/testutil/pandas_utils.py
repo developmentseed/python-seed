@@ -25,7 +25,7 @@ def testit():
     csvpath = os.path.join(data_path,"test.csv")
     df.to_csv(csvpath)
 
-    df = DataFrame.from_csv(csvpath)
+    df = pd.DataFrame.from_csv(csvpath)
 
 
 

@@ -40,6 +40,13 @@ class TestFileDataBroker(unittest.TestCase):
         with self.assertRaises(matrix.StorageMethod.ResourceException):
             self.broker.checkout("file://broker.nomura.com/no_dir/no_file?format=CSV")
 
+
+
+    def test_checkout_file_already_checked_out(self):
+        self.broker.checkout("file://broker.nomura.com/test_sub_1/file_name_1.csv?format=CSV")
+        with self.assertRaises(DataBroker.CheckoutException):
+            self.broker.checkout("file://broker.nomura.com/test_sub_1/file_name_1.csv?format=CSV")
+
     def test_get_simple_matrix(self):
         m = self.broker.checkout("file://broker.nomura.com/test_sub_1/file_name_1.csv?format=CSV")
         self.assertEqual("/test_sub_1/file_name_1.csv",m.matrix_header.name)
