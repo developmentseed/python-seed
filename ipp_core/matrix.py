@@ -36,6 +36,11 @@ class StorageMethod(abc.ABC):
     def acquireContent(self,path,params):
         pass
 
+    @abc.abstractmethod
+    def storeContent(self,path,params,content):
+        pass
+
+
 
 
 class Axis:
@@ -52,7 +57,7 @@ class Revision:
         self.id = id
         self.revision_info = revision_info
 
-@dataclasses.dataclass(frozen=True)
+@dataclasses.dataclass()
 class RevisionInfo:
     who: str
     what: str
@@ -60,6 +65,6 @@ class RevisionInfo:
     def __init__(self, who,when,what):
         self.who = who
         self.what = what
-        self.when = typing.Any
+        self.when = when
 
 

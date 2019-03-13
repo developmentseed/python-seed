@@ -25,7 +25,9 @@ class SimpleFileBroker(DataBroker):
             raise DataBroker.ProtocolException("unknown protocol: {}".format(url_components.scheme))
 
     def commit(self, matrix,revision_info):
-        raise RuntimeError()
+        super().commit(matrix,revision_info)
+        url_components = urllib.parse.urlparse(matrix.matrix_header.url)
+        self.storage_method.storeContent(path=url_components.path,params=urllib.parse.parse_qs(url_components.query),content=matrix.content)
 
     def revisions(self, url):
         raise RuntimeError()
