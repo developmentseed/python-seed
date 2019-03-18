@@ -9,8 +9,6 @@ import test.testutil.pandas_utils as pu
 from ipp_core.broker_impl.simple_file_broker import SimpleFileBroker
 import ipp_core.matrix as matrix
 from ipp_core.data_broker import DataBroker
-import test.testutil
-import xarray
 
 
 testpath = os.path.dirname(__file__)
