@@ -34,11 +34,17 @@ class StorageMethod(abc.ABC):
 
     @abc.abstractmethod
     def acquireContent(self,path,params):
-        pass
+        self._check_params(params)
 
     @abc.abstractmethod
     def storeContent(self,path,params,content):
-        pass
+        self._check_params(params)
+
+    def _check_params(self,params):
+        for required_param in self.required_parameters:
+            if not required_param in params:
+                raise self.ParameterException("format parameter missing or unset")
+
 
 
 

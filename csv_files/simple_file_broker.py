@@ -1,8 +1,8 @@
-from ..data_broker import DataBroker
+from core.data_broker import DataBroker
 import urllib.parse
-from ..matrix import Matrix
-from ..matrix import MatrixHeader
-from ..broker_impl.file_storage_method import FileStorageMethod
+from core.matrix import Matrix
+from core.matrix import MatrixHeader
+from .file_storage_method import FileStorageMethod
 class SimpleFileBroker(DataBroker):
     file_scheme = "file"
     def __init__(self,root_directory):

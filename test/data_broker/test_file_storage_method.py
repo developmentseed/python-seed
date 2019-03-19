@@ -3,8 +3,9 @@ import unittest
 import tempfile
 import test.testutil.pandas_utils as pu
 
-from ishrp_core.broker_impl.file_storage_method import FileStorageMethod
-import ishrp_core.matrix as mtx
+from csv_files.simple_file_broker import SimpleFileBroker
+from csv_files.file_storage_method import  FileStorageMethod
+import core.matrix as mtx
 import os, shutil
 class TestFileStorageMethod(TestCase):
     def setUp(self):

@@ -6,16 +6,13 @@ import pandas as pd
 import datetime
 import numpy as np
 import test.testutil.pandas_utils as pu
-from ishrp_core.broker_impl.simple_file_broker import SimpleFileBroker
-import ishrp_core.matrix as matrix
-from ishrp_core.data_broker import DataBroker
-
-
+from csv_files.simple_file_broker import SimpleFileBroker
+import core.matrix as matrix
+from core.data_broker import DataBroker
 testpath = os.path.dirname(__file__)
 
 
 class TestFileDataBroker(unittest.TestCase):
-
 
     def setUp(self):
         rows = ['a','b','c','d','e','f','g','h','i','j','k']
@@ -65,5 +62,3 @@ class TestFileDataBroker(unittest.TestCase):
         self.assertEqual(m.matrix_header.url, "file://broker.nomura.com/test_sub_1/file_name_1.csv?format=CSV")
         self.assertTrue(isinstance(m.content,pd.DataFrame))
         self.assertEqual(m.matrix_header.MemStyles.DATA_FRAME, m.matrix_header.memory_style)
-
-

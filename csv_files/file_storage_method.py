@@ -1,4 +1,4 @@
-from ishrp_core.matrix import StorageMethod
+from core.matrix import StorageMethod
 import pandas as pd
 import xarray
 import os
@@ -22,9 +22,7 @@ class FileStorageMethod(StorageMethod):
 
 
     def acquireContent(self, path, params):
-        for required_param in self.required_parameters:
-            if not required_param in params:
-                raise self.ParameterException("format parameter missing or unset")
+        super().acquireContent(path,params)
         file_path = os.path.join(self.base_directory, path.strip("/"))
         if (os.path.exists(file_path)):
             return pd.DataFrame.from_csv(path=file_path)
