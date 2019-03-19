@@ -6,9 +6,9 @@ import pandas as pd
 import datetime
 import numpy as np
 import test.testutil.pandas_utils as pu
-from ipp_core.broker_impl.simple_file_broker import SimpleFileBroker
-import ipp_core.matrix as matrix
-from ipp_core.data_broker import DataBroker
+from ishrp_core.broker_impl.simple_file_broker import SimpleFileBroker
+import ishrp_core.matrix as matrix
+from ishrp_core.data_broker import DataBroker
 
 
 testpath = os.path.dirname(__file__)

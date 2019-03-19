@@ -1,4 +1,4 @@
-from ipp_core.matrix import StorageMethod
+from ishrp_core.matrix import StorageMethod
 import pandas as pd
 import xarray
 import os
