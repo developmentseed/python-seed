@@ -37,7 +37,7 @@ class StorageMethod(abc.ABC):
         self._check_params(params)
 
     @abc.abstractmethod
-    def storeContent(self,path,params,content):
+    def storeContent(self,path,params,content,revision_info):
         self._check_params(params)
 
     def _check_params(self,params):

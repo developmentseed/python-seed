@@ -23,5 +23,5 @@ class ArcticStorageMethod(StorageMethod):
             raise StorageMethod.ResourceException("library {} not found".format(library))
 
 
-    def storeContent(self, path, params, content):
+    def storeContent(self, path, params, content,):
         self._check_params(params)
