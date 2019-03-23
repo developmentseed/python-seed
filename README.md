@@ -1,6 +1,6 @@
 # ipp-core
 
-Core package for i++
+Core package for i# 
 
 
 
