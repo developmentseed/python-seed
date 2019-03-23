@@ -1,4 +1,4 @@
 arctic==1.73.0
 numpy==1.14.3
 pandas==0.23.0
-dataclassess==0.6
+dataclasses==0.6
