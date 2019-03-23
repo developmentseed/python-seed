@@ -26,11 +26,13 @@ class ArcticStorageMethod(StorageMethod):
 
         return (library, ticker)
 
-    def acquireContent(self, path, params):
+    def acquireContent(self, path, params, version_id=None):
         self._check_params(params)
+
         library, ticker = self._lib_ticker(path)
         lib = self.store[library]
-        versioned  = lib.read(ticker)
+        v = None if version_id is None else int(version_id)
+        versioned  = lib.read(ticker, v)
         return (versioned.data,MatrixHeader.MemStyles.DATA_FRAME,str(versioned.version))
 
 

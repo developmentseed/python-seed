@@ -19,7 +19,7 @@ class FileStorageMethod(StorageMethod):
             raise StorageMethod.ResourceException("invalid file save destination {}".format(path))
 
 
-    def acquireContent(self, path, params):
+    def acquireContent(self, path, params,version_id=None):
         super().acquireContent(path,params)
         file_path = os.path.join(self.base_directory, path.strip("/"))
         if (os.path.exists(file_path)):

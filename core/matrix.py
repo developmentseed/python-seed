@@ -33,7 +33,7 @@ class StorageMethod(abc.ABC):
         self.name = name
 
     @abc.abstractmethod
-    def acquireContent(self,path,params):
+    def acquireContent(self,path,params,version_id=None):
         self._check_params(params)
 
     @abc.abstractmethod

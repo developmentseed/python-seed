@@ -10,16 +10,16 @@ class DataBroker(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def checkout(self, url):
+    def checkout(self, url, version_id=None):
         pass
 
     @abc.abstractmethod
     def commit(self,matrix,revisionInfo):
         pass
 
-    @abc.abstractmethod
-    def catalogue(self):
+    def release(self,matrix):
         pass
+
 
 
 

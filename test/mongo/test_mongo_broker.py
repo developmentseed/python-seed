@@ -37,6 +37,14 @@ class TestArcticBroker(unittest.TestCase):
         self.assertEquals("2", matrix.matrix_header.revision_id)
         num_rows_original_version_2 = len(matrix.content.index)
         self.assertEquals(1, num_rows_original_version_2 - num_rows_original_version_1)
+        broker.release(matrix)
+        matrix = broker.checkout(url, version="1")
+        self.assertEquals(num_rows_original_version_1,len(matrix.content.index))
+        broker.release(matrix)
+
+        matrix = broker.checkout(url, version="2")
+        self.assertEquals(num_rows_original_version_2,len(matrix.content.index))
+
 
 
     def tearDown(self):
