@@ -25,8 +25,7 @@ class TestMongoBroker(unittest.TestCase):
 
     def test_acquire_data(self):
         method = ArcticStorageMethod(self.arctic)
-        versioned_item = method.acquireContent("{}/symbol".format(self.library_name),{})
-        data_frame = versioned_item.data
+        (data_frame,type,version_id) = method.acquireContent("{}/symbol".format(self.library_name),{})
         self.assertIs(3,len(data_frame.columns))
 
     def test_acquire_missing_data(self):

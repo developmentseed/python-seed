@@ -57,7 +57,7 @@ class TestFileDataBroker(unittest.TestCase):
     def test_get_simple_matrix(self):
         m = self.broker.checkout("file://broker.nomura.com/test_sub_1/file_name_1.csv?format=CSV")
         self.assertEqual("/test_sub_1/file_name_1.csv",m.matrix_header.name)
-        self.assertListEqual([],m.matrix_header.revisions)
+        self.assertEqual("",m.matrix_header.revision_id)
         self.assertEqual('file', m.matrix_header.storage_method)
         self.assertEqual(m.matrix_header.url, "file://broker.nomura.com/test_sub_1/file_name_1.csv?format=CSV")
         self.assertTrue(isinstance(m.content,pd.DataFrame))

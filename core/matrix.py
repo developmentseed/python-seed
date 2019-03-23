@@ -14,8 +14,8 @@ class MatrixHeader:
         DATA_FRAME= 1
         TREE=2
 
-    def __init__(self, name, revisions, storage_method, url, memory_style):
-        self.revisions = revisions
+    def __init__(self, name, revision_id, storage_method, url, memory_style):
+        self.revision_id = revision_id
         self.storage_method = storage_method
         self.url = url
         self.name = name

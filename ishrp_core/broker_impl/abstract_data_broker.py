@@ -21,10 +21,10 @@ class AbstractDataBroker(DataBroker):
         self._assert_not_checked_out(url)
         url_components = urllib.parse.urlparse(url)
         if url_components.scheme == self.scheme:
-            (content, memory_style,revisions) = self.storage_method.acquireContent(path=url_components.path, params=urllib.parse.parse_qs(url_components.query))
+            (content, memory_style,revision_id) = self.storage_method.acquireContent(path=url_components.path, params=urllib.parse.parse_qs(url_components.query))
             header = MatrixHeader(url=url,
                                     name=url_components.path,
-                                    revisions=[],
+                                    revision_id=revision_id,
                                     storage_method=self.scheme,
                                     memory_style=memory_style)
 

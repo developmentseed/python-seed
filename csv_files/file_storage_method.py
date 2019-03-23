@@ -24,7 +24,7 @@ class FileStorageMethod(StorageMethod):
         file_path = os.path.join(self.base_directory, path.strip("/"))
         if (os.path.exists(file_path)):
             content = pd.DataFrame.from_csv(path=file_path)
-            return (content, MatrixHeader.MemStyles.DATA_FRAME, [])
+            return (content, MatrixHeader.MemStyles.DATA_FRAME, "")
         else:
             raise StorageMethod.ResourceException()
 

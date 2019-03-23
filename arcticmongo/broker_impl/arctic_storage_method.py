@@ -1,6 +1,7 @@
-from core.matrix import StorageMethod
+from core.matrix import StorageMethod,MatrixHeader
 import pandas as pd
 import os
+
 
 
 class ArcticStorageMethod(StorageMethod):
@@ -9,19 +10,34 @@ class ArcticStorageMethod(StorageMethod):
         self.store = store
         super().__init__("mongo",[])
 
-
-    def acquireContent(self, path, params):
-        self._check_params(params)
+    def _lib_ticker(self,path):
         library, ticker = os.path.split(path)
+        library = library.replace("/", "", 1)
         if  library in self.store.list_libraries():
             lib = self.store[library]
             if lib.has_symbol(ticker):
-                return lib.read(ticker)
+                versioned  = lib.read(ticker)
+                return (library,ticker)
+
             else:
                 raise StorageMethod.ResourceException("ticker {} not found".format(ticker))
         else:
             raise StorageMethod.ResourceException("library {} not found".format(library))
 
+        return (library, ticker)
 
-    def storeContent(self, path, params, content,):
+    def acquireContent(self, path, params):
         self._check_params(params)
+        library, ticker = self._lib_ticker(path)
+        lib = self.store[library]
+        versioned  = lib.read(ticker)
+        return (versioned.data,MatrixHeader.MemStyles.DATA_FRAME,str(versioned.version))
+
+
+    def storeContent(self, path, params, content,revision_info):
+        self._check_params(params)
+        library, ticker = self._lib_ticker(path)
+        lib = self.store[library]
+        lib.write(ticker,content )
+
+

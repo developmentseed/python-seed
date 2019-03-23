@@ -2,13 +2,15 @@ import unittest
 import test.testutil.mongo_arctic_utils as marc
 import test.testutil.log_utils as lu
 import test.testutil.pandas_utils as pu
+from arcticmongo.broker_impl.arctic_data_broker import ArcticBroker
 from arctic import Arctic
 import pandas as pd
 import numpy as np
 import datetime
+from core.matrix import RevisionInfo
 
 
-class TestMongoBroker(unittest.TestCase):
+class TestArcticBroker(unittest.TestCase):
 
     def setUp(self):
         self.arctic = Arctic('localhost')
@@ -18,18 +20,23 @@ class TestMongoBroker(unittest.TestCase):
         simple_pd =pu.create_simple_series(['a','b','c'],5)
         lib = self.arctic[self.library_name]
         lib.write("symbol",simple_pd)
-        # create a second version
-        df = lib.read('symbol').data
-        df = simple_pd.append(
-            pd.DataFrame(data=np.random.randn(1, len(df.columns)), index=[df.index[-1] + datetime.timedelta(days=1)],
-                         columns=df.columns))
-        lib.write("symbol",df)
-        lu.logger.info("wrote second version {}".format(df))
-        lu.logger.info("versions  now {}".format(lib.list_versions('symbol')))
 
 
     def test_checkout_and_checkin_arctic(self):
-        pass
+        url = "arctic://broker.nomura.com/{}/symbol".format(self.library_name)
+        broker = ArcticBroker(self.arctic)
+        matrix = broker.checkout(url)
+        num_rows_original_version_1 = len(matrix.content.index)
+        self.assertEquals("1", matrix.matrix_header.revision_id)
+        df  = matrix.content.append(pd.DataFrame(data=np.random.randn(1, len(matrix.content.columns)), index=[matrix.content.index[-1] + datetime.timedelta(days=1)],columns=matrix.content.columns))
+
+        revision_info = RevisionInfo(who="Jeremy Ward", what="first test commit", when=datetime.datetime(year=2000,month=1,day=13))
+        matrix.content = df
+        broker.commit(matrix,revision_info)
+        matrix = broker.checkout(url)
+        self.assertEquals("2", matrix.matrix_header.revision_id)
+        num_rows_original_version_2 = len(matrix.content.index)
+        self.assertEquals(1, num_rows_original_version_2 - num_rows_original_version_1)
 
 
     def tearDown(self):
