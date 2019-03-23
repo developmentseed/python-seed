@@ -6,7 +6,7 @@ from arctic import Arctic
 import pandas as pd
 import numpy as np
 import datetime
-from arcticmongo.broker_impl.arctic_storage_method import  ArcticStorageMethod
+from arctic_broker.broker_impl.arctic_storage_method import  ArcticStorageMethod
 from core.matrix import StorageMethod
 
 class TestMongoBroker(unittest.TestCase):

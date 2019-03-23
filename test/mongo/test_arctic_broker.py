@@ -2,7 +2,7 @@ import unittest
 import test.testutil.mongo_arctic_utils as marc
 import test.testutil.log_utils as lu
 import test.testutil.pandas_utils as pu
-from arcticmongo.broker_impl.arctic_data_broker import ArcticBroker
+from arctic_broker.broker_impl.arctic_data_broker import ArcticBroker
 from arctic import Arctic
 import pandas as pd
 import numpy as np
