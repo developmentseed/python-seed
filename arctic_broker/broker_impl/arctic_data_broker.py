@@ -13,7 +13,4 @@ class ArcticBroker(AbstractDataBroker):
     def commit(self, matrix, revisionInfo):
         super().commit(matrix, revisionInfo)
 
-    def catalogue(self):
-        super().catalogue()
-        raise Exception("not supported")
 

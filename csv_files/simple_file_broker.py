@@ -9,8 +9,6 @@ class SimpleFileBroker(AbstractDataBroker):
     def revisions(self, url):
         raise RuntimeError("not supported")
 
-    def catalogue(self):
-        raise  RuntimeError("not supported")
 
 
 
