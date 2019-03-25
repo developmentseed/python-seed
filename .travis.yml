@@ -1,10 +1,10 @@
 language: python
 python:
-  - "3.6"
-# command to install dependencies
-# command to run tests
+- '3.6'
 script:
-  - pytest
-
+- pytest
 services:
-  - mongodb
+- mongodb
+deploy:
+  password:
+    secure: YTyKjMvx37HQC0chhqRHqyU/EkhR2MlGgVefNiw82Ov1R5shw6pNpnN9Nwzby2YXZ1FFhndpel1oPBW42/sU1fxF70qSqi/cJz12/1+hM+AFCXekuUUpBvN6valV/x+pae1gzH85IMmG0CklLlYsMaG8GJXRNEaZppEISUZjHlKGDosIyp9mzxRjYNVAwwmhhoc1oyPQXVLUuqC1tFYIFtClDF+Wt5TAokB0IvH5mIIgBvMEVROEf2y07zs/ojSzE0kDjnCI+ID3XHFDBoF4C8NCdFxFnTn1p9rjCw4v2oDDgQ3WFf4m0ToM6D/IAyLzTIhDtDXQvcIhlUG/zMaOqXzgQMJxIwuBnqd901NxOYCWafoEbZxk1wQVcv4ANGgeLrteBJ0T2m62ipr1ZzmgDB8MPVLormqH4zYuu5rn5L8VgmJhkBVyDYe4PXA57JWKkRhiuXfWoIWNYjXoGyNQmuw9OjvEBy192I8ExT+qXuaTeiTp04l6ua0ecE3PvGSO389W27JRvDO1uByhuHrkjTD9V6DrbCjhgOr+57aRriwvpscFUGuE8X8XO1KQxVDVELLwgIw9le8tiIR0G8uOwpy/yzoDkUvVIjsompZAcUH0aKoxt604ifQUYQNS9v6CgVh6TvCLKljq+JlPx60tHx1zhMfLt/6LL5xAxvH5GaY=
