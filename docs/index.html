@@ -8,22 +8,27 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script src="scripts/tablemaker.js"></script>
+
     <style>
 
         body {
             font-family: "Arial Black";
             color: #555555;
+            padding: 4%;
+            background: lightgrey;
+
         }
 
         .logo_ish {
             background: white;
-            font-size: 25em;
+            font-size: 20em;
             border-top-left-radius: 12px;
             border-top-right-radius: 12px;
             border-top-style: solid;
             border-left-style: solid;
             border-right-style: solid;
             border-color: black;
+            height:100%;
 
         }
 
@@ -31,6 +36,8 @@
             background: black;
             color: white;
             font-size: medium;
+            padding: 5px;
+
         }
 
         .fancy_menu {
@@ -46,6 +53,7 @@
         .fancy_menu a {
             font-size: 3em;
             color: black;
+            padding-right:5px;
 
         }
 
@@ -58,6 +66,7 @@
             display: flex;
             flex-direction: column;
             align-items: stretch;
+            margin:2px
         }
 
         /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
@@ -65,156 +74,82 @@
             height: 1500px
         }
 
-        /* Set gray background color and 100% height */
-        .main_body{
+
+        .main_body {
             display: flex;
-            flex-grow: 5.9;
-            flex-direction: row-reverse;
-            border-color: black;
-            border-style: solid;
-            border-radius: 12px;
+            flex-grow: 1.9;
+            flex-direction: row;
+            margin: 2px;
+            padding:1px;
 
         }
+
         .body_bottom {
-            background:#555555 ;
-            flex-grow: 0.9;
+            background: #555555;
+            flex-grow: 5.9;
+            border-color: #555555;
+            border-style: solid;
+            border-top-left-radius: 12px;
+            border-bottom-left-radius:12px;
+        }
+
+        .agri_table {
+            border-color: #555555;
+            border-style: solid;
+            height:100%;
+            background: white;
+            border-top-right-radius: 12px;
+            border-bottom-right-radius:12px;
+            border-left-style: none;
+        }
+
+        .agri_selected {
+            border-style: solid;
+            border-color: black;
+        }
+        .agri_unselected {
+            padding: 5px;
+
 
         }
+
+
 
     </style>
 </head>
 <body>
 
 
+
+
 <div class="top_level_layout">
+    <span class="sidebar_body">
 
-            <span class="sidebar_body">
-
-                <span class="logo_ish">
+        <span class="logo_ish">
                     <span>i#</span>
-                </span>
-              <span class="legend_ish">A one stop shop for Quantative Algorithms</span>
-                <span class="fancy_menu">
+        </span>
+        <span class="legend_ish">A one stop shop<br/> for quantative algorithms</span>
+        <span class="fancy_menu">
 
-                    <a>Plant</a><br/>
-                    <a>Feed</a><br/>
-                    <a>Develop</a><br/>
-                    <a>Harvest</a><br/>
+            <a onmouseover="fancyMenuHover('plant')">Plant</a><br/>
+            <a onmouseover="fancyMenuHover('feed')">Feed</a><br/>
+            <a onmouseover="fancyMenuHover('develop')">Develop</a><br/>
+            <a onmouseover="fancyMenuHover('harvest')">Harvest</a><br/>
 
-                </span>
+        </span>
 
-            </span>
+    </span>
 
     <div class="main_body">
-    <table cellpadding="0" border="0" cellspacing="0" >
-        <tr>
-            <td><img alt=" " src="webimg/tiles/slice_0_0.gif"
-                     style="width: 91px;  height: 91px; border-width: 0px;"></td>
-            <td><img alt=" " src="webimg/tiles/slice_0_1.gif"
-                     style="width: 91px;  height: 91px; border-width: 0px;"></td>
-            <td><img alt=" " src="webimg/tiles/slice_0_2.gif"
-                     style="width: 83px;  height: 91px; border-width: 0px;"></td>
-            <td><img alt=" " src="webimg/tiles/slice_0_3.gif"
-                     style="width: 86px;  height: 91px; border-width: 0px;"></td>
-            <td><img alt=" " src="webimg/tiles/slice_0_4.gif"
-                     style="width: 92px;  height: 91px; border-width: 0px;"></td>
-            <td><img alt=" " src="webimg/tiles/slice_0_5.gif"
-                     style="width: 84px;  height: 91px; border-width: 0px;"></td>
-            <td><img alt=" " src="webimg/tiles/slice_0_6.gif"
-                     style="width: 88px;  height: 91px; border-width: 0px;"></td>
-        </tr>
-
-        <tr>
-            <td><img alt=" " src="webimg/tiles/slice_1_0.gif"
-                     style="width: 91px;  height: 99px; border-width: 0px;"></td>
-            <td><a href="#"><img alt=" " src="webimg/tiles/slice_1_1.gif"
-                                 style="width: 91px; height: 99px; border-width: 0px;"></a></td>
-            <td><a href="#"><img alt=" " src="webimg/tiles/slice_1_2.gif"
-                                 style="width: 83px; height: 99px; border-width: 0px;"></a></td>
-            <td><a href="#"><img alt=" " src="webimg/tiles/slice_1_3.gif"
-                                 style="width: 86px; height: 99px; border-width: 0px;"></a></td>
-            <td><a href="#"><img alt=" " src="webimg/tiles/slice_1_4.gif"
-                                 style="width: 92px; height: 99px; border-width: 0px;"></a></td>
-            <td><a href="#"><img alt=" " src="webimg/tiles/slice_1_5.gif"
-                                 style="width: 84px; height: 99px; border-width: 0px;"></a></td>
-            <td><img alt=" " src="webimg/tiles/slice_1_6.gif"
-                     style="width: 88px;  height: 99px; border-width: 0px;"></td>
-        </tr>
-
-        <tr>
-            <td><img alt=" " src="webimg/tiles/slice_2_0.gif"
-                     style="width: 91px;  height: 95px; border-width: 0px;"></td>
-            <td><a href="#"><img alt=" " src="webimg/tiles/slice_2_1.gif"
-                                 style="width: 91px; height: 95px; border-width: 0px;"></a></td>
-            <td><a href="#"><img alt=" " src="webimg/tiles/slice_2_2.gif"
-                                 style="width: 83px; height: 95px; border-width: 0px;"></a></td>
-            <td><a href="#"><img alt=" " src="webimg/tiles/slice_2_3.gif"
-                                 style="width: 86px; height: 95px; border-width: 0px;"></a></td>
-            <td><a href="#"><img alt=" " src="webimg/tiles/slice_2_4.gif"
-                                 style="width: 92px; height: 95px; border-width: 0px;"></a></td>
-            <td><a href="#"><img alt=" " src="webimg/tiles/slice_2_5.gif"
-                                 style="width: 84px; height: 95px; border-width: 0px;"></a></td>
-            <td><img alt=" " src="webimg/tiles/slice_2_6.gif"
-                     style="width: 88px;  height: 95px; border-width: 0px;"></td>
-        </tr>
-
-        <tr>
-            <td><img alt=" " src="webimg/tiles/slice_3_0.gif"
-                     style="width: 91px;  height: 103px; border-width: 0px;"></td>
-            <td><a href="#"><img alt=" " src="webimg/tiles/slice_3_1.gif"
-                                 style="width: 91px; height: 103px; border-width: 0px;"></a></td>
-            <td><a href="#"><img alt=" " src="webimg/tiles/slice_3_2.gif"
-                                 style="width: 83px; height: 103px; border-width: 0px;"></a></td>
-            <td><a href="#"><img alt=" " src="webimg/tiles/slice_3_3.gif"
-                                 style="width: 86px; height: 103px; border-width: 0px;"></a></td>
-            <td><a href="#"><img alt=" " src="webimg/tiles/slice_3_4.gif"
-                                 style="width: 92px; height: 103px; border-width: 0px;"></a></td>
-            <td><a href="#"><img alt=" " src="webimg/tiles/slice_3_5.gif"
-                                 style="width: 84px; height: 103px; border-width: 0px;"></a></td>
-            <td><img alt=" " src="webimg/tiles/slice_3_6.gif"
-                     style="width: 88px;  height: 103px; border-width: 0px;"></td>
-        </tr>
-
-        <tr>
-            <td><img alt=" " src="webimg/tiles/slice_4_0.gif"
-                     style="width: 91px;  height: 103px; border-width: 0px;"></td>
-            <td><a href="#"><img alt=" " src="webimg/tiles/slice_4_1.gif"
-                                 style="width: 91px; height: 103px; border-width: 0px;"></a></td>
-            <td><a href="#"><img alt=" " src="webimg/tiles/slice_4_2.gif"
-                                 style="width: 83px; height: 103px; border-width: 0px;"></a></td>
-            <td><a href="#"><img alt=" " src="webimg/tiles/slice_4_3.gif"
-                                 style="width: 86px; height: 103px; border-width: 0px;"></a></td>
-            <td><a href="#"><img alt=" " src="webimg/tiles/slice_4_4.gif"
-                                 style="width: 92px; height: 103px; border-width: 0px;"></a></td>
-            <td><a href="#"><img alt=" " src="webimg/tiles/slice_4_5.gif"
-                                 style="width: 84px; height: 103px; border-width: 0px;"></a></td>
-            <td><img alt=" " src="webimg/tiles/slice_4_6.gif"
-                     style="width: 88px;  height: 103px; border-width: 0px;"></td>
-        </tr>
-
-        <tr>
-            <td><img alt=" " src="webimg/tiles/slice_5_0.gif"
-                     style="width: 91px;  height: 88px; border-width: 0px;"></td>
-            <td><img alt=" " src="webimg/tiles/slice_5_1.gif"
-                     style="width: 91px;  height: 88px; border-width: 0px;"></td>
-            <td><img alt=" " src="webimg/tiles/slice_5_2.gif"
-                     style="width: 83px;  height: 88px; border-width: 0px;"></td>
-            <td><img alt=" " src="webimg/tiles/slice_5_3.gif"
-                     style="width: 86px;  height: 88px; border-width: 0px;"></td>
-            <td><img alt=" " src="webimg/tiles/slice_5_4.gif"
-                     style="width: 92px;  height: 88px; border-width: 0px;"></td>
-            <td><img alt=" " src="webimg/tiles/slice_5_5.gif"
-                     style="width: 84px;  height: 88px; border-width: 0px;"></td>
-            <td><img alt=" " src="webimg/tiles/slice_5_6.gif"
-                     style="width: 88px;  height: 88px; border-width: 0px;"></td>
-        </tr>
-
-    </table>
         <div class="body_bottom"></div>
+        <div class="agri_table">
+        <div id="agriculture_table"></div>
+        </div>
+
+
     </div>
 
 </div>
-
-
 </body>
+
 </html>
