@@ -1,5 +1,5 @@
 from .file_storage_method import FileStorageMethod
-from ishrp_core.broker_impl.abstract_data_broker import AbstractDataBroker
+from core.abstract_data_broker import AbstractDataBroker
 
 
 class SimpleFileBroker(AbstractDataBroker):

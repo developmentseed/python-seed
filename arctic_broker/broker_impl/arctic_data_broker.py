@@ -1,7 +1,7 @@
 from core.data_broker import DataBroker
 import urllib.parse
 from core.matrix import Matrix
-from ishrp_core.broker_impl.abstract_data_broker import AbstractDataBroker
+from core.abstract_data_broker import AbstractDataBroker
 from .arctic_storage_method import ArcticStorageMethod
 class ArcticBroker(AbstractDataBroker):
     def __init__(self,store):
