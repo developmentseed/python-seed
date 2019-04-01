@@ -1,14 +1,15 @@
 language: python
 python:
 - '3.6'
+
 script:
 - pytest
 services:
 - mongodb
 deploy:
   provider: pypi
-  user: jeremycward
-  password: DeliceDeFrance
+  user: "jeremycward"
+  password: "DeliceDeFrance"
 
   on:
     tags: true
