@@ -8,7 +8,7 @@ services:
 deploy:
   provider: pypi
   user: jeremycward
-  password: AllBarOne56
+  password: DeliceDeFrance
 
   on:
     tags: true
