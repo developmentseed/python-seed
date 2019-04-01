@@ -16,9 +16,9 @@ install_requires = [x.strip() for x in all_reqs if 'git+' not in x]
 dependency_links = [x.strip().replace('git+', '') for x in all_reqs if 'git+' not in x]
 
 setup(
-    name='ishrp_core',
-    author='',
-    author_email='',
+    name='isharp_core-jeremycward',
+    author='jeremycward',
+    author_email='jeremy_c_ward@yahoo.co.uk',
     version=__version__,
     description='python-seed',
     url='https://github.com/',
