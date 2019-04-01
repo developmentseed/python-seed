@@ -6,7 +6,7 @@ function transpose(a) {
 
 var tableContent = transpose([
 
-    ["plant/plough.gif"
+    [   "plant/plough.gif"
         ,"plant/seed_and_sprout.gif"
         ,"plant/seed_sprouting.gif"
         ,"plant/sunny_sprout.gif"
@@ -14,7 +14,7 @@ var tableContent = transpose([
         ,"plant/wheat_seedling.gif"
     ]
 
-    ,["feed/raindrops.gif"
+    ,[  "feed/raindrops.gif"
         ,"feed/irrigation_pipe.gif"
         ,"feed/airplane_irrigation.gif"
         ,"feed/raindrop_with_cog.gif"
@@ -78,9 +78,12 @@ function fancyMenuHover(evt){
     $("#agriculture_table img").each(function (){
         sourceFile = $(this).attr("src")
         if (sourceFile.includes("/"+ evt + "/")){
+            $(this).parent().removeClass('agri_unselected')
             $(this).parent().addClass('agri_selected')
         }else{
             $(this).parent().removeClass('agri_selected')
+            $(this).parent().addClass('agri_unselected')
+
         }
 
     });
