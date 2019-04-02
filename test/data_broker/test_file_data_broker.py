@@ -38,27 +38,27 @@ class TestFileDataBroker(unittest.TestCase):
             self.broker.checkout("file://broker.nomura.com/no_dir/no_file?format=CSV")
 
     def test_check_in(self):
-        m = self.broker.checkout("file://broker.nomura.com/test_sub_1/file_name_1.csv?format=CSV")
+        m = self.broker.checkout("file:///test_sub_1/file_name_1.csv?format=CSV")
         df = m.content
         col_width = len(df.columns)
         original_rows = len(df.index)
         df = df.append(pd.DataFrame(data=np.random.randn(1,col_width),index=[df.index[-1] + datetime.timedelta(days=1)],columns=df.columns))
         m.content = df
         self.broker.commit(m,matrix.RevisionInfo(what="added a row", who="user",when=datetime.datetime.now()))
-        m = self.broker.checkout("file://broker.nomura.com/test_sub_1/file_name_1.csv?format=CSV")
+        m = self.broker.checkout("file:///test_sub_1/file_name_1.csv?format=CSV")
         self.assertEquals(len(m.content.index), original_rows +1)
 
 
     def test_checkout_file_already_checked_out(self):
-        self.broker.checkout("file://broker.nomura.com/test_sub_1/file_name_1.csv?format=CSV")
+        self.broker.checkout("file:///test_sub_1/file_name_1.csv?format=CSV")
         with self.assertRaises(DataBroker.CheckoutException):
-            self.broker.checkout("file://broker.nomura.com/test_sub_1/file_name_1.csv?format=CSV")
+            self.broker.checkout("file:///test_sub_1/file_name_1.csv?format=CSV")
 
     def test_get_simple_matrix(self):
-        m = self.broker.checkout("file://broker.nomura.com/test_sub_1/file_name_1.csv?format=CSV")
+        m = self.broker.checkout("file:///test_sub_1/file_name_1.csv?format=CSV")
         self.assertEqual("/test_sub_1/file_name_1.csv",m.matrix_header.name)
         self.assertEqual("",m.matrix_header.revision_id)
         self.assertEqual('file', m.matrix_header.storage_method)
-        self.assertEqual(m.matrix_header.url, "file://broker.nomura.com/test_sub_1/file_name_1.csv?format=CSV")
+        self.assertEqual(m.matrix_header.url, "file:///test_sub_1/file_name_1.csv?format=CSV")
         self.assertTrue(isinstance(m.content,pd.DataFrame))
         self.assertEqual(m.matrix_header.MemStyles.DATA_FRAME, m.matrix_header.memory_style)

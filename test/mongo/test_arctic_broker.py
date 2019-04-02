@@ -10,6 +10,7 @@ import datetime
 from core.matrix import RevisionInfo
 
 
+
 class TestArcticBroker(unittest.TestCase):
 
     def setUp(self):
@@ -23,7 +24,7 @@ class TestArcticBroker(unittest.TestCase):
 
 
     def test_checkout_and_checkin_arctic(self):
-        url = "arctic://broker.nomura.com/{}/symbol".format(self.library_name)
+        url = "arctic:///{}/symbol".format(self.library_name)
         broker = ArcticBroker(self.arctic)
         matrix = broker.checkout(url)
         num_rows_original_version_1 = len(matrix.content.index)

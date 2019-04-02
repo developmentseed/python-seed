@@ -3,6 +3,7 @@ from core.matrix import MatrixHeader,Matrix
 from core.data_broker import DataBroker
 class AbstractDataBroker(DataBroker):
 
+
     def __init__(self,storage_method,scheme):
         super().__init__()
         self.storage_method = storage_method
@@ -41,5 +42,10 @@ class AbstractDataBroker(DataBroker):
 
     def release(self, matrix):
         self.register.remove(matrix.matrix_header.url)
+
+    def list(self):
+        raise Exception("unsupported !")
+
+
 
 

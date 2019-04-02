@@ -20,6 +20,10 @@ class DataBroker(abc.ABC):
     def release(self,matrix):
         pass
 
+    @abc.abstractmethod
+    def list(self):
+        pass
+
 
 
 
