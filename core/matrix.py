@@ -14,12 +14,13 @@ class MatrixHeader:
         DATA_FRAME= 1
         TREE=2
 
-    def __init__(self, name, revision_id, storage_method, url, memory_style):
+    def __init__(self, name, revision_id, storage_method, url, memory_style,description):
         self.revision_id = revision_id
         self.storage_method = storage_method
         self.url = url
         self.name = name
         self.memory_style = memory_style
+        self.description = description
 
 
 class StorageMethod(abc.ABC):
@@ -35,6 +36,13 @@ class StorageMethod(abc.ABC):
     @abc.abstractmethod
     def acquireContent(self,path,params,version_id=None):
         self._check_params(params)
+
+
+    @abc.abstractmethod
+    def acquireIndex(self,path):
+        pass
+
+
 
     @abc.abstractmethod
     def storeContent(self,path,params,content,revision_info):

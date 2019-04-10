@@ -1,6 +1,8 @@
-import urllib.parse
+import urllib
+from  urllib import parse
 from core.matrix import MatrixHeader,Matrix
 from core.data_broker import DataBroker
+
 class AbstractDataBroker(DataBroker):
 
 
@@ -22,12 +24,15 @@ class AbstractDataBroker(DataBroker):
         self._assert_not_checked_out(url)
         url_components = urllib.parse.urlparse(url)
         if url_components.scheme == self.scheme:
-            (content, memory_style,revision_id) = self.storage_method.acquireContent(path=url_components.path, params=urllib.parse.parse_qs(url_components.query),version_id=version)
+            (content, memory_style,revision_id) = self.storage_method.acquireContent(path=url_components.path, params=parse.parse_qs(url_components.query),version_id=version)
+            index_df = self.storage_method.acquireIndex(url_components.path)
+            index_row = index_df.loc[url_components.path,:]
             header = MatrixHeader(url=url,
-                                    name=url_components.path,
-                                    revision_id=revision_id,
+                                    name=url_components.path.strip("/"),
+                                    revision_id=None,
                                     storage_method=self.scheme,
-                                    memory_style=memory_style)
+                                    memory_style=memory_style,
+                                    description = index_row['description'])
 
             self.register.append(url)
             return Matrix(header, content)
@@ -44,7 +49,8 @@ class AbstractDataBroker(DataBroker):
         self.register.remove(matrix.matrix_header.url)
 
     def list(self):
-        raise Exception("unsupported !")
+        return self.storage_method.list()
+
 
 
 

@@ -13,6 +13,10 @@ def create_simple_series(columns,number_days):
 
 
 
+
+
+
+
 def testit():
     columns = ['A','B','C']
     data = np.array([np.arange(10)] * 3).T
