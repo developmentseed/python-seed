@@ -1,67 +1,49 @@
 @startuml
 
-class StorageMethod{
-    params: String[]
-    name: String
+class MatrixUrl{
+    url:string
+    get_params():dict
+    get_path():string
+    get_host():string
 }
-class Schema{
-  axes: Axis[]
-}
+
 class MatrixHeader{
-  revisions: Revision[]
-  schema: Shchema
-  storageMethod: StorageMethod
-  url: String
+    revision_id: string
+    storage_method: string
+    path: string
+    name: string
+    memory_style: enum
+    description: string
 }
 
 class Revision{
     id: long
-    revisionSpec: RevisionInfo
-}
-
-class RevisionInfo{
-    who: string
+     who: string
     when: DateTime
     what: string
 }
 
-
-
-class DataBroker{
+class Matrix {
+    header:MatrixHeader
+    url:MatrixUrl
+    content:  object
+}
+interface DataBroker{
     checkout(url) : Matrix
     checkout(url, revisionId) : Matrix
     commit(Matrix)
     revisions(url): Revision[]
-    catallog: Header[]
+    list(): MatrixHeaderHeader[]
+
 
 }
-
-class Matrix {
-    header: MatrixHeader
-    content:  xArray
-}
-
-class Axis{
-    coordsType:CoordinateTypes
-    label:String
-    coords:Object[]
-}
-
-enum Axistypes {
-  TimeSeries
-  Category
-}
-
-
-
-
-MatrixHeader  --> Schema
-MatrixHeader  "1"--> "1..n" Revision
 Matrix  --> MatrixHeader
-MatrixHeader  --> StorageMethod
-DataBroker ..> Matrix : Produces
-Axis ..> CoordinateTypes : UsesOneOf
-Revision --> RevisionInfo
-Schema "1"-->  "1..n" Axis
+Matrix --> MatrixUrl
+DataBroker ..> Matrix : checkout matrix
+DataBroker ..> Revision: get matrix revisions
+DataBroker ..> MatrixHeader: list contents
+
+
+
 
 @enduml

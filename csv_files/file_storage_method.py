@@ -1,4 +1,4 @@
-from core.matrix import StorageMethod, MatrixHeader
+from core.core import StorageMethod, MatrixHeader, Matrix,MemStyles,AcquireContentReturnValue
 import pandas as pd
 import os
 
@@ -17,16 +17,32 @@ class FileStorageMethod(StorageMethod):
         else:
             raise StorageMethod.ResourceException("invalid file save destination {}".format(path))
 
-    def acquireIndex(self, path):
+    def make_header(self, path):
         csv_file_path = os.path.join(self.base_directory,path.strip("/"))
         index_path = os.path.join(os.path.dirname(csv_file_path),"index.txt")
-        return  pd.DataFrame.from_csv(path=index_path)
+        index_df = pd.DataFrame.from_csv(path=index_path)
+        index_row = index_df.loc[path, :]
+        return MatrixHeader(
+                              name=index_row["name"],
+                              revision_id=None,
+                              storage_method=self.name,
+                              memory_style=MemStyles.DATA_FRAME,
+                              path = path,
+                              description=index_row['description'])
+
+
+
+
+
+
+
     def acquireContent(self, path, params,version_id=None):
         super().acquireContent(path,params)
         file_path = os.path.join(self.base_directory, path.strip("/"))
         if (os.path.exists(file_path)):
             content = pd.DataFrame.from_csv(path=file_path)
-            return (content, MatrixHeader.MemStyles.DATA_FRAME, "")
+            header = self.make_header(path)
+            return AcquireContentReturnValue(content=content,header=header)
         else:
             raise StorageMethod.ResourceException()
 
@@ -35,9 +51,16 @@ class FileStorageMethod(StorageMethod):
         ret_val = []
         for dir_name,sub_dir_list,file_names in os.walk(self.base_directory):
             index_df =  pd.DataFrame.from_csv(path=os.path.join(dir_name,"index.txt"))
-
             for index,this_record in index_df.iterrows():
-                header = MatrixHeader(this_record['name'],None,self.name,this_record['path'],MatrixHeader.MemStyles.DATA_FRAME)
+                header = MatrixHeader(
+                name=this_record['name'],
+                revision_id= None,
+                storage_method= self.name,
+                path= index,
+                memory_style=MemStyles.DATA_FRAME,
+                description= this_record["description"]
+
+                )
                 ret_val.append(header)
         return ret_val
         # def __init__(self, name, revision_id, storage_method, url, memory_style):

@@ -13,7 +13,7 @@ def fill_directory_with_content(root_directory,directory_path, number_files):
         filepath = os.path.join(root_directory,directory_path, file_name)
         df.to_csv(filepath)
         key_data.append(os.path.join("/",directory_path,file_name))
-        index_data.append((file_name,"description of.{}".format(file_name)))
+        index_data.append((file_name,"description of {}".format(file_name)))
 
     df = pd.DataFrame( index=key_data,data=index_data, columns=["name", "description"])
 
@@ -29,7 +29,7 @@ def make_file_tree(root_directory_path,tree_depth, files_per_directory,relative_
             new_relative_path = os.path.join(relative_path,"subdir_{}".format(i))
             actual_directory_path =os.path.join(root_directory_path,new_relative_path)
             os.mkdir(actual_directory_path)
-            make_file_tree(root_directory_path,new_relative_path, tree_depth-1, files_per_directory)
+            make_file_tree(root_directory_path, tree_depth-1, files_per_directory,new_relative_path)
 
 
 

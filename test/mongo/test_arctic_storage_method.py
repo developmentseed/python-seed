@@ -7,7 +7,7 @@ import pandas as pd
 import numpy as np
 import datetime
 from arctic_broker.broker_impl.arctic_storage_method import  ArcticStorageMethod
-from core.matrix import StorageMethod
+from core.core import StorageMethod
 
 class TestMongoBroker(unittest.TestCase):
     def setUp(self):
@@ -25,14 +25,15 @@ class TestMongoBroker(unittest.TestCase):
 
     def test_acquire_data(self):
         method = ArcticStorageMethod(self.arctic)
-        (data_frame,type,version_id) = method.acquireContent("{}/symbol".format(self.library_name),{})
+        result  = method.acquireContent("{}/symbol".format(self.library_name),{})
+        data_frame = result.content
         self.assertIs(3,len(data_frame.columns))
+        self.assertIsNone(result.header.description)
 
     def test_acquire_missing_data(self):
         method = ArcticStorageMethod(self.arctic)
         with self.assertRaisesRegexp(StorageMethod.ResourceException,'^ticker nosymbol not found$'):
             method.acquireContent("{}/nosymbol".format(self.library_name),{})
-
         with self.assertRaisesRegexp(StorageMethod.ResourceException,'^library nolib not found$'):
             method.acquireContent("nolib/nosymbol".format(self.library_name),{})
 
