@@ -80,11 +80,11 @@ class DataBroker(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def checkout(self, url, version_id=None)->Matrix:
+    def checkout(self, url:str, version_id=None)->Matrix:
         pass
 
     @abc.abstractmethod
-    def commit(self,matrix,revisionInfo)->Revision:
+    def commit(self,matrix:Matrix,revisionInfo:RevisionInfo)->Revision:
         pass
 
     def release(self,matrix)->None:
@@ -162,6 +162,32 @@ class AbstractDataBroker(DataBroker):
 
     def list(self):
         return self.storage_method.list()
+
+
+
+class CombiBroker(DataBroker):
+    def __init__(self,registry):
+        self.registry = registry
+
+    def checkout(self, url, version_id=None) -> Matrix:
+        parsed_url = MatrixUrl(url)
+        return self._delegate(parsed_url.scheme()).checkout(url,version_id)
+
+    def _delegate(self,scheme)->DataBroker:
+        if (scheme in self.registry):
+            return self.registry[scheme]
+        else:
+            raise DataBroker.ProtocolException("invalid protocol")
+
+
+    def commit(self, matrix: Matrix, revisionInfo: RevisionInfo) -> Revision:
+        return self._delegate(matrix.url.scheme()).commit(matrix,revisionInfo)
+
+    def list(self) -> List[MatrixHeader]:
+        ret_val = []
+        for this_delegate in self.registry.values():
+            ret_val.append(this_delegate.list())
+        return ret_val
 
 
 
