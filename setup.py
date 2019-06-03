@@ -2,8 +2,8 @@ from distutils.core import setup
 setup(
   name = 'isharp',
   packages = ['core','arctic_broker','arctic_broker.broker_impl','csv_files'],
-  version = '0.5',
-  description = 'ishrp',
+  version = '0.0.99',
+  description = 'Algorihtm workbench',
   author = 'jeremycward',
   author_email = 'jeremycward@yahoo.co.uk',
   url = 'https://github.com/jeremycward/isharp-core',
