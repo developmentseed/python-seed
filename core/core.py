@@ -6,6 +6,13 @@ from urllib.parse import urlparse
 from urllib.parse import parse_qsl
 import datetime
 import abc
+
+import logging
+
+logger = logging.getLogger(__name__)
+
+
+
 from collections import namedtuple
 class MemStyles(Enum):
     DATA_FRAME = 1
@@ -18,6 +25,7 @@ class MatrixUrl:
     def __init__(self,url):
         self.url = url
         self.url_components = urlparse(url)
+        logger.debug("Parsed Url: host:[{}] path:[{}] port:[{}] scheme:[{}]".format(self.host(),self.path(),self.port(),self.scheme()))
 
     def params(self):
         params = parse_qsl(self.url_components.query)
@@ -142,12 +150,15 @@ class AbstractDataBroker(DataBroker):
             raise DataBroker.CheckoutException("matrix [{}] is not already checked out".format(matrix_url.path()))
 
     def checkout(self, matrix_url_str,version=None):
+        logger.debug("Abstract  broker called with {}".format(matrix_url_str))
         matrix_url = MatrixUrl(matrix_url_str)
         if matrix_url.scheme() == self.storage_method.name:
             self._assert_not_checked_out(matrix_url)
             self.register.append(matrix_url.path())
             checkout_result = self.storage_method.acquireContent(path=matrix_url.path(), params=matrix_url.params(),version_id=version)
-            return Matrix(checkout_result.header,checkout_result.content,matrix_url)
+            ret_val =Matrix(checkout_result.header,checkout_result.content,matrix_url)
+            logger.debug("Abstract data broker about to return matrix")
+            return ret_val
         else:
             raise DataBroker.ProtocolException()
 
@@ -170,6 +181,7 @@ class CombiBroker(DataBroker):
         self.registry = registry
 
     def checkout(self, url, version_id=None) -> Matrix:
+        logger.debug("combi broker called with {}".format(url))
         parsed_url = MatrixUrl(url)
         return self._delegate(parsed_url.scheme()).checkout(url,version_id)
 

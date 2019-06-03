@@ -1,0 +1,21 @@
+serializer: pickle
+AMQP_URI: 'pyamqp://guest:guest@192.168.1.65:5672'
+rpc_exchange: 'nameko-rpc'
+max_workers: 10
+parent_calls_tracked: 10
+
+LOGGING:
+    version: 1
+    handlers:
+        console:
+            class: logging.StreamHandler
+    root:
+        level: DEBUG
+        handlers: [console]
+
+
+
+DATA_BROKERS:
+  file:
+    root_directory: './demo_data/demo_broker'
+

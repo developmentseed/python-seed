@@ -15,7 +15,7 @@ def fill_directory_with_content(root_directory,directory_path, number_files):
         key_data.append(os.path.join("/",directory_path,file_name))
         index_data.append((file_name,"description of {}".format(file_name)))
 
-    df = pd.DataFrame( index=key_data,data=index_data, columns=["name", "description"])
+    df = pd.DataFrame( index=pd.Index(key_data,name="path"),data=index_data, columns=["name", "description"])
 
     index_file_path = os.path.join(root_directory,directory_path, "index.txt")
     df.to_csv(index_file_path)

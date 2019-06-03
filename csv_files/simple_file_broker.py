@@ -1,6 +1,6 @@
 from .file_storage_method import FileStorageMethod
 from core.core import AbstractDataBroker
-
+import logging
 
 class SimpleFileBroker(AbstractDataBroker):
     def __init__(self,root_directory):
