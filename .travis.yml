@@ -1,9 +1,10 @@
 language: python
 python:
 - '3.6'
-
 script:
 - pytest
 services:
 - mongodb
-
+deploy:
+  password:
+    secure: ChRfRTE2twJox87SQ5rKnrZkiUXDR7vS9+KCZigBN/lUhIjU9z3DVliqKkLzJu465Nkl7LG4Blij5luXh4X2wkSDP5CNB2W7rXN9i1b98+5WX1WvDRIfTVn4es2VGvZwngYVY/It7ZnuEvFlmV1UDiKDe92XFDRMcd2pY2ScurvyEEEV2dSN10by2j5lI4jOL5TtqOaaCfd8wktKGX4pplJbl14pVH5QLx3MaK3wh9CFdAhouNzOYbKpsXX1M5sTMc5wVWqxRCYr62zPOiGSeu+0DcgizBaikfo4Z0/T1lg8oFsyiwjDweVJdroxVe9c5lfi1d0+9wGLKLZtuse5DWt+Hz4pVsVf9PBT5gLbm3+IA6hRtVRojzzi+TF23k+nADRPW7ySSvHzCHotlIBu4+1wSX8p/JQRCOFRNbVdUvKsxD6cXSm1XGSsixeCexwJTJeJnJ5fK77MaWcxPKnGF5UrcJRXyTaTbFT+iLXbQ9y/LtmcAMqN5IXPLSiJiXfVFh4FTD3C5tPp6BdFNSgItCrAnXMt7bUxZIHBk5695ZXSK/qSNEW/t+Y78pdmmhJSp/4Y1aiazKVkvdrckdFdLcgp59p8abrd4VO7/6345HBDeQUpX6VCH2FxXbbQUle0yYPwTTl//6UG0yNgco16z7YYMJAUzZwG0dgWoOXCDtk=
