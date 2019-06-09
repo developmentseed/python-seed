@@ -3,10 +3,6 @@ services:
   web:
     # replace username/repo:tag with your name and image details
     image: jeremyward/mobysharp:demo
-    deploy:
-      replicas: 1
-      restart_policy:
-        condition: on-failure
     ports:
       - "4000:80"
     networks:
