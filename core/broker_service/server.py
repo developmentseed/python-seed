@@ -14,6 +14,7 @@ def create_yaml_driven_combi_broker(config):
     file_broker_spec = config.get('file')
     root_directory = file_broker_spec.get('root_directory')
     logger.info("file spec={}".format(root_directory))
+
     fileBroker =SimpleFileBroker(root_directory)
 
     return CombiBroker({"file":fileBroker})

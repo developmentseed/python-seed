@@ -9,7 +9,12 @@ class FileStorageMethod(StorageMethod):
     allowed_formats = ["CSV"]
     def __init__(self, base_directory):
         self.base_directory = base_directory
-        super().__init__("file", ["format"])
+        if os.path.isdir(self.base_directory):
+            logging.info("Found base directory {}".format(self.base_directory))
+            super().__init__("file", ["format"])
+        else:
+            logger.error("could not read base directory {}".format(self.base_directory))
+            raise StorageMethod.ResourceException()
 
     def storeContent(self, path, params, content,revision_info):
         super().storeContent(path, params, content,revision_info)
@@ -31,12 +36,6 @@ class FileStorageMethod(StorageMethod):
                               memory_style=MemStyles.DATA_FRAME,
                               path = path,
                               description=index_row['description'])
-
-
-
-
-
-
 
     def acquireContent(self, path, params,version_id=None):
         super().acquireContent(path,params)

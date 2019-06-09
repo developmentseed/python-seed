@@ -5,12 +5,9 @@ services:
     ports:
       - "5672:5672"
       - "15671:15671"
-  web:
+  datahub:
     # replace username/repo:tag with your name and image details
-    image: jeremyward/mobysharp:demo
-    ports:
-      - "4000:80"
-    networks:
-      - webnet
+    image: jeremyward/datahub:latest
+
 networks:
   webnet:
