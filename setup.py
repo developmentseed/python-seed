@@ -1,8 +1,8 @@
 from distutils.core import setup
 setup(
   name = 'isharp',
-  packages = ['core','arctic_broker','arctic_broker.broker_impl','csv_files'],
-  version = '0.102',
+  packages = ['isharp','arctic_broker','arctic_broker.broker_impl','csv_files'],
+  version = '0.103',
   description = 'Algorithmic workbench',
   author = 'jeremycward',
   author_email = 'jeremycward@yahoo.co.uk',
