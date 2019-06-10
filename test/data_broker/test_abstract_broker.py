@@ -1,12 +1,12 @@
 
 import unittest
-from core.core import DataBroker,MatrixHeader,Matrix,AcquireContentReturnValue,Revision
+from isharp.core import DataBroker,MatrixHeader,Matrix,AcquireContentReturnValue,Revision
 from unittest.mock import MagicMock
 from unittest.mock import patch
-from core.core import StorageMethod
+from isharp.core import StorageMethod
 from datetime import datetime
-from core.core import RevisionInfo
-from core.core import AbstractDataBroker
+from isharp.core import RevisionInfo
+from isharp.core import AbstractDataBroker
 
 test_header = MatrixHeader(name="hello", revision_id=5, storage_method="test", path=".", memory_style=None,
                            description="None")

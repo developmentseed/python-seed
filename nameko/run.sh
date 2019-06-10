@@ -1,5 +1,5 @@
 # run server
-nameko run --config ./nameko/config.yaml core.server:DataBrokerService
+nameko run --config ./nameko/config.yaml isharp.broker_service.server:DataBrokerService
 
 #invoke client
 #nameko shell --config ./nameko/config.yaml

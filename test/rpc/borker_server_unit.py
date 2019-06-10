@@ -1,9 +1,9 @@
 """ Service unit testing best practice.
 """
 from nameko.testing.services import worker_factory
-from core.broker_service.server import DataBrokerService
+from isharp.broker_service.server import DataBrokerService
 import pandas as pd
-from core.core import Matrix
+from isharp.core import Matrix
 from unittest import TestCase
 
 class TestBrokerService(TestCase):

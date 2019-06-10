@@ -1,4 +1,4 @@
-from core.core import StorageMethod, MatrixHeader, Matrix,MemStyles,AcquireContentReturnValue
+from isharp.core import StorageMethod, MatrixHeader, Matrix,MemStyles,AcquireContentReturnValue
 import pandas as pd
 import os
 import logging

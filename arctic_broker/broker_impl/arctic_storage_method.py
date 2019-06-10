@@ -1,4 +1,4 @@
-from core.core import StorageMethod,MatrixHeader,Revision,AcquireContentReturnValue,MemStyles
+from isharp.core import StorageMethod,MatrixHeader,Revision,AcquireContentReturnValue,MemStyles
 from typing import List
 import os
 

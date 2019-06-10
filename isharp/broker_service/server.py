@@ -1,8 +1,8 @@
 from nameko.extensions import DependencyProvider
 from nameko.rpc import rpc, RpcProxy
-from core.core import  MatrixHeader,CombiBroker
+from isharp.core import  MatrixHeader,CombiBroker
 from typing import List
-from core.core import  DataBroker,Matrix,RevisionInfo,Revision
+from isharp.core import  DataBroker,Matrix,RevisionInfo,Revision
 from csv_files.simple_file_broker import SimpleFileBroker
 import logging
 

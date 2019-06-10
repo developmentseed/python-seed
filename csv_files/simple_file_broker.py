@@ -1,5 +1,5 @@
 from .file_storage_method import FileStorageMethod
-from core.core import AbstractDataBroker
+from isharp.core import AbstractDataBroker
 import logging
 
 class SimpleFileBroker(AbstractDataBroker):

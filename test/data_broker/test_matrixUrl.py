@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from core.core import MatrixUrl
+from isharp.core import MatrixUrl
 
 
 class TestMatrixUrl(TestCase):
