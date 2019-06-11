@@ -2,7 +2,7 @@ from distutils.core import setup
 setup(
   name = 'isharp',
   packages = ['isharp'],
-  version = '0.103',
+  version = '0.104',
   description = 'Algorithmic workbench',
   author = 'jeremycward',
   author_email = 'jeremycward@yahoo.co.uk',
