@@ -1,7 +1,8 @@
 from distutils.core import setup
+from setuptools import find_packages
 setup(
   name = 'isharp',
-  packages = ['isharp'],
+  packages = find_packages(),
   version = '0.104',
   description = 'Algorithmic workbench',
   author = 'jeremycward',
