@@ -11,7 +11,7 @@ COPY . .
 # Install any needed packages specified in requirements.txt
 RUN pip install --trusted-host pypi.python.org -r requirements.txt
 
-
+#nameko run --config ./nameko/config.yaml isharp.broker_service.server:DataBrokerService
 #nameko run --config ./nameko/config.yaml core.server:DataBrokerService
 #CMD nameko run --config config.yaml core.server:DataBrokerService
 

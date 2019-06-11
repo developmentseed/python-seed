@@ -3,7 +3,7 @@ from nameko.rpc import rpc, RpcProxy
 from isharp.core import  MatrixHeader,CombiBroker
 from typing import List
 from isharp.core import  DataBroker,Matrix,RevisionInfo,Revision
-from csv_files.simple_file_broker import SimpleFileBroker
+from isharp.csv_files.simple_file_broker import SimpleFileBroker
 import logging
 
 logger = logging.getLogger(__name__)
