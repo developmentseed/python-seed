@@ -1,5 +1,5 @@
 serializer: pickle
-AMQP_URI: 'pyamqp://guest:guest@localhost:5672'
+AMQP_URI: pyamqp://${RABBITMQ_USER:guest}:${RABBITMQ_PASSWORD:password}@${RABBITMQ_HOST:localhost}
 rpc_exchange: 'nameko-rpc'
 max_workers: 10
 parent_calls_tracked: 10
@@ -12,8 +12,6 @@ LOGGING:
     root:
         level: DEBUG
         handlers: [console]
-
-
 
 DATA_BROKERS:
   file:
