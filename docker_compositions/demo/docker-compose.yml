@@ -1,13 +1,19 @@
 version: "3"
 services:
-  mq:
+  rabbit:
     image: rabbitmq:3-management
     ports:
-      - "5672:5672"
-      - "15671:15671"
+      - "15672:15672"
   datahub:
     # replace username/repo:tag with your name and image details
     image: jeremyward/datahub:latest
+    depends_on:
+      - rabbit
+    environment:
+    RABBIT_PASSWORD: "guest"
+    RABBIT_USER: "guest"
+    RABBIT_HOST: "rabbit"
+    RABBIT_PORT: "5672"
+    RABBIT_MANAGEMENT_PORT: "15672"
 
-networks:
-  webnet:
+
