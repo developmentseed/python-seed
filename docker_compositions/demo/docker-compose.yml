@@ -4,7 +4,8 @@ services:
     image: rabbitmq:3-management
     ports:
       - "15672:15672"
-
+    environment:
+      - RABBITMQ_DEFAULT_VHOST
 
 
   datahub:
