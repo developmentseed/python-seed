@@ -13,11 +13,11 @@ services:
     depends_on:
       - rabbit
     environment:
-    - RABBIT_PASSWORD
-    - RABBIT_USER
-    - RABBIT_HOST
-    - RABBIT_PORT
-    - RABBIT_MANAGEMENT_PORT
+      - RABBIT_PASSWORD
+      - RABBIT_USER
+      - RABBIT_HOST
+      - RABBIT_PORT
+      - RABBIT_MANAGEMENT_PORT
 
 
 
