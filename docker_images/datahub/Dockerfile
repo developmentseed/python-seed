@@ -10,10 +10,13 @@ COPY . .
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --trusted-host pypi.python.org -r requirements.txt
+RUN apt-get -qq update > /dev/null
+RUN apt-get -qq -y install rabbitmq-server > /dev/null
+RUN  /usr/sbin/rabbitmq-plugins enable rabbitmq_management
 
-CMD env
-CMD nameko run --config ./config.yaml -- isharp.broker_service.server:DataBrokerService
 
 
+
+CMD ["/init.sh"]
 
 
