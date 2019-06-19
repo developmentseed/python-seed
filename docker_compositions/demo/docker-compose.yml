@@ -5,11 +5,6 @@ services:
     ports:
       - "15672:15672"
     environment:
-    - RABBIT_PASSWORD
-    - RABBIT_USER
-    - RABBIT_HOST
-    - RABBIT_PORT
-    - RABBIT_MANAGEMENT_PORT
 
 
   datahub:
@@ -17,5 +12,12 @@ services:
     image: jeremyward/datahub:latest
     depends_on:
       - rabbit
+    environment:
+    - RABBIT_PASSWORD
+    - RABBIT_USER
+    - RABBIT_HOST
+    - RABBIT_PORT
+    - RABBIT_MANAGEMENT_PORT
+
 
 
