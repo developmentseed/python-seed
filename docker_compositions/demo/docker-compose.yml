@@ -4,16 +4,18 @@ services:
     image: rabbitmq:3-management
     ports:
       - "15672:15672"
-  datahub:
-    # replace username/repo:tag with your name and image details
-    image: jeremyward/datahub:latest
-    depends_on:
-      - rabbit
     environment:
     - RABBIT_PASSWORD
     - RABBIT_USER
     - RABBIT_HOST
     - RABBIT_PORT
     - RABBIT_MANAGEMENT_PORT
+
+
+  datahub:
+    # replace username/repo:tag with your name and image details
+    image: jeremyward/datahub:latest
+    depends_on:
+      - rabbit
 
 
