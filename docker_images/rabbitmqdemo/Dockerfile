@@ -18,7 +18,7 @@ RUN apt-get install --yes python3-pip
 
 COPY ./requirements.txt .
 
-RUN pip install --trusted-host pypi.python.org -r requirements.txt
+#RUN pip install --trusted-host pypi.python.org -r requirements.txt
 
 # Add files.
 ADD bin/rabbitmq-start /usr/local/bin/
@@ -45,9 +45,10 @@ VOLUME ["/data/log", "/data/mnesia"]
 # Define working directory.
 WORKDIR /data
 
-# Define default command.
-CMD ["/bin/bash"]
-
 # Expose ports.
 EXPOSE 5672
 EXPOSE 15672
+
+# Define default command.
+CMD ["/bin/bash"]
+
