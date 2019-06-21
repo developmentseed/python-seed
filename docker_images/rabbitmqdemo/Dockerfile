@@ -13,7 +13,7 @@ FROM ubuntu
 #Install python
 RUN apt-get update
 
-RUN apt update && apt upgrade
+RUN apt --yes update && apt --yes upgrade
 RUN apt install --yes wget
 
 RUN apt-get install --yes python3
