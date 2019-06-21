@@ -31,7 +31,7 @@ ADD bin/rabbitmq-start /usr/local/bin/
 RUN \
   wget -qO - https://www.rabbitmq.com/rabbitmq-signing-key-public.asc | apt-key add - && \
   echo "deb http://www.rabbitmq.com/debian/ testing main" > /etc/apt/sources.list.d/rabbitmq.list && \
-  apt-get update && \
+  apt-get  --allow-unauthenticated update && \
   DEBIAN_FRONTEND=noninteractive apt-get install --allow-unauthenticated -y rabbitmq-server && \
   rm -rf /var/lib/apt/lists/* && \
   rabbitmq-plugins enable rabbitmq_management && \
