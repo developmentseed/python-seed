@@ -12,6 +12,9 @@ COPY . .
 RUN pip install --trusted-host pypi.python.org -r requirements.txt
 
 
-CMD nameko run --config ./config.yaml isharp.broker_service.server:DataBrokerService
+RUN chmod +x init.sh
+
+
+CMD ./init.sh
 
 
