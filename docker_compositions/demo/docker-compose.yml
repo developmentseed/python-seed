@@ -6,7 +6,6 @@ services:
     ports:
       - "15672:15672"
 
-
   datahub:
     container_name: isharp-datahub
     image: datahub
