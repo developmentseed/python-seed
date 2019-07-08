@@ -1,5 +1,5 @@
 # Use an official Python runtime as a parent image
-FROM python:3.6-slim
+FROM python:3
 
 # Set the working directory to /app
 WORKDIR .
@@ -10,13 +10,8 @@ COPY . .
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --trusted-host pypi.python.org -r requirements.txt
-RUN apt-get -qq update > /dev/null
-RUN apt-get -qq -y install rabbitmq-server > /dev/null
-RUN  /usr/sbin/rabbitmq-plugins enable rabbitmq_management
 
 
-
-
-CMD ["/init.sh"]
+CMD ["/bin/bash"]
 
 

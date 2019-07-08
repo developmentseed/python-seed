@@ -10,13 +10,6 @@ def create_simple_series(columns,number_days):
     index = pd.date_range(todays_date - datetime.timedelta(number_days), periods=number_days, freq='D')
     return pd.DataFrame(data,index=index,columns=columns)
 
-
-
-
-
-
-
-
 def testit():
     columns = ['A','B','C']
     data = np.array([np.arange(10)] * 3).T

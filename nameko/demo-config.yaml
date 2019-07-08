@@ -1,5 +1,5 @@
 serializer: pickle
-AMQP_URI: pyamqp://guest:guest@localhost
+AMQP_URI: 'pyamqp://guest:guest@nas174:5672'
 rpc_exchange: 'nameko-rpc'
 max_workers: 10
 parent_calls_tracked: 10
@@ -13,7 +13,9 @@ LOGGING:
         level: DEBUG
         handlers: [console]
 
+
+
 DATA_BROKERS:
   file:
-    root_directory: './data_hub'
+    root_directory: './demo_data/demo_broker'
 

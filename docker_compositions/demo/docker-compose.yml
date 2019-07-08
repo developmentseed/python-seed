@@ -7,9 +7,8 @@ services:
     environment:
       - RABBITMQ_DEFAULT_VHOST
 
-
   datahub:
-    image: jeremyward/datahub:latest
+    image: rabbitmqdemo
     depends_on:
       - rabbit
     environment:

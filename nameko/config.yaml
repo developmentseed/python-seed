@@ -1,5 +1,5 @@
 serializer: pickle
-AMQP_URI: 'pyamqp://guest:guest@localhost:5672'
+AMQP_URI: 'pyamqp://guest:guest@ec2-34-205-159-121.compute-1.amazonaws.com:5672'
 rpc_exchange: 'nameko-rpc'
 max_workers: 10
 parent_calls_tracked: 10
