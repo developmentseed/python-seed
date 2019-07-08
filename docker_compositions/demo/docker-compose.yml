@@ -1,23 +1,24 @@
 version: "3"
 services:
   rabbit:
-    image: rabbitmq:3-management
+    container_name: isharp-rabbitmq
+    image: rabbitmq:3.7-management
     ports:
       - "15672:15672"
-    environment:
-      - RABBITMQ_DEFAULT_VHOST
+
 
   datahub:
-    command: "/bin/bash"
+    container_name: isharp-datahub
     image: datahub
     depends_on:
       - rabbit
-    environment:
-      - RABBIT_PASSWORD
-      - RABBIT_USER
-      - RABBIT_HOST
-      - RABBIT_PORT
-      - RABBIT_MANAGEMENT_PORT
-
+    links:
+      - rabbit:isharp-rabbitmq
+ environment:
+        RABBIT_PASSWORD: "guest"
+        RABBIT_USER: "guest"
+        RABBIT_HOST: "rabbit"
+        RABBIT_PORT: "5672"
+        RABBIT_MANAGEMENT_PORT: "15672"
 
 
