@@ -11,9 +11,10 @@ services:
     image: datahub
     depends_on:
       - rabbit
+
     links:
       - "rabbit:isharp-rabbitmq"
-     environment:
+    environment:
       RABBIT_PASSWORD: "guest"
       RABBIT_USER: "guest"
       RABBIT_HOST: "rabbit"
