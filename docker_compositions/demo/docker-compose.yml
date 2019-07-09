@@ -1,5 +1,16 @@
 version: "3"
 services:
+
+
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - "27017:27017"
+
   rabbit:
     container_name: isharp-rabbitmq
     image: rabbitmq:3.7-management
@@ -12,6 +23,7 @@ services:
     image: datahub
     depends_on:
       - rabbit
+      - mongo
 
     links:
       - "rabbit:isharp-rabbitmq"
