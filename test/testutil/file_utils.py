@@ -1,7 +1,7 @@
 import os
 import test.testutil.pandas_utils as pu
 import pandas as pd
-
+import pathlib
 rows = ['a','b','c','d','e','f','g','h','i','j','k']
 
 def fill_directory_with_content(root_directory,directory_path, number_files):
@@ -12,7 +12,8 @@ def fill_directory_with_content(root_directory,directory_path, number_files):
         file_name = "file_name_{}.csv".format(i)
         filepath = os.path.join(root_directory,directory_path, file_name)
         df.to_csv(filepath)
-        key_data.append(os.path.join("/",directory_path,file_name))
+        posix_path  = pathlib.PureWindowsPath(os.path.join("/",directory_path,file_name))
+        key_data.append(posix_path.as_posix())
         index_data.append((file_name,"description of {}".format(file_name)))
 
     df = pd.DataFrame( index=pd.Index(key_data,name="path"),data=index_data, columns=["name", "description"])

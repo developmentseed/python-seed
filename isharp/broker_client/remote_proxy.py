@@ -37,7 +37,7 @@ class PooledBrokerConnection(DataBroker):
         pass
 
     def checkout(self, url: str, version_id=None) -> Matrix:
-        return self.proxy.data_broker_service.checkout("file:///file_name_1.csv?format=CSV")
+        return self.proxy.data_broker_service.checkout(url)
 
 
 class BrokerConnectionPool(DataBroker):

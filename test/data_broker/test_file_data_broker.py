@@ -21,12 +21,19 @@ class TestFileDataBroker(unittest.TestCase):
         self.broker = SimpleFileBroker(self.test_data_path)
 
     def tearDown(self):
-        shutil.rmtree(self.test_data_path)
+        pass
+        # shutil.rmtree(self.test_data_path)
 
 
     def test_invalid_path(self):
         with self.assertRaises(StorageMethod.ResourceException):
             self.broker.checkout("file://broker.nomura.com/no_dir/no_file?format=CSV")
+
+    def test_get_compound_path(self):
+        testurl = "file:///subdir_1/file_name_1.csv?format=CSV"
+        m = self.broker.checkout(testurl)
+        self.assertEqual("file_name_1.csv",m.matrix_header.name)
+
 
     def test_get_simple_matrix(self):
         testurl = "file:///file_name_1.csv?format=CSV"
