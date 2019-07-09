@@ -15,5 +15,5 @@ LOGGING:
 
 DATA_BROKERS:
   file:
-    root_directory: './data_hub'
+    root_directory: '/demo_data/data_broker'
 
