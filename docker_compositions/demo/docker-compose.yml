@@ -12,7 +12,7 @@ services:
       - "27017:27017"
 
   init_mongo:
-    constainer_name: isharp_mongo_demo_init
+    container_name: isharp_mongo_demo_init
     image: arctic_demo_init
     depends_on:
       - mongo
