@@ -1,5 +1,5 @@
 mongo_db:
-  host: ec2-34-205-159-121.compute-1.amazonaws.com
+  host: localhost
   db_name: local
   user: root
   password: example
