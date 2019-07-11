@@ -9,4 +9,9 @@ data_files:
   MSFT: data/msft.csv
   ORCL: data/orcl.csv
   AAPL: data/aapl.csv
+  PRU: data/PRU.L.csv
+  SDR: data/SDR.L.csv
+  TSCO: data/TSCO.L.csv
+  VOD: data/VOD.L.csv
+  RR: data/RR.L.csv
 
