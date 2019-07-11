@@ -11,6 +11,12 @@ services:
     ports:
       - "27017:27017"
 
+  init_mongo:
+    constainer_name: isharp_mongo_demo_init
+    image: arctic_demo_init
+    depends_on:
+      - mongo
+
   rabbit:
     container_name: isharp-rabbitmq
     image: rabbitmq:3.7-management
