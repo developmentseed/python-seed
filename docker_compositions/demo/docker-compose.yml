@@ -20,6 +20,12 @@ services:
     links:
       - "mongo:isharp_mongo"
 
+    environment:
+      mongo_password: "example"
+      mongo_userid: "root"
+      mongo_db_name: "isharp"
+      mongo_init_skip: ""
+      mongo_host: "mongo"
 
   rabbit:
     container_name: isharp-rabbitmq
