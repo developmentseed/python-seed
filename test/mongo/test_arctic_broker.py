@@ -49,7 +49,7 @@ class TestArcticBroker(unittest.TestCase):
     def test_list(self):
         broker = ArcticBroker(self.arctic)
         result = broker.list()
-        self.assertEquals(9, len(result))
+        self.assertEquals(1, len(result))
 
 
 
