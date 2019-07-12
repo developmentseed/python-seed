@@ -46,6 +46,12 @@ class TestArcticBroker(unittest.TestCase):
         self.assertEquals(num_rows_original_version_2,len(matrix.content.index))
 
 
+    def test_list(self):
+        broker = ArcticBroker(self.arctic)
+        result = broker.list()
+        self.assertEquals(9, len(result))
+
+
 
     def tearDown(self):
         self.arctic.delete_library(self.library_name)

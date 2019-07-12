@@ -180,7 +180,7 @@ class CombiBroker(DataBroker):
         self.registry = registry
 
     def checkout(self, url, version_id=None) -> Matrix:
-        logger.debug("combi broker called with {}".format(url))
+        logger.info("combi broker called with {}".format(url))
         parsed_url = MatrixUrl(url)
         return self._delegate(parsed_url.scheme()).checkout(url,version_id)
 

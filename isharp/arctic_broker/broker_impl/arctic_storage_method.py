@@ -55,7 +55,27 @@ class ArcticStorageMethod(StorageMethod):
         lib.write(ticker,content )
 
     def list(self) -> List[MatrixHeader]:
-        pass
+        ret_val = []
+        for this_lib_name in self.store.list_libraries():
+            library = self.store[this_lib_name]
+            for this_symbol in library.list_symbols():
+                versions = library.list_versions(this_symbol)
+                filtered = [version for version in versions if not version['deleted']]
+                max_version = max(map(lambda v: v['version'], filtered))
+                ret_val.append(MatrixHeader(name=this_symbol,
+                                            description="don't know yet",
+                                            storage_method = self.name,
+                                            memory_style = MemStyles.DATA_FRAME,
+                                            revision_id = str(max_version),
+                                            path="{}/{}".format(this_lib_name,this_symbol)))
+
+        return ret_val
+
+
+
+
+
+
 
 
 
