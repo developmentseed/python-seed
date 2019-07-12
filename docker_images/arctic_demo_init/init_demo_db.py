@@ -4,6 +4,7 @@ from pymongo import MongoClient
 from arctic import Arctic
 from arctic import auth
 import logging
+import expandvars
 
 logging.basicConfig()
 logger = logging.getLogger()
@@ -17,6 +18,9 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger = logging.getLogger(__name__)
 
+def env_substitution(dict_in):
+    for this_key,this_value in dict_in.items():
+        dict_in[this_key] = expandvars.expandvars(this_value)
 
 def load_data_file(file_name, ticker_name,arctic_library):
     df = pd.read_csv(file_name)
@@ -25,17 +29,29 @@ def load_data_file(file_name, ticker_name,arctic_library):
 
 
 conf = yaml.load(open('arctic_demo.yaml','r'))
-client = MongoClient('localhost')
+env_substitution(conf['mongo_db'])
+
+if expandvars.expandvars(conf['skip']):
+    logger.info("skipping wihtout loading since skip parameter is not empty")
+    quit()
+
+
+
 m_host= conf['mongo_db']['host']
+client = MongoClient(m_host)
 lib_name = conf['lib_name']
-arctic.hooks._get_auth_hook = lambda *args, **kwargs: auth.Credential(database=m_host,user=conf['mongo_db']['user'],password=conf['mongo_db']['password'])
-arctic = Arctic(m_host)
+arctic_connection = Arctic(m_host)
+if conf['mongo_db']['user']:
+    logger.info("Creating login hook for user {}".format(conf['mongo_db']['user']))
+    arctic.hooks._get_auth_hook = lambda *args, **kwargs: auth.Credential(database=m_host,user=conf['mongo_db']['user'],password=conf['mongo_db']['password'])
+
+
 logger.info ("started Arctic on {}".format(m_host))
 
-arctic.initialize_library(lib_name)
+arctic_connection.initialize_library(lib_name)
 dat_files = conf['data_files']
 for key,value in dat_files.items():
-    load_data_file(value,key,arctic[lib_name])
+    load_data_file(value,key,arctic_connection[lib_name])
 
 
 

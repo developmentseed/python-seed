@@ -3,6 +3,7 @@ services:
 
 
   mongo:
+    container_name: isharp_mongo
     image: mongo
     restart: always
     environment:
@@ -16,6 +17,9 @@ services:
     image: arctic_demo_init
     depends_on:
       - mongo
+    links:
+      - "mongo:isharp_mongo"
+
 
   rabbit:
     container_name: isharp-rabbitmq

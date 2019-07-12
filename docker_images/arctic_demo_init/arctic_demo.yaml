@@ -1,8 +1,9 @@
+skip: ${mongo_init_skip:-}
 mongo_db:
-  host: localhost
-  db_name: local
-  user: root
-  password: example
+  host: ${mongo_host:-localhost}
+  db_name: ${mongo_db_name:-local}
+  user: ${mongo_userid:-}
+  password: ${mongo_password:-}
 
 lib_name: isharp
 data_files:
