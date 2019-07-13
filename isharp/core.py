@@ -195,9 +195,12 @@ class CombiBroker(DataBroker):
         return self._delegate(matrix.url.scheme()).commit(matrix,revisionInfo)
 
     def list(self) -> List[MatrixHeader]:
+        logger.info("combi broker list method called")
         ret_val = []
         for this_delegate in self.registry.values():
+            logger.info("getting listing from delegate")
             ret_val.append(this_delegate.list())
+        logger.info("combi broker returning listing with {} values".format(len(ret_val)))
         return ret_val
 
 

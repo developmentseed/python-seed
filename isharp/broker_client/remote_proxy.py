@@ -34,7 +34,7 @@ class PooledBrokerConnection(DataBroker):
         pass
 
     def list(self) -> List[MatrixHeader]:
-        pass
+        return self.proxy.data_broker_service.list()
 
     def checkout(self, url: str, version_id=None) -> Matrix:
         return self.proxy.data_broker_service.checkout(url)
@@ -68,6 +68,11 @@ class BrokerConnectionPool(DataBroker):
         return self._connect(matrix.url.url).commit(matrix, revisionInfo)
 
     def list(self) -> List[MatrixHeader]:
-        pass
+        raise NotImplementedError
+
+    def list(self,network_location):
+        return self._connect(network_location).list()
+
+
 
 
