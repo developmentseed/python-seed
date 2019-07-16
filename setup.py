@@ -3,7 +3,7 @@ from setuptools import find_packages
 setup(
   name = 'isharp',
   packages = find_packages(),
-  version = '1.2',
+  version = '1.3',
   description = 'Algorithmic workbench',
   author = 'jeremycward',
   author_email = 'jeremycward@yahoo.co.uk',
