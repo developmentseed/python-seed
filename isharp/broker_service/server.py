@@ -3,28 +3,17 @@ from nameko.rpc import rpc, RpcProxy
 from isharp.core import  MatrixHeader,CombiBroker
 from typing import List
 from isharp.core import  DataBroker,Matrix,RevisionInfo,Revision
-from isharp.csv_files.simple_file_broker import SimpleFileBroker
 import logging
 
 logger = logging.getLogger(__name__)
 
-
-def create_yaml_driven_combi_broker(config):
-    logger.info("Config for combi broker: {}".format(config))
-    file_broker_spec = config.get('file')
-    root_directory = file_broker_spec.get('root_directory')
-    logger.info("file spec={}".format(root_directory))
-
-    fileBroker =SimpleFileBroker(root_directory)
-
-    return CombiBroker({"file":fileBroker})
-
 class DataBrokerDelegate(DependencyProvider):
 
     def get_dependency(self, worker_ctx):
-        data_brokers =worker_ctx.container.config.get('DATA_BROKERS')
-        return create_yaml_driven_combi_broker(data_brokers)
-
+        print("getting data broker delegates")
+        data_brokers =worker_ctx.container.config.get('data_brokers')
+        print("got {} data brokers".format(len(data_brokers)))
+        return  CombiBroker(data_brokers)
 
 class DataBrokerService(DataBroker):
     name="data_broker_service"
@@ -45,11 +34,6 @@ class DataBrokerService(DataBroker):
     @rpc
     def list(self) -> List[MatrixHeader]:
         pass
-
-
-
-
-
 
 
 

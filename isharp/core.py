@@ -7,6 +7,7 @@ from urllib.parse import parse_qsl
 import datetime
 import abc
 
+
 import logging
 logger = logging.getLogger(__name__)
 
@@ -175,8 +176,11 @@ class AbstractDataBroker(DataBroker):
 
 
 
+
+
 class CombiBroker(DataBroker):
     def __init__(self,registry):
+        print('Creating combi broker with keys {}'.format(registry.keys()))
         self.registry = registry
 
     def checkout(self, url, version_id=None) -> Matrix:

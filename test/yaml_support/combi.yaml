@@ -1,0 +1,14 @@
+
+  brokers:
+    file:
+      !SimpleFileBroker
+         root_directory: ${root_dir:-.}
+
+    arctic:
+      !ArcticBroker
+        mongo_host: ${mongo_host:-localhost}
+
+
+
+
+

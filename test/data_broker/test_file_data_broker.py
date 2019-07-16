@@ -21,8 +21,7 @@ class TestFileDataBroker(unittest.TestCase):
         self.broker = SimpleFileBroker(self.test_data_path)
 
     def tearDown(self):
-        pass
-        # shutil.rmtree(self.test_data_path)
+        shutil.rmtree(self.test_data_path)
 
 
     def test_invalid_path(self):

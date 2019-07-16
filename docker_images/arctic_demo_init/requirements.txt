@@ -1,5 +1,5 @@
 arctic==1.74.0
 numpy==1.14.3
 pandas==0.24.2
-nameko
+pyyaml
 expandvars

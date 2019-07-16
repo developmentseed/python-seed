@@ -1,0 +1,29 @@
+serializer: pickle
+rabbit_uid: ${rabbit_uid:-guest}
+rabbit_pwd: ${rabbit_uid:-guest}
+rabbit_host: ${rabbit_host:ec2-34-205-159-121.compute-1.amazonaws.com:15672}
+
+rpc_exchange: 'nameko-rpc'
+max_workers: 10
+parent_calls_tracked: 10
+
+LOGGING:
+    version: 1
+    handlers:
+        console:
+            class: logging.StreamHandler
+    root:
+        level: DEBUG
+        handlers: [console]
+
+data_brokers:
+    file:
+      !SimpleFileBroker
+         root_directory: ${root_dir:-.}
+
+    arctic:
+      !ArcticBroker
+        mongo_host: ${mongo_host:-localhost}
+
+
+
