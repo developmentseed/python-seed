@@ -4,6 +4,7 @@ python:
 script:
 - pytest
 services:
+- rabitmq
 - mongodb
 deploy:
   provider: pypi
