@@ -15,6 +15,6 @@ RUN pip install --trusted-host pypi.python.org -r requirements.txt
 RUN chmod +x init.sh
 
 
-CMD ./init.sh &
+CMD ./init.sh
 
 
