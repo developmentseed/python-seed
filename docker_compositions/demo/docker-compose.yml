@@ -51,3 +51,7 @@ services:
       RABBIT_MANAGEMENT_PORT: "15672"
 
 
+  jupyter:
+    container_name: isharp-demo-jupyter
+
+
