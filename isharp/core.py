@@ -201,7 +201,7 @@ class CombiBroker(DataBroker):
 
     def release(self, matrix) -> None:
         logger.info("combi broker  release called")
-        self._delegate(matrix.url.scheme())
+        self._delegate(matrix.url.scheme()).release(matrix)
         return None
 
     def list(self) -> List[MatrixHeader]:
@@ -209,7 +209,10 @@ class CombiBroker(DataBroker):
         ret_val = []
         for this_delegate in self.registry.values():
             logger.info("getting listing from delegate")
-            ret_val.append(this_delegate.list())
+            this_pack = this_delegate.list()
+            for listing_item in this_pack:
+                ret_val.append(listing_item)
+
         logger.info("combi broker returning listing with {} values".format(len(ret_val)))
         return ret_val
 

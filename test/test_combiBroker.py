@@ -8,7 +8,10 @@ class TestCombiBroker(TestCase):
     def setUp(self):
         self.foo_broker = Mock()
         self.bar_broker = Mock()
-        self.foo_broker.list = MagicMock(return_value=[MatrixHeader(name="foo",revision_id=None,storage_method=None,path=None,memory_style=None,description=None)])
+        self.foo_broker.list = MagicMock(return_value=[
+            MatrixHeader(name="foo",revision_id=None,storage_method=None,path=None,memory_style=None,description=None),
+            MatrixHeader(name="foo_2", revision_id=None, storage_method=None, path=None, memory_style=None,description=None)
+        ])
         self.bar_broker.list = MagicMock(return_value = [MatrixHeader(name="bar",revision_id=None,storage_method=None,path=None,memory_style=None,description=None)])
         self.combi_broker = CombiBroker(
             {
@@ -44,7 +47,7 @@ class TestCombiBroker(TestCase):
 
     def test_list(self):
         ret = self.combi_broker.list()
-        self.assertEquals(2, len(ret))
+        self.assertEquals(3, len(ret))
         self.foo_broker.list.assert_called()
         self.bar_broker.list.assert_called()
         self.bar_broker.checkout.assert_not_called()

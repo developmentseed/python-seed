@@ -1,5 +1,6 @@
 
 from isharp.broker_client.remote_proxy import BrokerConnectionPool
+from  isharp.broker_client.client_utils import mtx_headers_as_dataframe as to_df
 import logging
 logging.basicConfig()
 logger = logging.getLogger()
@@ -19,15 +20,12 @@ logger.info("hello from logging")
 
 
 with BrokerConnectionPool() as broker:
-    mtx = broker.checkout("file://ec2-34-205-159-121.compute-1.amazonaws.com:5672/file_name_1.csv?format=CSV")
+    mtx = broker.checkout("file://localhost:5672/file_name_1.csv?format=CSV")
+    print(mtx.content)
     broker.release(mtx)
-    print (mtx.content)
-    mtx = broker.checkout("file://ec2-34-205-159-121.compute-1.amazonaws.com:5672/file_name_1.csv?format=CSV")
-    print (mtx.matrix_header.description)
+    mtx = broker.checkout("file://localhost:5672/file_name_1.csv?format=CSV")
     broker.release(mtx)
-
-
-
+    print (to_df(broker.list("localhost:5672")))
 
 print("end")
 

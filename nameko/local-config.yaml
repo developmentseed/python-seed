@@ -1,0 +1,26 @@
+serializer: pickle
+AMQP_URI: 'pyamqp://guest:guest@localhost:5672'
+rpc_exchange: 'nameko-rpc'
+max_workers: 10
+parent_calls_tracked: 10
+
+LOGGING:
+    version: 1
+    handlers:
+        console:
+            class: logging.StreamHandler
+    root:
+        level: INFO
+        handlers: [console]
+
+data_brokers:
+    file:
+      !SimpleFileBroker
+         root_directory: /Users/jerem/dev/ipp-core/demo_data/demo_broker
+
+    arctic:
+      !ArcticBroker
+        mongo_host: localhost
+
+
+

@@ -5,10 +5,13 @@ from isharp.core import RevisionInfo
 from urllib.parse import urlparse
 from nameko.standalone.rpc import ClusterRpcProxy
 import logging
+
 logger = logging.getLogger(__name__)
 
 
-def remote_config(net_location:str):
+
+
+def remote_config(net_location: str):
     return {
         'serializer': 'pickle',
         'AMQP_URI': 'pyamqp://guest:guest@{}'.format(net_location),
@@ -17,9 +20,10 @@ def remote_config(net_location:str):
         'parent_calls_tracked': 10
     }
 
+
 class PooledBrokerConnection(DataBroker):
     def __init__(self, net_location: str):
-        logger.info("creating remote client at {}".format(net_location) )
+        logger.info("creating remote client at {}".format(net_location))
         conf = remote_config(net_location)
         self.rpc_proxy = ClusterRpcProxy(conf)
         self.proxy = self.rpc_proxy.start()
@@ -29,15 +33,18 @@ class PooledBrokerConnection(DataBroker):
         logger.info("closing remote client at {}".format(self.net_location))
         self.rpc_proxy.stop()
 
-
     def commit(self, matrix: Matrix, revisionInfo: RevisionInfo) -> Revision:
-        pass
+        return self.proxy.data_broker_service.commit(matrix, revisionInfo)
 
     def list(self) -> List[MatrixHeader]:
         return self.proxy.data_broker_service.list()
 
     def checkout(self, url: str, version_id=None) -> Matrix:
         return self.proxy.data_broker_service.checkout(url)
+
+    def release(self, matrix) -> None:
+        self.proxy.data_broker_service.release(matrix)
+        return None
 
 
 class BrokerConnectionPool(DataBroker):
@@ -47,7 +54,7 @@ class BrokerConnectionPool(DataBroker):
     def __enter__(self):
         return self
 
-    def  __exit__(self, exc_type, exc_value, traceback):
+    def __exit__(self, exc_type, exc_value, traceback):
         for thisConnection in self.pool.values():
             thisConnection.stop()
 
@@ -62,7 +69,7 @@ class BrokerConnectionPool(DataBroker):
 
     def _conn_details(self, url: str) -> str:
         url_components = urlparse(url)
-        return  url_components.netloc
+        return url_components.netloc
 
     def checkout(self, url: str, version_id=None) -> Matrix:
         return self._connect(url).checkout(url, version_id)
@@ -73,9 +80,5 @@ class BrokerConnectionPool(DataBroker):
     def release(self, matrix) -> None:
         self._connect(matrix.url.url).release(matrix)
 
-    def list(self,network_location):
+    def list(self, network_location):
         return self._acquire_connection(network_location).list()
-
-
-
-

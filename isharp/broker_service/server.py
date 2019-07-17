@@ -22,18 +22,24 @@ class DataBrokerService(DataBroker):
 
     @rpc
     def checkout(self, url: str, version_id=None) -> Matrix:
+        logger.debug("delegate received checkout call")
         ret_val = self.delegate.checkout(url,version_id)
-        logger.debug("call to delegate successful")
+        logger.debug("checkout call to delegate successful")
         return ret_val
     @rpc
     def commit(self, matrix: Matrix, revisionInfo: RevisionInfo) -> Revision:
+        logger.debug("delegate received commit call")
         return super().commit(matrix, revisionInfo)
     @rpc
     def release(self, matrix) -> None:
-        pass
+        logger.debug("delegate reeived release call")
+        self.delegate.release(matrix)
+        logger.debug("release call to delegate successful")
+        return None
     @rpc
     def list(self) -> List[MatrixHeader]:
-        pass
+        logger.debug("delegate about to retrieve listing")
+        return self.delegate.list()
 
 
 
