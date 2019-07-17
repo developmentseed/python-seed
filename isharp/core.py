@@ -196,7 +196,13 @@ class CombiBroker(DataBroker):
 
 
     def commit(self, matrix: Matrix, revisionInfo: RevisionInfo) -> Revision:
+        logger.info("combi broker  commit called ")
         return self._delegate(matrix.url.scheme()).commit(matrix,revisionInfo)
+
+    def release(self, matrix) -> None:
+        logger.info("combi broker  release called")
+        self._delegate(matrix.url.scheme())
+        return None
 
     def list(self) -> List[MatrixHeader]:
         logger.info("combi broker list method called")

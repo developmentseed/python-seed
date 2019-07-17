@@ -51,11 +51,14 @@ class BrokerConnectionPool(DataBroker):
         for thisConnection in self.pool.values():
             thisConnection.stop()
 
-    def _connect(self, url: str):
-        connection_key = self._conn_details(url)
+    def _acquire_connection(self, connection_key):
         if connection_key not in self.pool.keys():
             self.pool[connection_key] = PooledBrokerConnection(connection_key)
         return self.pool[connection_key]
+
+    def _connect(self, url: str):
+        connection_key = self._conn_details(url)
+        return self._acquire_connection(connection_key)
 
     def _conn_details(self, url: str) -> str:
         url_components = urlparse(url)
@@ -67,11 +70,11 @@ class BrokerConnectionPool(DataBroker):
     def commit(self, matrix: Matrix, revisionInfo: RevisionInfo) -> Revision:
         return self._connect(matrix.url.url).commit(matrix, revisionInfo)
 
-    def list(self) -> List[MatrixHeader]:
-        raise NotImplementedError
+    def release(self, matrix) -> None:
+        self._connect(matrix.url.url).release(matrix)
 
     def list(self,network_location):
-        return self._connect(network_location).list()
+        return self._acquire_connection(network_location).list()
 
 
 
