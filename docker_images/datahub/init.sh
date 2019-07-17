@@ -2,6 +2,6 @@ echo ===========================================================================
 echo STARTING DATAHUB:
 env
 echo =======================================================================================
-python
-python datahub_main.py run --config ./config.yaml isharp.broker_service.server:DataBrokerService
+
+datahub run --config ./config.yaml isharp.broker_service.server:DataBrokerService
 
