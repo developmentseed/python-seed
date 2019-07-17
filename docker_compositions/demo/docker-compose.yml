@@ -14,7 +14,7 @@ services:
 
   init_mongo:
     container_name: isharp_mongo_demo_init
-    image: arctic_demo_init
+    image: jeremyward/arctic_demo_init
     depends_on:
       - mongo
     links:
@@ -36,7 +36,7 @@ services:
 
   datahub:
     container_name: isharp-datahub
-    image: datahub
+    image: jeremyward/datahub
     depends_on:
       - rabbit
       - mongo
