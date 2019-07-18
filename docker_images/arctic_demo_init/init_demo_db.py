@@ -18,12 +18,15 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger = logging.getLogger(__name__)
 
+def toDate(str):
+    return pd.to_datetime(str)
+
 def env_substitution(dict_in):
     for this_key,this_value in dict_in.items():
         dict_in[this_key] = expandvars.expandvars(this_value)
 
 def load_data_file(file_name, ticker_name,arctic_library):
-    df = pd.read_csv(file_name)
+    df = pd.read_csv(file_name,converters={0:toDate}, index_col=0)
     logger.info("loading {} from file {}".format(ticker_name,file_name))
     arctic_library.write(ticker_name,df)
 
