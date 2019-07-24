@@ -6,8 +6,8 @@ from arctic import Arctic
 import pandas as pd
 import numpy as np
 import datetime
-from isharp.arctic_broker.broker_impl.arctic_storage_method import  ArcticStorageMethod
-from isharp.core import StorageMethod
+from isharp.datahub.arctic_broker.broker_impl.arctic_storage_method import  ArcticStorageMethod
+from isharp.datahub.core import StorageMethod
 
 class TestMongoBroker(unittest.TestCase):
     def setUp(self):

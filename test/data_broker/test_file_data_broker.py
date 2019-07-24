@@ -5,8 +5,8 @@ import unittest
 import pandas as pd
 import test.testutil.file_utils as fu
 import test.testutil.log_utils as lu
-from isharp.core import StorageMethod, MemStyles
-from isharp.csv_files.simple_file_broker import SimpleFileBroker
+from isharp.datahub.core import StorageMethod, MemStyles
+from isharp.datahub.csv_files.simple_file_broker import SimpleFileBroker
 
 testpath = os.path.dirname(__file__)
 

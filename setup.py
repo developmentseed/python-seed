@@ -14,7 +14,7 @@ setup(
     classifiers=[],
     entry_points={
         'console_scripts': [
-            'datahub=isharp.broker_service.datahub_main:main',
+            'datahub=isharp.datahub.broker_service.datahub_main:main',
         ]
     },
 )

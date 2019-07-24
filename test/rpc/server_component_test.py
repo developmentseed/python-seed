@@ -1,4 +1,4 @@
-from isharp.core import StorageMethod,AbstractDataBroker,Matrix,MatrixHeader,AcquireContentReturnValue
+from isharp.datahub.core import StorageMethod,AbstractDataBroker,Matrix,MatrixHeader,AcquireContentReturnValue
 from nameko.testing.services import worker_factory
 from isharp.broker_service.server import DataBrokerService
 from unittest import TestCase

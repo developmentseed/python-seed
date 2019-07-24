@@ -1,6 +1,6 @@
 from unittest import TestCase
 from unittest.mock import MagicMock,patch,Mock
-from isharp.core import DataBroker,CombiBroker, MatrixUrl, MatrixHeader,Matrix
+from isharp.datahub.core import DataBroker,CombiBroker, MatrixUrl, MatrixHeader,Matrix
 
 class TestCombiBroker(TestCase):
 

@@ -1,7 +1,7 @@
 from typing import List
-from isharp.core import DataBroker, MatrixHeader, Matrix, AcquireContentReturnValue, Revision
-from isharp.core import MatrixUrl
-from isharp.core import RevisionInfo
+from isharp.datahub.core import DataBroker, MatrixHeader, Matrix, AcquireContentReturnValue, Revision
+from isharp.datahub.core import MatrixUrl
+from isharp.datahub.core import RevisionInfo
 from urllib.parse import urlparse
 from nameko.standalone.rpc import ClusterRpcProxy
 import logging

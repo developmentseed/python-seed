@@ -1,8 +1,8 @@
 from nameko.extensions import DependencyProvider
 from nameko.rpc import rpc, RpcProxy
-from isharp.core import  MatrixHeader,CombiBroker
+from isharp.datahub.core import  MatrixHeader,CombiBroker
 from typing import List
-from isharp.core import  DataBroker,Matrix,RevisionInfo,Revision
+from isharp.datahub.core import  DataBroker,Matrix,RevisionInfo,Revision
 import logging
 
 logger = logging.getLogger(__name__)

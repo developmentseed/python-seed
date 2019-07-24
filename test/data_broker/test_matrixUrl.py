@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from isharp.core import MatrixUrl
+from isharp.datahub.core import MatrixUrl
 
 
 class TestMatrixUrl(TestCase):

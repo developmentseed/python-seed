@@ -1,6 +1,6 @@
 
-from isharp.broker_client.remote_proxy import BrokerConnectionPool
-from  isharp.broker_client.client_utils import mtx_headers_as_dataframe as to_df
+from isharp.datahub.broker_client.remote_proxy import BrokerConnectionPool
+from  isharp.datahub.broker_client.client_utils import mtx_headers_as_dataframe as to_df
 import logging
 logging.basicConfig()
 logger = logging.getLogger()

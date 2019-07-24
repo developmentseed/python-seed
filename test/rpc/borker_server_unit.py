@@ -3,7 +3,7 @@
 from nameko.testing.services import worker_factory
 from isharp.broker_service.server import DataBrokerService
 import pandas as pd
-from isharp.core import Matrix
+from isharp.datahub.core import Matrix
 from unittest import TestCase
 
 class TestBrokerService(TestCase):

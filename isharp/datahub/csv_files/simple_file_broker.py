@@ -1,5 +1,5 @@
 from .file_storage_method import FileStorageMethod
-from isharp.core import AbstractDataBroker
+from isharp.datahub.core import AbstractDataBroker
 import logging
 
 class SimpleFileBroker(AbstractDataBroker):
