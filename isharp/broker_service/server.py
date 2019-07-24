@@ -36,6 +36,14 @@ class DataBrokerService(DataBroker):
         self.delegate.release(matrix)
         logger.debug("release call to delegate successful")
         return None
+
+    @rpc
+    def releaseAll(self) -> None:
+        logger.debug("delegate reeived release all call")
+        self.delegate.releaseAll()
+        logger.debug("release call to delegate successful")
+        return None
+
     @rpc
     def list(self) -> List[MatrixHeader]:
         logger.debug("delegate about to retrieve listing")

@@ -29,6 +29,10 @@ class PooledBrokerConnection(DataBroker):
         self.proxy = self.rpc_proxy.start()
         self.net_location = net_location
 
+    def releaseAll(self) -> None:
+        logger.info("release all for  remote client at {}".format(self.net_location))
+        self.rpc_proxy.data_broker_service.releaseAll()
+
     def stop(self):
         logger.info("closing remote client at {}".format(self.net_location))
         self.rpc_proxy.stop()
@@ -79,6 +83,11 @@ class BrokerConnectionPool(DataBroker):
 
     def release(self, matrix) -> None:
         self._connect(matrix.url.url).release(matrix)
+
+    def releaseAll(self) -> None:
+        for thisConnection in self.pool.values():
+            thisConnection.releaseAll()
+
 
     def list(self, network_location):
         return self._acquire_connection(network_location).list()

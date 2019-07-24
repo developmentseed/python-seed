@@ -34,6 +34,14 @@ class TestAbstractBroker(unittest.TestCase):
         with self.assertRaises(DataBroker.CheckoutException):
             self.broker.checkout("test:///file_name_1.csv?format=CSV")
 
+    def test_checkout_file_already_checked_out_after_release(self):
+        self.mock_acquire_content_result()
+        self.broker.checkout("test:///file_name_1.csv?format=CSV")
+        self.broker.releaseAll()
+        self.broker.checkout("test:///file_name_1.csv?format=CSV")
+
+
+
     def test_commit(self):
         self.mock_acquire_content_result()
         self.mock_commit_result()
@@ -42,6 +50,18 @@ class TestAbstractBroker(unittest.TestCase):
         revision_info = RevisionInfo("who","what",time_now)
         revision = self.broker.commit(m,revision_info)
         self.assertEqual(revision_info,revision.revision_info)
+
+
+
+    def test_release_all_then_commit(self):
+        self.mock_acquire_content_result()
+        self.mock_commit_result()
+        testurl = "test:///file_name_1.csv?format=CSV"
+        m = self.broker.checkout(testurl)
+        self.broker.releaseAll()
+        with self.assertRaises(DataBroker.CheckoutException):
+            revision = self.broker.commit(m, test_revision.revision_info)
+
 
     def test_release(self):
         self.mock_acquire_content_result()

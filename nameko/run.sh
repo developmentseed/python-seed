@@ -7,4 +7,4 @@ nameko run --config ./nameko/config.yaml isharp.broker_service.server:DataBroker
 
 import sys
 sys.path.insert(0,'.')
-n.rpc.data_broker_service.checkout("file:///file_name_1.csv?format=CSV")
+n.rpc.data_broker_service.cheCackout("file:///file_name_1.csv?format=CSV")

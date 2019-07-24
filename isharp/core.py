@@ -102,6 +102,10 @@ class DataBroker(abc.ABC):
     def list(self)->List[MatrixHeader]:
         pass
 
+    @abc.abstractmethod
+    def releaseAll(self)->None:
+        pass
+
 
 
 AcquireContentReturnValue = namedtuple('AcquireContentReturnValue', 'header content')
@@ -168,14 +172,15 @@ class AbstractDataBroker(DataBroker):
         self.register.remove(matrix.url.path())
         return revision
 
+    def releaseAll(self):
+        logger.debug("Abstract databroker about to release all")
+        self.register.clear()
+
     def release(self, matrix):
         self.register.remove(matrix.url.path())
 
     def list(self):
         return self.storage_method.list()
-
-
-
 
 
 class CombiBroker(DataBroker):
@@ -203,6 +208,11 @@ class CombiBroker(DataBroker):
         logger.info("combi broker  release called")
         self._delegate(matrix.url.scheme()).release(matrix)
         return None
+
+    def releaseAll(self) -> None:
+        logger.info("combi broker  release called")
+        for broker in self.registry.values():
+            broker.releaseAll()
 
     def list(self) -> List[MatrixHeader]:
         logger.info("combi broker list method called")
