@@ -1,5 +1,5 @@
-from isharp.arctic_broker.broker_impl.arctic_data_broker import  ArcticBroker
-from isharp.csv_files.simple_file_broker import SimpleFileBroker
+from isharp.datahub.arctic_broker.broker_impl.arctic_data_broker import  ArcticBroker
+from isharp.datahub.csv_files.simple_file_broker import SimpleFileBroker
 from arctic import Arctic
 import yaml
 import expandvars
