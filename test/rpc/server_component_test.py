@@ -1,6 +1,6 @@
 from isharp.datahub.core import StorageMethod,AbstractDataBroker,Matrix,MatrixHeader,AcquireContentReturnValue
 from nameko.testing.services import worker_factory
-from isharp.broker_service.server import DataBrokerService
+from isharp.datahub.broker_service.server import DataBrokerService
 from unittest import TestCase
 from unittest.mock import patch
 from unittest.mock import MagicMock
