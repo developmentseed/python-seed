@@ -3,5 +3,5 @@ echo STARTING DATAHUB:
 env
 echo =======================================================================================
 
-datahub run --config ./config.yaml isharp.broker_service.server:DataBrokerService
+datahub run --config ./config.yaml isharp.datahub.broker_service.server:DataBrokerService
 
