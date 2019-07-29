@@ -1,0 +1,105 @@
+tWIGy:
+  algo_model: WigModel
+  full_name: "Weighted Index Global"
+  constituents:
+    NIKKEI:
+      description: "Nikkei 250 index"
+      business_center: TOK
+      timezone: TOK
+      mkt_close: 1530
+      investment_unit: 0.108794987
+      weights:
+        portfolio1: 0.5
+        portfolio2: 0.5
+
+    HANGSENG:
+      description: "Hang Seng mar caps."
+      business_center: HKG
+      timezone: HKG
+      mkt_close: 1650
+      investment_unit: 0.049679591
+      weights:
+        portfolio1: 0.5
+        portfolio2: 0.5
+
+    FTSE:
+      description: "Ftse 100"
+      business_center: LON
+      timezone: LON
+      mkt_close: 1650
+      investment_unit: 0.208081901
+      weights:
+        portfolio1: 0.5
+        portfolio2: 0.5
+
+    EURO50:
+      description: "Eurostoxx 50"
+      business_center: PAR
+      timezone: PAR
+      mkt_close: 1650
+      investment_unit: 0.430203744493392
+      weights:
+        portfolio1: 0.5
+        portfolio2: 0.5
+
+      S&P500:
+        description: "Standard & Poor"
+        business_center: NYK
+        timezone: NYK
+        mkt_close: 1650
+        investment_unit: 0.973359159796373
+      weights:
+        portfolio1: 2
+        portfolio2: 2
+
+
+    NDX:
+      description: "NASDAQ"
+      business_center: NYK
+      timezone: NYK
+      mkt_close: 1650
+      investment_unit: 0.576564941
+      weights:
+        portfolio1: 2
+        portfolio2: 2
+
+    BOV:
+      description: "Brasilian"
+      business_center: BAR
+      timezone: BAR
+      mkt_close: 1650
+      investment_unit: 0.119573601
+      weights:
+        portfolio1: 1
+        portfolio2: 1
+
+    ASX:
+      description: "Aussie stock exchange"
+      business_center: SYD
+      timezone: SYD
+      mkt_close: 1650
+      investment_unit: 0.23598820058997
+      weights:
+        portfolio1: 1
+        portfolio2: 1
+
+    CAC40:
+      description: "CAC 40"
+      business_center: CAC
+      timezone: CAC
+      mkt_close: 1650
+      investment_unit: 0.299410162
+      weights:
+        portfolio1: 1
+        portfolio2: 1
+
+    IBEX35:
+      description: "IBeX 35"
+      business_center: MAD
+      timezone: MAD
+      mkt_close: 1650
+      investment_unit: 0.108953825368809
+      weights:
+        portfolio1: 1
+        portfolio2: 1
+

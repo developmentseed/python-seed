@@ -1,0 +1,36 @@
+@startuml
+
+class Market{
+    name: string
+}
+
+class Instrument{
+    name:string
+}
+class Observation{
+}
+
+
+class Index{
+    name:string
+}
+
+class Evaluation{
+    name: string
+    due_at: time
+}
+
+class Constituent{
+}
+
+Index -- Constituent : has many
+Constituent -- Instrument
+Market -- Instrument
+Index --Evaluation :  has many
+
+Evaluation -- Observation : per Constituent
+Observation -- Constituent : has one
+
+
+
+@enduml
