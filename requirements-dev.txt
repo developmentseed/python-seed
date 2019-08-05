@@ -1,2 +1,1 @@
 pytest~=3.6.1
-ppytest-cov~=2.5.1

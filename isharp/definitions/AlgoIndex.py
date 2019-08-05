@@ -5,17 +5,6 @@ from typing import List
 from typing import Type
 from typing import Any
 
-from django.db import models
-class WigModel(models.Model):
-    full_name = models.CharField(max_length=100)
-
-
-class WigConstituent(models.Model):
-    owner = models.ForeignKey(WigModel)
-
-
-
-
 
 
 

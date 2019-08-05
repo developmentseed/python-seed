@@ -3,3 +3,5 @@ numpy==1.14.3
 pandas==0.24.2
 dataclasses==0.6
 nameko
+luigi
+neo4j
