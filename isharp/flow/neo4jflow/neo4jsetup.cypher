@@ -2,8 +2,8 @@
 
 CREATE (minX:Strategy {name: 'minX',description: 'Mini Weighted Global Strategy'})
 
-CREATE (minX_1:PublishedIndex {description: 'minx PortfolioA', ticker:"MN1"})-[:PUBLISHED_BY]->(minX)
-CREATE (minX_2:PublishedIndex {description: 'minx PortfolioB', ticker:"MN2"})-[:PUBLISHED_BY]->(minX)
+CREATE (minX_1:Quote {description: 'minx PortfolioA', ticker:"MN1"})-[:PUBLISHED_BY]->(minX)
+CREATE (minX_2:Quote {description: 'minx PortfolioB', ticker:"MN2"})-[:PUBLISHED_BY]->(minX)
 
 // Markets
 
@@ -21,15 +21,6 @@ CREATE
 CREATE
     (EOD1730: Job {due_by: '2130', name:'2135 US NYK Close'})<-[:EVAL]-(minX)
    ,(INTRA0500: Job {due_by: '0500', name:'0500 TOK CLose'})<-[:EVAL]-(minX)
-
-//CREATE
-//     (EOD1730)-[:REQUIRES {path:['investec','settle','eod','NIK']}]->(NIKKEI)
-//    ,(EOD1730)-[:REQUIRES {path:['investec','settle','eod','NDX']}]->(NDX)
-//    ,(EOD1730)-[:REQUIRES { path:['investec','settle','eod','SP']}]->(SanP500)
-//
-//    ,(INTRA0500)-[:REQUIRES {path: ['Google', 'LATEST', '0500', 'NIK'], fallback:'latest'}]->(NIKKEI)
-//    ,(INTRA0500)-[:REQUIRES {path: ['Investec','SETTLE', 'EOD',  'NAS'], t: -1}]->(NDX)
-//    ,(INTRA0500)-[:REQUIRES {feed: 'Investec', field:'SETTLE', time:'EOD', ticker: 'SP', t: -1}]->(SanP500)
 
 CREATE
     (minX_1)-[:PARAMS{weight:1.5}]->(NIKKEI)
