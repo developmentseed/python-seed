@@ -2,6 +2,7 @@ from neo4j import GraphDatabase
 import luigi
 import os
 
+
 feedpoints = {
     "InvestCo": {
         "CLOSING": {"times": ["EOD"],
@@ -63,14 +64,6 @@ def inject_requirements_tx(tx, requirements):
                 tx.run(uses_link_phrase)
 
 
-
-
-
-
-
-
-
-
 def inject_feeds_tx(tx, feed_points):
     for (feed_name, feed_info) in feed_points.items():
         price_feed_phrase = "CREATE (z:PriceFeed {{name:'{}'}}) return z".format(feed_name, feed_name)
@@ -90,7 +83,6 @@ def inject_feeds_tx(tx, feed_points):
                     time_insert_phrase = "match(n) WHERE id(n) = {} CREATE(n)-[:CAPUTURES]->(z:Capture {{name:'{}'}} ) RETURN z".format(
                         ticker_id, time, time)
                     tx.run(time_insert_phrase)
-
 
 
 class DbSetup():
@@ -131,6 +123,9 @@ path = os.path.dirname(os.path.realpath(__file__))
 cypher_path = os.path.join(path, "neo4jsetup.cypher")
 with open(cypher_path, 'r') as cypher_file:
     setup_query = cypher_file.read()
+
+
+yaml_path =  os.path.join(path, "neo4jsetup.cypher")
 
 setup = DbSetup("bolt://ec2-34-205-159-121.compute-1.amazonaws.com:7687", user="", password="")
 

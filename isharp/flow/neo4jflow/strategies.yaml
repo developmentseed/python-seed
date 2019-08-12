@@ -1,0 +1,114 @@
+markets: [
+{
+  props:{name: NYSE},
+  instrs:[
+  {name: SanP500, description: 'S&P 500 index' },
+  {name: NDX,     description: 'NASDAQ' },
+  ]
+},
+{
+  props:{name: Osaka},
+  instrs:[
+  {name: Nikkei,     description: 'Nikkei 250' },
+  ]
+},
+{
+  props:{name: LSE},
+  instrs:[
+  {name: FTSE100,     description: 'Ftse 100' },
+  ]
+}
+]
+
+feedpoints: {
+  "InvestCo": {
+    "CLOSING": {"times": ["EOD"],
+                "tickers": ["NIK", "RUSS", "FTSE", "NDX", "EURO","SP"]
+    },
+    "SPOT": {"times": ["0500", "0900", "1000", "1730"],
+             "tickers": ["NIK", "RUSS", "FTSE", "NDX", "EURO","SP"]
+
+    },
+
+  },
+
+  "YahooFinance": {
+    "CLOSING": {"times": ["EOD"],
+                "tickers": ["NIK", "RUSS", "FTSE", "NDX", "EURO","SP"]
+    },
+    "SPOT": {"times": ["0500", "0900", "1000", "1730"],
+             "tickers": ["NIK", "RUSS", "FTSE", "NDX", "EURO","SP"]
+
+    },
+  },
+
+}
+
+strategies: [
+{
+  props:{name: minX, description: 'Mini Weighted Global Strategy'},
+  constituents: [
+  {name: Nikkei, props:{weight: 1}},
+  {name: SanP500, props:{weight: 1}},
+  {name: NDX, props:{weight: 1}}
+  ],
+  quotes: [
+  {props:{name: MN1 ,description: 'minx PortfolioA'}},
+  {props: {name: MN2, description: 'minx PortfolioB'}}
+  ],
+  evals:[
+  {
+    props: { name: 'EOD1730', due_by: '2130', description: '2135 US NYK Close'},
+    dependencies: {
+      'Nikkei': ['InvestCo', 'CLOSING', 'EOD', 'NIK'],
+      'NDX': ['InvestCo', 'CLOSING', 'EOD', 'NDX'],
+      'SanP500': ['InvestCo', 'CLOSING', 'EOD', 'SP']
+    }
+  } ,
+
+  {
+    props: { name: '0500', due_by: '2130', description: 'O500 Osaka Close'},
+    dependencies: {
+      'Nikkei': ['YahooFinance', 'SPOT', '0500', 'NIK'],
+      'NDX': ['InvestCo', 'CLOSING', 'EOD', 'NDX'],
+      'SanP500': ['InvestCo', 'CLOSING', 'EOD', 'SP']
+    }
+  }
+
+  ]
+},
+{
+  props:{name: transAt,description: 'Transatlantic weighted strategy'},
+  constituents:[
+  {name: FTSE100, props:{weight: 1}},
+  {name: SanP500, props:{weight: 1}},
+  {name: NDX, props:{weight: 1}}
+
+
+  ],
+  quotes: [{props:{name: TA1, description: 'transatPortfolioA' }}],
+  evals:[
+
+  {
+    props: { name: 'EOD2135', due_by: '2130', description: '2135 US NYK Close'},
+    dependencies: {
+      'FTSE100': ['InvestCo', 'CLOSING', 'EOD', 'FTSE'],
+      'NDX': ['InvestCo', 'CLOSING', 'EOD', 'NDX'],
+      'SanP500': ['InvestCo', 'CLOSING', 'EOD', 'SP']
+    }
+  } ,
+
+  {
+    props: { name: '1600', due_by: '1600', description: '1600 LSE Close'},
+    dependencies: {
+      'FTSE100': ['YahooFinance', 'SPOT', '0500', 'FTSE'],
+      'NDX': ['InvestCo', 'CLOSING', 'EOD', 'NDX'],
+      'SanP500': ['InvestCo', 'CLOSING', 'EOD', 'SP']
+    }
+  }
+
+
+  ]
+}
+
+]

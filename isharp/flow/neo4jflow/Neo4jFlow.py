@@ -17,36 +17,26 @@ class JobFetcher(object):
 
     def fetchJobs(self):
         with self._driver.session() as session:
-            records = session.write_transaction(self.showJobs)
-            evalJobs = {}
-            requirements = {}
+            queryStr = """"
+            match (s:Strategy)-->(p:Job)-->(c:Capture)<--(ticker:FeedTicker)<--(field:FeedField)<--(feed:PriceFeed) return 
+            
+            p,s,c,ticker,field,feed
+            
+            """
+
+            records = session.write_transaction(lambda tx:tx.run(queryStr))
             for record in records:
-                requirement_rel = record['requirement']
-                eval_task_node = record['job']
-                strat_node = record['index_group']
-                if eval_task_node.id not in evalJobs:
-                    evalJobs[eval_task_node.id] = CalculationTask([], eval_label=eval_task_node['name'],
-                                                                  dueBy=eval_task_node['due_by'],
-                                                                  strategy=strat_node['description'])
+                print(record)
 
-
-
-    def strategies(self):
+    def reducedJobs(self):
         with self._driver.session() as session:
-            return session.write_transaction(lambda tx: tx.run("MATCH (p:IndexGroup) RETURN p"))
+            queryStr = "match  p= (s:Strategy)-->(j:Job)-->(c:Capture)<--(ticker:FeedTicker)<--(field:FeedField)<--(feed:PriceFeed)  return reduce (stratMap = 0, n IN nodes(p) | stratMap + 1  )  AS reduction"
 
-    @staticmethod
-    def showJobs(tx):
-        return tx.run("MATCH (index_group)-[evaluation:EVAL]->(job)-[requirement:REQUIRES]->(instrument) RETURN evaluation,index_group,job,requirement,instrument")
-
-
-
-
-
-
-
+            records = session.write_transaction(lambda tx: tx.run(queryStr))
+            for record in records:
+                print(record)
 
 
 jf = JobFetcher("bolt://ec2-34-205-159-121.compute-1.amazonaws.com:7687",user="",password="")
-jf.fetchJobs()
+jf.reducedJobs()
 jf.close()
