@@ -2,6 +2,7 @@ import luigi
 
 from isharp.flow.core import  DatahubRequirement
 from isharp.flow.core import CalculationTask
+from isharp.flow.neo4jflow.py2neoflow import  calcTasks
 class DataHubTarget(luigi.Target):
 
     def __init__(self,data_hub_requirement) -> None:
@@ -64,13 +65,9 @@ def submit(calc_task:CalculationTask):
 
 
 if __name__ == '__main__':
-    reqs = [DatahubRequirement("USD", "svn:a//", 1),
-            DatahubRequirement("JPY", "svn:b//", 2),
-            DatahubRequirement("EUR", "svn:c//", 3)]
-
-    task = CalculationTask(strategy="buildtrat", dueBy="0525", eval_label="eodJob",requirements=reqs)
-
-    submit(task)
+    tasks = calcTasks()
+    for task in tasks:
+        submit(task)
 
 
 

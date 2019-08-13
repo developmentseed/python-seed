@@ -14,7 +14,6 @@ class JobFetcher(object):
     def close(self):
         self._driver.close()
 
-
     def fetchJobs(self):
         with self._driver.session() as session:
             queryStr = """"
