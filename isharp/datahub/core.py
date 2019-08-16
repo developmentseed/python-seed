@@ -6,6 +6,8 @@ from urllib.parse import urlparse
 from urllib.parse import parse_qsl
 import datetime
 import abc
+import luigi
+
 
 
 import logging
@@ -57,6 +59,13 @@ class MatrixHeader:
     description: str
 
 @dataclasses.dataclass(frozen=True)
+class MatrixPreview:
+    header: MatrixHeader
+    range_start: str
+    range_end: str
+
+
+@dataclasses.dataclass(frozen=True)
 class Matrix:
     matrix_header: MatrixHeader
     content: object
@@ -100,6 +109,10 @@ class DataBroker(abc.ABC):
 
     @abc.abstractmethod
     def list(self)->List[MatrixHeader]:
+        pass
+
+    @abc.abstractmethod
+    def peek(self,url)->MatrixPreview:
         pass
 
     @abc.abstractmethod
@@ -153,18 +166,20 @@ class AbstractDataBroker(DataBroker):
         if matrix_url.path() not in self.register:
             raise DataBroker.CheckoutException("matrix [{}] is not already checked out".format(matrix_url.path()))
 
+    def _check_schema(self,matrix_url):
+        if matrix_url.scheme() != self.storage_method.name:
+            raise DataBroker.ProtocolException()
+
     def checkout(self, matrix_url_str,version=None):
         logger.debug("Abstract  broker called with {}".format(matrix_url_str))
         matrix_url = MatrixUrl(matrix_url_str)
-        if matrix_url.scheme() == self.storage_method.name:
-            self._assert_not_checked_out(matrix_url)
-            self.register.append(matrix_url.path())
-            checkout_result = self.storage_method.acquireContent(path=matrix_url.path(), params=matrix_url.params(),version_id=version)
-            ret_val =Matrix(checkout_result.header,checkout_result.content,matrix_url)
-            logger.debug("Abstract data broker about to return matrix")
-            return ret_val
-        else:
-            raise DataBroker.ProtocolException()
+        self._check_schema(matrix_url)
+        self._assert_not_checked_out(matrix_url)
+        self.register.append(matrix_url.path())
+        checkout_result = self.storage_method.acquireContent(path=matrix_url.path(), params=matrix_url.params(),version_id=version)
+        ret_val =Matrix(checkout_result.header,checkout_result.content,matrix_url)
+        logger.debug("Abstract data broker about to return matrix")
+        return ret_val
 
     def commit(self, matrix, revisionInfo):
         self._assert_checked_out(matrix.url)
@@ -182,6 +197,15 @@ class AbstractDataBroker(DataBroker):
     def list(self):
         return self.storage_method.list()
 
+    def peek(self, url) -> MatrixPreview:
+        matrix_url = MatrixUrl(url)
+        self._check_schema(matrix_url)
+        try:
+            content_tuple = self.storage_method.acquireContent(path=matrix_url.path(), params=matrix_url.params(),version_id=None)
+            return  MatrixPreview(header =  content_tuple.header, range_start=content_tuple.content.index[0], range_end=content_tuple.content.index[-1])
+        except StorageMethod.ResourceException:
+            return None
+
 
 class CombiBroker(DataBroker):
     def __init__(self,registry):
@@ -192,6 +216,11 @@ class CombiBroker(DataBroker):
         logger.info("combi broker called with {}".format(url))
         parsed_url = MatrixUrl(url)
         return self._delegate(parsed_url.scheme()).checkout(url,version_id)
+
+    def peek(self, url) -> MatrixHeader:
+        logger.info("combi broker called with peek {}".format(url))
+        parsed_url = MatrixUrl(url)
+        return self._delegate(parsed_url.scheme()).peek(url)
 
     def _delegate(self,scheme)->DataBroker:
         if (scheme in self.registry):
@@ -228,3 +257,11 @@ class CombiBroker(DataBroker):
 
 
 
+class DatahubTarget(luigi.Target):
+    def __init__(self,url:str,t,data_broker:DataBroker):
+        self.url = url
+        self.data_broker = data_broker
+        self.t = t
+
+    def exists(self):
+        return self.data_broker.list(self.url)

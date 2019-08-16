@@ -7,7 +7,7 @@ class DatahubRequirement:
     url:str
     t: int
     def exists(self):
-        return False
+        return True
 
 
 @dataclasses.dataclass(frozen=True)

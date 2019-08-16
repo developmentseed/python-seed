@@ -7,10 +7,11 @@ from isharp.datahub.core import StorageMethod
 from datetime import datetime
 from isharp.datahub.core import RevisionInfo
 from isharp.datahub.core import AbstractDataBroker
+import pandas as pd
 
 test_header = MatrixHeader(name="hello", revision_id=5, storage_method="test", path=".", memory_style=None,
                            description="None")
-test_content = {}
+test_content =  pd.DataFrame(data={'col1':[1],'col2':[2]},index=['2019-01-01'])
 time_now = datetime.now()
 
 test_revision = Revision("abc",RevisionInfo("who","what",time_now))
@@ -72,13 +73,27 @@ class TestAbstractBroker(unittest.TestCase):
         with self.assertRaises(DataBroker.CheckoutException):
             revision = self.broker.commit(m, test_revision.revision_info)
 
+    def test_peek_on_existing(self):
+        self.mock_acquire_content_result()
+        testurl = "test:///file_name_1.csv?format=CSV"
+        preview = self.broker.peek(testurl)
+        self.assertIsNotNone(preview)
+
+
+    def test_peek_on_non_existing(self):
+        self.mock_acquire_non_existent_content_result()
+        testurl = "test:///file_name_1.csv?format=CSV"
+        m = self.broker.peek(testurl)
+        self.assertIsNone(m)
+
+
 
     def test_get_simple_matrix(self):
         self.mock_acquire_content_result()
         testurl = "test:///file_name_1.csv?format=CSV"
         m = self.broker.checkout(testurl)
         self.assertEqual(test_header, m.matrix_header,"header should be test header")
-        self.assertEqual(test_content, m.content,"Content should be empty hashtable")
+        self.assertEqual(test_content.size, m.content.size,"Content should be empty hashtable")
         self.assertEqual(testurl,m.url.url, "URL should be test url")
         self.mock_storage_method.acquireContent.assert_called_once_with(params={"format": "CSV"}, path="/file_name_1.csv",version_id =None)
 
@@ -93,3 +108,12 @@ class TestAbstractBroker(unittest.TestCase):
     def mock_acquire_content_result(self):
         self.mock_storage_method.acquireContent = \
             MagicMock(return_value=(AcquireContentReturnValue(header=test_header,content=test_content)))
+
+    def mock_acquire_non_existent_content_result(self):
+        self.mock_storage_method.acquireContent = \
+            MagicMock(return_value=())
+        self.mock_storage_method.acquireContent.side_effect =  effect()
+
+
+def effect(*args, **kwargs):
+        yield StorageMethod.ResourceException()

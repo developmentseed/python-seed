@@ -42,7 +42,8 @@ class FileStorageMethod(StorageMethod):
         file_path = os.path.join(self.base_directory, path.strip("/"))
         logger.debug("Attempting to acquire file at [{}]  Base dir = [{}] original Path = [{}]".format(file_path,self.base_directory,path))
         if (os.path.exists(file_path)):
-            content = pd.read_csv(file_path)
+            content = pd.read_csv(file_path,index_col=0)
+            last = content.index[-1]
             header = self.make_header(path)
             logger.info("Acquired file for {}".format(path))
             return AcquireContentReturnValue(content=content,header=header)

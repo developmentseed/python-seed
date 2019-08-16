@@ -52,13 +52,30 @@ class TestArcticBroker(unittest.TestCase):
         self.assertEquals(1, len(result))
 
 
+    def test_peek_with_existing_file(self):
+        broker = ArcticBroker(self.arctic)
+
+        url = "arctic:///{}/symbol".format(self.library_name)
+        preview = broker.peek(url)
+
+        todays_date = datetime.datetime.now().date()
+
+        expected_start_date =  todays_date- datetime.timedelta(5)
+        expected_end_date = expected_start_date + datetime.timedelta(4)
+
+        self.assertEqual(expected_start_date.strftime("%Y-%m-%d"), preview.range_start.strftime("%Y-%m-%d"))
+        self.assertEqual(expected_end_date.strftime("%Y-%m-%d"), preview.range_end.strftime("%Y-%m-%d"))
+
+
+    def test_peek_non_existing_file(self):
+        broker = ArcticBroker(self.arctic)
+        testurl = "arctic:///subdir_1/file_name_xxx.csv?format=CSV"
+        preview = broker.peek(testurl)
+        self.assertIsNone(preview)
 
     def tearDown(self):
         self.arctic.delete_library(self.library_name)
         lu.logger.info("deleted test library {}".format(self.library_name))
-
-
-
 
 
 

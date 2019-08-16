@@ -5,3 +5,4 @@ dataclasses==0.6
 nameko
 luigi
 neo4j
+py2neo

@@ -46,8 +46,6 @@ class ArcticStorageMethod(StorageMethod):
         return AcquireContentReturnValue(content=versioned.data,header=header)
 
 
-
-
     def storeContent(self, path, params, content,revision_info)->Revision:
         self._check_params(params)
         library, ticker = self._lib_ticker(path)
