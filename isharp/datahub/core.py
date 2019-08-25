@@ -257,11 +257,11 @@ class CombiBroker(DataBroker):
 
 
 
-class DatahubTarget(luigi.Target):
-    def __init__(self,url:str,t,data_broker:DataBroker):
-        self.url = url
-        self.data_broker = data_broker
-        self.t = t
+@dataclasses.dataclass(frozen=True)
+class DatahubTarget():
+    url: str
+    t: int
 
-    def exists(self):
-        return self.data_broker.list(self.url)
+
+    def exists(self,data_broker)->bool:
+        return data_broker.peek(self.url) != None

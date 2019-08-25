@@ -1,39 +1,36 @@
 import luigi
 import time
-import datetime
 from multiprocessing import Process
 from isharp.flow.core import CalculationTask
 from isharp.flow.neo4jflow.py2neoflow import  calcTasks
-from typing import List
+from isharp.datahub.broker_client.remote_proxy import  BrokerConnectionPool
+
 
 
 class DataHubTarget(luigi.Target):
-
-    def __init__(self,data_hub_requirement) -> None:
-        super().__init__()
+    def __init__(self,data_hub_requirement,data_broker):
         self.data_hub_requirement = data_hub_requirement
+        self.data_broker = data_broker
 
     def exists(self):
-        return self.data_hub_requirement.exists()
+        print(" would be checking for url {}".format(self.data_hub_requirement.url) )
+        # peeked =  self.data_broker.peek(self.data_hub_requirement.url)
+        # return peeked != None
+        return False
 
-class DataHubInput(luigi.ExternalTask):
+class DataHubInputTask(luigi.ExternalTask):
     task_namespace = "isharp"
     task_family="DataRequirement"
-
     url = luigi.Parameter()
-    t = luigi.IntParameter(significant=False)
+    t = luigi.IntParameter()
 
-    @classmethod
-    def get_param_values(cls, params, args, kwargs):
-        return super().get_param_values(params, (), kwargs)
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.data_hub_target=args[0]
-
+    def registerTarget(self,requirement,data_broker):
+        self.data_hub_target = DataHubTarget(requirement,data_broker)
 
     def output(self):
         return self.data_hub_target
+
+
 
 class LuigiCalculationTask(luigi.Task):
     accepts_messages = True
@@ -42,6 +39,9 @@ class LuigiCalculationTask(luigi.Task):
     strategy = luigi.Parameter()
     dueBy = luigi.Parameter()
     eval_label=luigi.Parameter()
+
+    def set_requirements(self,requirements):
+        self.requirements = requirements
 
 
     def run(self):
@@ -61,17 +61,21 @@ class LuigiCalculationTask(luigi.Task):
                     msg.respond("unknown message")
         print ("finished")
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.requirements= args[0]
-
-    @classmethod
-    def get_param_values(cls, params, args, kwargs):
-        return super().get_param_values(params, (), kwargs)
-
 
     def requires(self):
         return self.requirements
+
+
+def buildTask(calc_task,data_broker):
+    task = LuigiCalculationTask(strategy=calc_task.strategy, dueBy=calc_task.dueBy, eval_label=calc_task.dueBy)
+    requirements = []
+    for reqiurement in calc_task.requirements:
+          input_task = DataHubInputTask(url=reqiurement.url, t=reqiurement.t)
+          input_task.registerTarget(reqiurement,data_broker)
+          requirements.append(input_task)
+    task.set_requirements(requirements)
+    return task
+
 
 
 def submit(task:CalculationTask):
@@ -80,9 +84,9 @@ def submit(task:CalculationTask):
 
 
 if __name__ == '__main__':
-    for calc_task in calcTasks():
-        inputs = [DataHubInput(i, url=i.url, t=i.t) for i in calc_task.requirements]
-        task = LuigiCalculationTask(inputs, strategy=calc_task.strategy, dueBy=calc_task.dueBy, eval_label=calc_task.dueBy)
+    broker = BrokerConnectionPool()
+    for calc_task in calcTasks("datahub","5672"):
+        task = buildTask(calc_task,broker)
         p= Process(target=submit, args=(task,))
         p.start()
 

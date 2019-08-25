@@ -1,13 +1,12 @@
 import dataclasses
-
+import isharp.datahub.broker_client
+from  isharp.datahub.core import DataBroker
 from typing import List
 @dataclasses.dataclass(frozen=True)
 class DatahubRequirement:
     name:str
     url:str
     t: int
-    def exists(self):
-        return True
 
 
 @dataclasses.dataclass(frozen=True)

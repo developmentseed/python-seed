@@ -1,10 +1,14 @@
 import yaml
-
+import dataclasses
 from pymongo import MongoClient
 from arctic import Arctic
 from arctic import auth
 import logging
 import expandvars
+import numpy as np
+import pandas as pd
+import datetime
+import random
 
 logging.basicConfig()
 logger = logging.getLogger()
@@ -17,6 +21,47 @@ formatter = logging.Formatter("%(levelname)s - %(message)s")
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger = logging.getLogger(__name__)
+
+
+
+@dataclasses.dataclass(frozen=True)
+class RandomMatrix(object):
+    drift_pc: int
+    step_size: float
+    start_value : float
+    start_date : str
+    end_date : str
+    time_slot_interval : str
+
+
+    def to_df(self):
+        index = pd.date_range(start=self.start_date, end=self.end_date)
+
+        time_range = pd.date_range("00:00", "23:59", freq=self.time_slot_interval)
+        time_slots = [d.strftime("%H%M") for d in time_range]
+        time_slots.append('EOD')
+
+        base_array = np.zeros((len(index), len(time_slots)))
+        base_array[0].fill(self.start_value)
+
+        for i in range(1, len(base_array)):
+            prev_base_value = base_array[i - 1, 0]
+            step_x = random.randint(0, 100) + self.drift_pc
+            adj = abs(self.step_size * np.random.normal())
+            direction = 1 if step_x > 50 else -1
+            adj = adj * direction
+            row = base_array[i]
+            base_value = prev_base_value + adj
+            row.fill(base_value)
+            for i in range(1, len(row)):
+                up = random.randint(0, 1)
+                adj = 0.0009983 * np.random.normal()
+                if not up:
+                    adj = adj * -1
+                row[i] = row[i - 1] + adj
+
+        return  pd.DataFrame(data=base_array, index=index, columns=time_slots)
+
 
 def toDate(str):
     return pd.to_datetime(str)
@@ -57,6 +102,22 @@ for key,value in dat_files.items():
     load_data_file(value,key,arctic_connection[lib_name])
 
 
+
+
+series = RandomMatrix(
+drift_pc = 10,
+step_size=0.01,
+start_value=7,
+start_date='1/1/2015',
+end_date = '1/1/2019',
+time_slot_interval = "15min"
+)
+
+
+
+lib_name = 'GoogleFinance'
+arctic_connection.initialize_library("GoogleFinance")
+arctic_connection[lib_name].write("ES.SETL.EOD", series.to_df())
 
 
 

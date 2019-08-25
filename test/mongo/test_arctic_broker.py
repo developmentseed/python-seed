@@ -10,7 +10,6 @@ import datetime
 from isharp.datahub.core import RevisionInfo
 
 
-
 class TestArcticBroker(unittest.TestCase):
 
     def setUp(self):
@@ -21,7 +20,6 @@ class TestArcticBroker(unittest.TestCase):
         simple_pd =pu.create_simple_series(['a','b','c'],5)
         lib = self.arctic[self.library_name]
         lib.write("symbol",simple_pd)
-
 
     def test_checkout_and_checkin_arctic(self):
         url = "arctic:///{}/symbol".format(self.library_name)
@@ -65,7 +63,6 @@ class TestArcticBroker(unittest.TestCase):
 
         self.assertEqual(expected_start_date.strftime("%Y-%m-%d"), preview.range_start.strftime("%Y-%m-%d"))
         self.assertEqual(expected_end_date.strftime("%Y-%m-%d"), preview.range_end.strftime("%Y-%m-%d"))
-
 
     def test_peek_non_existing_file(self):
         broker = ArcticBroker(self.arctic)

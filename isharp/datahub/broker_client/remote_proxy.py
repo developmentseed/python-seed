@@ -1,6 +1,6 @@
 from typing import List
 from isharp.datahub.core import DataBroker, MatrixHeader, Matrix, AcquireContentReturnValue, Revision
-from isharp.datahub.core import MatrixUrl
+from isharp.datahub.core import MatrixPreview
 from isharp.datahub.core import RevisionInfo
 from urllib.parse import urlparse
 from nameko.standalone.rpc import ClusterRpcProxy
@@ -50,6 +50,9 @@ class PooledBrokerConnection(DataBroker):
         self.proxy.data_broker_service.release(matrix)
         return None
 
+    def peek(self, url) -> MatrixPreview:
+        return (self.proxy.data_broker_service).peek(url)
+
 
 class BrokerConnectionPool(DataBroker):
     def __init__(self):
@@ -88,6 +91,8 @@ class BrokerConnectionPool(DataBroker):
         for thisConnection in self.pool.values():
             thisConnection.releaseAll()
 
+    def peek(self, url) -> MatrixPreview:
+        return self._connect(url).peek(url)
 
     def list(self, network_location):
         return self._acquire_connection(network_location).list()
