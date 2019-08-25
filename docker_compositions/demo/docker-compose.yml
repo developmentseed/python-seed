@@ -55,6 +55,8 @@ services:
     image: neo4j
     volumes:
       - $HOME/neo4j/data:/data
+    environment:
+      -NEO4J_AUTH: 'none'
 
     ports:
       - "7474:7474"
@@ -64,3 +66,4 @@ services:
     container_name: isharp-demo-jupyter
 
 
+# docker run  --publish=7474:7474 --publish=7687:7687  --env=NEO4J_AUTH=none --volume=$HOME/neo4j/data:/data neo4j
