@@ -56,7 +56,7 @@ services:
     volumes:
       - $HOME/neo4j/data:/data
     environment:
-      -NEO4J_AUTH: 'none'
+      NEO4J_AUTH: 'none'
 
     ports:
       - "7474:7474"
