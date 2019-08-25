@@ -50,6 +50,15 @@ services:
       RABBIT_PORT: "5672"
       RABBIT_MANAGEMENT_PORT: "15672"
 
+  graph:
+    container_name: isharp-graph
+    image: neo4j
+    volumes:
+      - $HOME/neo4j/data:/data
+
+    ports:
+      - "7474:7474"
+      - "7687:7687"
 
   jupyter:
     container_name: isharp-demo-jupyter
