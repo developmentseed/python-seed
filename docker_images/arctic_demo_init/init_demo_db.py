@@ -88,11 +88,14 @@ if expandvars.expandvars(conf['skip']):
 m_host= conf['mongo_db']['host']
 client = MongoClient(m_host)
 lib_name = conf['lib_name']
-arctic_connection = Arctic(m_host)
+
 if conf['mongo_db']['user']:
-    logger.info("Creating login hook for user {}".format(conf['mongo_db']['user']))
+    mongo_user = conf['mongo_db']['user']
+    mongo_pwd = conf['mongo_db']['password']
+    logger.info("Creating login hook for user {} pwd {} on mongo_host {}".format(mongo_user, mongo_pwd, m_host))
     arctic.hooks._get_auth_hook = lambda *args, **kwargs: auth.Credential(database=m_host,user=conf['mongo_db']['user'],password=conf['mongo_db']['password'])
 
+arctic_connection = Arctic(m_host)
 
 logger.info ("started Arctic on {}".format(m_host))
 
