@@ -11,8 +11,10 @@ class ArcticStorageMethod(StorageMethod):
         super().__init__("arctic",[])
 
     def _lib_ticker(self,path):
-        library, ticker = os.path.split(path)
-        library = library.replace("/", "", 1)
+        tokens  = [ i for i in list(path.split('/')) if len(i)>0]
+
+        library = tokens[0]
+        ticker = '.'.join(tokens[1:])
         if  library in self.store.list_libraries():
             lib = self.store[library]
             if lib.has_symbol(ticker):

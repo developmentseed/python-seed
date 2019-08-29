@@ -21,6 +21,9 @@ class TestArcticBroker(unittest.TestCase):
         lib = self.arctic[self.library_name]
         lib.write("symbol",simple_pd)
 
+        lib.write("ES.SETL.EOD", simple_pd)
+
+
     def test_checkout_and_checkin_arctic(self):
         url = "arctic:///{}/symbol".format(self.library_name)
         broker = ArcticBroker(self.arctic)
@@ -47,7 +50,7 @@ class TestArcticBroker(unittest.TestCase):
     def test_list(self):
         broker = ArcticBroker(self.arctic)
         result = broker.list()
-        self.assertEquals(1, len(result))
+        self.assertEquals(2, len(result))
 
 
     def test_peek_with_existing_file(self):
@@ -69,6 +72,15 @@ class TestArcticBroker(unittest.TestCase):
         testurl = "arctic:///subdir_1/file_name_xxx.csv?format=CSV"
         preview = broker.peek(testurl)
         self.assertIsNone(preview)
+
+    def test_with_qualified_ticker_name(self):
+        url = "arctic:///{}/ES/SETL/EOD".format(self.library_name)
+        broker = ArcticBroker(self.arctic)
+        matrix = broker.checkout(url)
+        self.assertIsNotNone(matrix)
+
+
+
 
     def tearDown(self):
         self.arctic.delete_library(self.library_name)
