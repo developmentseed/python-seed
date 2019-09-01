@@ -23,7 +23,9 @@ env:
 
 after_success:
   - cd docker_images/datahub
-  - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+  - pwd
+  - echo $DOCKER_USER
+  - docker login -u $DOCKER_USER -p $DOCKER_PASS
   - export REPO=jeremyward/datahub
   - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
   - docker build -f Dockerfile -t $REPO:$COMMIT .
