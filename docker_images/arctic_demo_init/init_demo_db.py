@@ -118,9 +118,14 @@ time_slot_interval = "15min"
 
 
 
-lib_name = 'GoogleFinance'
-arctic_connection.initialize_library("GoogleFinance")
-arctic_connection[lib_name].write("ES.SETL.EOD", series.to_df())
+lib_name = 'YahooFinance'
+arctic_connection.initialize_library(lib_name)
+arctic_connection[lib_name].write("SPOT.FTSE.0500", series.to_df())
+
+lib_name = 'InvestCo'
+arctic_connection.initialize_library(lib_name)
+arctic_connection[lib_name].write("CLOSING.SP.EOD", series.to_df())
+
 
 
 

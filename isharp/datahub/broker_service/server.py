@@ -49,6 +49,7 @@ class DataBrokerService(DataBroker):
         logger.debug("delegate about to retrieve listing")
         return self.delegate.list()
 
+    @rpc
     def peek(self, url) -> MatrixHeader:
         logger.debug("delegate about to peek")
         return self.delegate.peek(url)

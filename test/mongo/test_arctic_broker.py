@@ -20,7 +20,6 @@ class TestArcticBroker(unittest.TestCase):
         simple_pd =pu.create_simple_series(['a','b','c'],5)
         lib = self.arctic[self.library_name]
         lib.write("symbol",simple_pd)
-
         lib.write("ES.SETL.EOD", simple_pd)
 
 
@@ -77,7 +76,8 @@ class TestArcticBroker(unittest.TestCase):
         url = "arctic:///{}/ES/SETL/EOD".format(self.library_name)
         broker = ArcticBroker(self.arctic)
         matrix = broker.checkout(url)
-        self.assertIsNotNone(matrix)
+        self.assertEqual(matrix.matrix_header.path,"/{}/ES/SETL/EOD".format(self.library_name))
+
 
 
 

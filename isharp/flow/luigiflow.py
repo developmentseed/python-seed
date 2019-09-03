@@ -13,10 +13,11 @@ class DataHubTarget(luigi.Target):
         self.data_broker = data_broker
 
     def exists(self):
-        print(" would be checking for url {}".format(self.data_hub_requirement.url) )
-        # peeked =  self.data_broker.peek(self.data_hub_requirement.url)
-        # return peeked != None
-        return False
+
+        peeked =  self.data_broker.peek(self.data_hub_requirement.url)
+        print(" would be checking for url {} -> {}".format(self.data_hub_requirement.url,peeked))
+        return peeked != None
+
 
 class DataHubInputTask(luigi.ExternalTask):
     task_namespace = "isharp"

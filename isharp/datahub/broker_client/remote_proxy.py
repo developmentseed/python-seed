@@ -31,7 +31,7 @@ class PooledBrokerConnection(DataBroker):
 
     def releaseAll(self) -> None:
         logger.info("release all for  remote client at {}".format(self.net_location))
-        self.rpc_proxy.data_broker_service.releaseAll()
+        self.proxy.data_broker_service.releaseAll()
 
     def stop(self):
         logger.info("closing remote client at {}".format(self.net_location))
@@ -51,7 +51,7 @@ class PooledBrokerConnection(DataBroker):
         return None
 
     def peek(self, url) -> MatrixPreview:
-        return (self.proxy.data_broker_service).peek(url)
+        return self.proxy.data_broker_service.peek(url)
 
 
 class BrokerConnectionPool(DataBroker):
