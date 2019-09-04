@@ -41,9 +41,9 @@ with BrokerConnectionPool() as broker:
     print(mtx.matrix_header.path)
 
 
-    print(broker.peek('arctic://{}:5672/InvestCo/CLOSING/SP/EOD'.format(rpc_host)))
-
-    print(broker.peek('arctic://{}:5672/InvestCo/CLOSING/SPX/EOD'.format(rpc_host)))
+    # print(broker.peek('arctic://{}:5672/InvestCo/CLOSING/SP/EOD'.format(rpc_host)))
+    #
+    # print(broker.peek('arctic://{}:5672/InvestCo/CLOSING/SPX/EOD'.format(rpc_host)))
 
 
 

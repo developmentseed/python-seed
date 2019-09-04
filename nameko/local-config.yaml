@@ -10,7 +10,7 @@ LOGGING:
         console:
             class: logging.StreamHandler
     root:
-        level: INFO
+        level: DEBUG
         handlers: [console]
 
 data_brokers:

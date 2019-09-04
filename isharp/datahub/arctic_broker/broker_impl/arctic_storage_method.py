@@ -1,8 +1,7 @@
 from isharp.datahub.core import StorageMethod,MatrixHeader,Revision,AcquireContentReturnValue,MemStyles
 from typing import List
 import logging
-logger = logging.getLogger(__name__)
-
+logging.basicConfig(level=logging.INFO)
 class ArcticStorageMethod(StorageMethod):
 
     def __init__(self,store):
@@ -13,7 +12,7 @@ class ArcticStorageMethod(StorageMethod):
         tokens  = [ i for i in list(path.split('/')) if len(i)>0]
         library = tokens[0]
         ticker = '.'.join(tokens[1:])
-        logger.info("Arctic storage method converted path to libaray [{}], ticker [{}]".format(library,ticker))
+        logging.info("Arctic storage method converted path to libaray [{}], ticker [{}]".format(library,ticker))
 
         if  library in self.store.list_libraries():
             lib = self.store[library]
@@ -24,7 +23,7 @@ class ArcticStorageMethod(StorageMethod):
             else:
                 raise StorageMethod.ResourceException("ticker {} not found".format(ticker))
         else:
-            raise StorageMethod.ResourceException("library {} not found".format(library))
+            raise StorageMethod.ResourceException("library {} not found in library list {}".format(library,self.store.list_libraries()))
 
         return (library, ticker)
 

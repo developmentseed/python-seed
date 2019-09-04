@@ -5,7 +5,13 @@ from typing import List
 from isharp.datahub.core import  DataBroker,Matrix,RevisionInfo,Revision
 import logging
 
+
+handler = logging.StreamHandler()
+handler.setLevel(logging.INFO)
+formatter = logging.Formatter("%(levelname)s - %(message)s")
+handler.setFormatter(formatter)
 logger = logging.getLogger(__name__)
+logger.addHandler(handler)
 
 class DataBrokerDelegate(DependencyProvider):
 
@@ -32,7 +38,7 @@ class DataBrokerService(DataBroker):
         return super().commit(matrix, revisionInfo)
     @rpc
     def release(self, matrix) -> None:
-        logger.debug("delegate reeived release call")
+        logger.debug("delegate received release call")
         self.delegate.release(matrix)
         logger.debug("release call to delegate successful")
         return None

@@ -209,7 +209,6 @@ class AbstractDataBroker(DataBroker):
 
 class CombiBroker(DataBroker):
     def __init__(self,registry):
-        print('Creating combi broker with keys {}'.format(registry.keys()))
         self.registry = registry
 
     def checkout(self, url, version_id=None) -> Matrix:
