@@ -47,7 +47,7 @@ class TestMongoBroker(unittest.TestCase):
         method = ArcticStorageMethod(self.arctic)
         with self.assertRaisesRegexp(StorageMethod.ResourceException,'^ticker nosymbol not found$'):
             method.acquireContent("{}/nosymbol".format(self.library_name),{})
-        with self.assertRaisesRegexp(StorageMethod.ResourceException,'^library nolib not found$'):
+        with self.assertRaisesRegexp(StorageMethod.ResourceException,'^library nolib not found in library list'):
             method.acquireContent("nolib/nosymbol".format(self.library_name),{})
 
 
