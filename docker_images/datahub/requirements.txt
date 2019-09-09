@@ -5,5 +5,5 @@ dataclasses==0.6
 nameko
 expandvars
 luigi
-isharp==2.32
+isharp==2.34
 
