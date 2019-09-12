@@ -101,8 +101,14 @@ class DataBroker(abc.ABC):
         pass
 
     @abc.abstractmethod
+    def view(self, url:str, version_id=None)->Matrix:
+        pass
+
+
+    @abc.abstractmethod
     def commit(self,matrix:Matrix,revisionInfo:RevisionInfo)->Revision:
         pass
+
 
     def release(self,matrix)->None:
         pass
@@ -170,16 +176,23 @@ class AbstractDataBroker(DataBroker):
         if matrix_url.scheme() != self.storage_method.name:
             raise DataBroker.ProtocolException()
 
-    def checkout(self, matrix_url_str,version=None):
-        logger.debug("Abstract  broker called with {}".format(matrix_url_str))
+    def _open(self, matrix_url_str,checkout,version=None ):
+        logger.debug("Abstract  broker called with {} checkout ? {}".format(matrix_url_str,checkout))
         matrix_url = MatrixUrl(matrix_url_str)
         self._check_schema(matrix_url)
-        self._assert_not_checked_out(matrix_url)
-        self.register.append(matrix_url.path())
-        checkout_result = self.storage_method.acquireContent(path=matrix_url.path(), params=matrix_url.params(),version_id=version)
-        ret_val =Matrix(checkout_result.header,checkout_result.content,matrix_url)
+        if checkout:
+            self._assert_not_checked_out(matrix_url)
+            self.register.append(matrix_url.path())
+        result = self.storage_method.acquireContent(path=matrix_url.path(), params=matrix_url.params(),version_id=version)
+        ret_val =Matrix(result.header,result.content,matrix_url)
         logger.debug("Abstract data broker about to return matrix")
         return ret_val
+
+    def checkout(self, matrix_url_str,version=None):
+        return self._open(matrix_url_str,True)
+
+    def view(self, matrix_url_str,version=None):
+        return self._open(matrix_url_str, False)
 
     def commit(self, matrix, revisionInfo):
         self._assert_checked_out(matrix.url)
@@ -215,6 +228,12 @@ class CombiBroker(DataBroker):
         logger.info("combi broker called with {}".format(url))
         parsed_url = MatrixUrl(url)
         return self._delegate(parsed_url.scheme()).checkout(url,version_id)
+
+    def view(self, url, version_id=None) -> Matrix:
+        logger.info("combi broker View called with {}".format(url))
+        parsed_url = MatrixUrl(url)
+        return self._delegate(parsed_url.scheme()).view(url,version_id)
+
 
     def peek(self, url) -> MatrixHeader:
         logger.info("combi broker called with peek {}".format(url))

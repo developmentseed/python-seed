@@ -41,7 +41,11 @@ class TestAbstractBroker(unittest.TestCase):
         self.broker.releaseAll()
         self.broker.checkout("test:///file_name_1.csv?format=CSV")
 
-
+    def test_view_file_already_checked_out(self):
+        self.mock_acquire_content_result()
+        self.broker.checkout("test:///file_name_1.csv?format=CSV")
+        result = self.broker.view("test:///file_name_1.csv?format=CSV")
+        self.assertIsNotNone(result)
 
     def test_commit(self):
         self.mock_acquire_content_result()
@@ -51,6 +55,10 @@ class TestAbstractBroker(unittest.TestCase):
         revision_info = RevisionInfo("who","what",time_now)
         revision = self.broker.commit(m,revision_info)
         self.assertEqual(revision_info,revision.revision_info)
+
+
+
+
 
 
 

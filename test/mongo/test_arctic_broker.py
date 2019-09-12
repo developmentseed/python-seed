@@ -50,6 +50,7 @@ class TestArcticBroker(unittest.TestCase):
         broker = ArcticBroker(self.arctic)
         result = broker.list()
         self.assertEquals(2, len(result))
+        self.assertEqual("{}/ES.SETL.EOD".format(self.library_name),result[0].path)
 
 
     def test_peek_with_existing_file(self):

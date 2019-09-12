@@ -26,6 +26,7 @@ class TestFileDataBroker(unittest.TestCase):
         shutil.rmtree(self.test_data_path)
 
 
+
     def test_invalid_path(self):
         with self.assertRaises(StorageMethod.ResourceException):
             self.broker.checkout("file://broker.nomura.com/no_dir/no_file?format=CSV")
@@ -71,6 +72,8 @@ class TestFileDataBroker(unittest.TestCase):
         header  = headers[0]
         self.assertIsNone(header.revision_id)
         self.assertEqual("file",header.storage_method)
+        self.assertEqual("/file_name_1.csv", header.path)
         self.assertEqual("file_name_1.csv",header.name)
         self.assertEqual("description of file_name_1.csv",header.description)
         self.assertEqual(MemStyles.DATA_FRAME, header.memory_style)
+

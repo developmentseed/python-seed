@@ -3,7 +3,7 @@
 <head>
     <title>Flask Template Example</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <style type="text/css">
         .container {
             max-width: 500px;
@@ -13,15 +13,19 @@
 </head>
 <body>
 <div class="container">
-    <H1>Broker Listing:</H1>
-    <table border="1">
-
+    <H3>Broker Listing: {{hostname}}</H3>
+    <table class="table table-bordered table-striped">
+        <thead>
         <tr>
-            <td>name</td>
-            <td>path</td>
-            <td>revision_id</td>
-            <td>storage_method</td>
+            <td>Name</td>
+            <td>Path</td>
+            <td>Revision</td>
+            <td>Storage Method</td>
+            <td>Style</td>
+            <td>Description</td>
         </tr>
+        </thead>
+        <tbody>
 
 
         {% for n in my_list %}
@@ -30,8 +34,11 @@
             <td>{{n.path}}</td>
             <td>{{n.revision_id}}</td>
             <td>{{n.storage_method}}</td>
+            <td>{{n.memory_style}}</td>
+            <td>{{n.description}}</td>
         </tr>
         {% endfor %}
+        </tbody>
     </table>
 
 </div>

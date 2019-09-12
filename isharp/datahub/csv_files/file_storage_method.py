@@ -61,7 +61,8 @@ class FileStorageMethod(StorageMethod):
                 name=this_record['name'],
                 revision_id= None,
                 storage_method= self.name,
-                path= index,
+                path=  this_record['path'] if 'path' in this_record else '',
+                 # path='hello',
                 memory_style=MemStyles.DATA_FRAME,
                 description= this_record["description"]
 

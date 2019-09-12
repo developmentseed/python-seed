@@ -40,11 +40,15 @@ class PooledBrokerConnection(DataBroker):
     def commit(self, matrix: Matrix, revisionInfo: RevisionInfo) -> Revision:
         return self.proxy.data_broker_service.commit(matrix, revisionInfo)
 
+
     def list(self) -> List[MatrixHeader]:
         return self.proxy.data_broker_service.list()
 
     def checkout(self, url: str, version_id=None) -> Matrix:
         return self.proxy.data_broker_service.checkout(url)
+
+    def view(self, url: str, version_id=None) -> Matrix:
+        return self.proxy.data_broker_service.view(url)
 
     def release(self, matrix) -> None:
         self.proxy.data_broker_service.release(matrix)
@@ -80,6 +84,9 @@ class BrokerConnectionPool(DataBroker):
 
     def checkout(self, url: str, version_id=None) -> Matrix:
         return self._connect(url).checkout(url, version_id)
+
+    def view(self, url: str, version_id=None) -> Matrix:
+        return self._connect(url).view(url, version_id)
 
     def commit(self, matrix: Matrix, revisionInfo: RevisionInfo) -> Revision:
         return self._connect(matrix.url.url).commit(matrix, revisionInfo)
