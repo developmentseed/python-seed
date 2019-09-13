@@ -189,10 +189,10 @@ class AbstractDataBroker(DataBroker):
         return ret_val
 
     def checkout(self, matrix_url_str,version=None):
-        return self._open(matrix_url_str,True)
+        return self._open(matrix_url_str,True,version)
 
     def view(self, matrix_url_str,version=None):
-        return self._open(matrix_url_str, False)
+        return self._open(matrix_url_str, False,version)
 
     def commit(self, matrix, revisionInfo):
         self._assert_checked_out(matrix.url)
