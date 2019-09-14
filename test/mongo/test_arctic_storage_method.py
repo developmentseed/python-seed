@@ -29,9 +29,13 @@ class TestMongoBroker(unittest.TestCase):
     def test_acquire_data(self):
         method = ArcticStorageMethod(self.arctic)
         result  = method.acquireContent("{}/symbol".format(self.library_name),{})
+
         data_frame = result.content
+        self.assertFalse(result.header.path[0] == '/')
         self.assertIs(3,len(data_frame.columns))
         self.assertIsNone(result.header.description)
+        self.assertEqual(result.header.name,result.header.path)
+
 
     def test_acquire_data_with_qualified_symbol(self):
         method = ArcticStorageMethod(self.arctic)

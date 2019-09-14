@@ -136,26 +136,23 @@ class StorageMethod(abc.ABC):
     class ResourceException(Exception):
         pass
 
-    def __init__(self, name, required_params={}):
-        self.required_parameters = required_params
+    def __init__(self, name):
         self.name = name
 
     @abc.abstractmethod
     def acquireContent(self,path,params,version_id=None)->AcquireContentReturnValue:
-        self._check_params(params)
+        pass
+
 
     @abc.abstractmethod
     def storeContent(self,path,params,content,revision_info)->Revision:
-        self._check_params(params)
+        pass
+
 
 
     @abc.abstractmethod
     def list(self)->List[MatrixHeader]:
         pass
-    def _check_params(self,params):
-        for required_param in self.required_parameters:
-            if not required_param in params:
-                raise self.ParameterException("format parameter missing or unset")
 
 
 class AbstractDataBroker(DataBroker):

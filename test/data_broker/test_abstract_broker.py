@@ -37,9 +37,12 @@ class TestAbstractBroker(unittest.TestCase):
 
     def test_checkout_file_already_checked_out_after_release(self):
         self.mock_acquire_content_result()
-        self.broker.checkout("test:///file_name_1.csv?format=CSV")
+        m=self.broker.checkout("test:///file_name_1.csv?format=CSV")
+        self.assertEqual(m.matrix_header.name, "hello")
         self.broker.releaseAll()
-        self.broker.checkout("test:///file_name_1.csv?format=CSV")
+        m = self.broker.checkout("test:///file_name_1.csv?format=CSV")
+
+
 
     def test_view_file_already_checked_out(self):
         self.mock_acquire_content_result()

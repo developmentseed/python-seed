@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Flask Template Example</title>
+    <title>Datahub index</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="http://netdna.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <style type="text/css">
@@ -30,12 +30,15 @@
 
         {% for n in my_list %}
         <tr>
+            {% set url="http://localhost/datahub/view/{}?protocol={}".format(n.path,n.storage_method)%}
             <td>{{n.name}}</td>
             <td>{{n.path}}</td>
             <td>{{n.revision_id}}</td>
             <td>{{n.storage_method}}</td>
             <td>{{n.memory_style}}</td>
             <td>{{n.description}}</td>
+            <td> <a href="{{url}}">View</a></td>
+
         </tr>
         {% endfor %}
         </tbody>

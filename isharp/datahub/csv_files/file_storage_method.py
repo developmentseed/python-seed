@@ -11,7 +11,7 @@ class FileStorageMethod(StorageMethod):
         self.base_directory = base_directory
         if os.path.isdir(self.base_directory):
             logging.info("Found base directory {}".format(self.base_directory))
-            super().__init__("file", ["format"])
+            super().__init__("file")
         else:
             logger.error("could not read base directory {}".format(self.base_directory))
             raise StorageMethod.ResourceException()
@@ -28,13 +28,13 @@ class FileStorageMethod(StorageMethod):
         csv_file_path = os.path.join(self.base_directory,path.strip("/"))
         index_path = os.path.join(os.path.dirname(csv_file_path),"index.txt")
         index_df = pd.read_csv(index_path, index_col=0)
-        index_row = index_df.loc[path, :]
+        index_row = index_df.loc[path.strip("/"), :]
         return MatrixHeader(
                               name=index_row["name"],
                               revision_id=None,
                               storage_method=self.name,
                               memory_style=MemStyles.DATA_FRAME,
-                              path = path,
+                              path = path[1:],
                               description=index_row['description'])
 
     def acquireContent(self, path, params,version_id=None):

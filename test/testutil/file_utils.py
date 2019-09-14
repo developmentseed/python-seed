@@ -13,7 +13,7 @@ def fill_directory_with_content(root_directory,directory_path, number_files):
         filepath = os.path.join(root_directory,directory_path, file_name)
         df.to_csv(filepath)
         posix_path  = pathlib.PureWindowsPath(os.path.join("/",directory_path,file_name))
-        key_data.append(posix_path.as_posix())
+        key_data.append(posix_path.as_posix().strip("/"))
         index_data.append((file_name,"description of {}".format(file_name)))
 
     df = pd.DataFrame( index=pd.Index(key_data,name="path"),data=index_data, columns=["name", "description"])

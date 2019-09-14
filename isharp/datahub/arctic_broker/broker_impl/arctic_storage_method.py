@@ -6,7 +6,7 @@ class ArcticStorageMethod(StorageMethod):
 
     def __init__(self,store):
         self.store = store
-        super().__init__("arctic",[])
+        super().__init__("arctic")
 
     def _lib_ticker(self,path):
         tokens  = [ i for i in list(path.split('/')) if len(i)>0]
@@ -28,14 +28,12 @@ class ArcticStorageMethod(StorageMethod):
         return (library, ticker)
 
     def acquireContent(self, path, params, version_id=None)->AcquireContentReturnValue:
-        self._check_params(params)
-
         library, ticker = self._lib_ticker(path)
         lib = self.store[library]
         v = None if version_id is None else int(version_id)
         versioned  = lib.read(ticker, v)
         header = MatrixHeader(
-        name="",
+        name= path,
         revision_id= str(versioned.version),
         storage_method=self.name,
         path= path,
@@ -48,7 +46,6 @@ class ArcticStorageMethod(StorageMethod):
 
 
     def storeContent(self, path, params, content,revision_info)->Revision:
-        self._check_params(params)
         library, ticker = self._lib_ticker(path)
         lib = self.store[library]
         lib.write(ticker,content )

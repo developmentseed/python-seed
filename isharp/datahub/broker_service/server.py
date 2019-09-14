@@ -33,6 +33,7 @@ class DataBrokerService(DataBroker):
         logger.debug("checkout call to delegate successful")
         return ret_val
 
+    @rpc
     def view(self, url: str, version_id=None) -> Matrix:
         logger.debug("delegate received view call")
         ret_val = self.delegate.view(url,version_id)

@@ -37,10 +37,13 @@ with BrokerConnectionPool() as broker:
     mtx = broker.checkout('arctic://{}:5672/YahooFinance/SPOT/FTSE/0500'.format(rpc_host))
     print (mtx.matrix_header.path)
 
-    mtx = broker.checkout('arctic://{}:5672/InvestCo/CLOSING/SP/EOD'.format(rpc_host))
+    mtx = broker.view('arctic://{}:5672/InvestCo/CLOSING/SP/EOD'.format(rpc_host))
     print(mtx.matrix_header.path)
+    print (mtx.matrix_header.name)
 
 
+
+    mtx = broker.view('file://{}:5672/subdir_2/subdir_2/file_name_1.csv'.format(rpc_host))
     # print(broker.peek('arctic://{}:5672/InvestCo/CLOSING/SP/EOD'.format(rpc_host)))
     #
     # print(broker.peek('arctic://{}:5672/InvestCo/CLOSING/SPX/EOD'.format(rpc_host)))

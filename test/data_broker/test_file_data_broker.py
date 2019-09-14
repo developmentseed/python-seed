@@ -35,6 +35,8 @@ class TestFileDataBroker(unittest.TestCase):
         testurl = "file:///subdir_1/file_name_1.csv?format=CSV"
         m = self.broker.checkout(testurl)
         self.assertEqual("file_name_1.csv",m.matrix_header.name)
+        self.assertEqual("subdir_1/file_name_1.csv", m.matrix_header.path)
+
 
 
     def test_peek_with_existing_file(self):
@@ -62,7 +64,7 @@ class TestFileDataBroker(unittest.TestCase):
         self.assertEqual("file_name_1.csv",m.matrix_header.name)
         self.assertEqual(None,m.matrix_header.revision_id)
         self.assertEqual('file', m.matrix_header.storage_method)
-        self.assertEqual(m.matrix_header.path, "/file_name_1.csv")
+        self.assertEqual(m.matrix_header.path, "file_name_1.csv")
         self.assertTrue(isinstance(m.content,pd.DataFrame))
         self.assertEqual(MemStyles.DATA_FRAME, m.matrix_header.memory_style)
 
@@ -72,7 +74,7 @@ class TestFileDataBroker(unittest.TestCase):
         header  = headers[0]
         self.assertIsNone(header.revision_id)
         self.assertEqual("file",header.storage_method)
-        self.assertEqual("/file_name_1.csv", header.path)
+        self.assertEqual("file_name_1.csv", header.path)
         self.assertEqual("file_name_1.csv",header.name)
         self.assertEqual("description of file_name_1.csv",header.description)
         self.assertEqual(MemStyles.DATA_FRAME, header.memory_style)

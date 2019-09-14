@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+   <H2>Matrix {{matrix.matrix_header.name}}</H2>
+    <table>
+        <tr><td>Revision</td><td>{{matrix.matrix_header.revision_id}}</td></tr></tr>
+        <tr><td>Path</td><td>{{matrix.matrix_header.path}}</td></tr></tr>
+    </table>
+   <p></p>
+
+   {{matrix.content.to_html()|safe}}
+
+
+
+
+</body>
+</html>
