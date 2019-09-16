@@ -1,0 +1,34 @@
+
+serializer: pickle
+AMQP_URI: qp://${RABBITMQ_USER:guest}:${RABBITMQ_PASSWORD:guest}@${RABBITMQ_HOST:rabbit}
+rpc_exchange: 'nameko-rpc'
+max_workers: 10
+parent_calls_tracked: 10
+
+LOGGING:
+    version: 1
+    handlers:
+        console:
+            class: logging.StreamHandler
+    root:
+        level: DEBUG
+        handlers: [console]
+
+#===================================================================================================
+#NB the environment substitutions below for mongo_host and file_root_dir use a different syntax to the
+#ones above. If anyone can show me how to change this so that the standard in-built nameko parser can
+#be used rather than expandvars, please do
+#===================================================================================================
+data_brokers:
+
+    arctic:
+      !ArcticBroker
+        mongo_host: ${mongo_host:-mongo}
+
+    file:
+      !SimpleFileBroker
+        root_directory: ${file_broker_root:-/demo_broker_data}
+
+
+
+
