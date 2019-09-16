@@ -1,0 +1,37 @@
+version: "3"
+services:
+
+
+  mongo:
+    container_name: isharp_mongo
+    image: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+
+
+  rabbit:
+    container_name: isharp-rabbitmq
+d    image: rabbitmq:3.7-management
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+
+
+  graph:
+    container_name: isharp-graph
+    image: neo4j
+    volumes:
+      - $HOME/neo4j/data:/data
+    environment:
+      NEO4J_AUTH: 'none'
+
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+
+#  jupyter:
+#    container_name: isharp-demo-jupyter
+
+
+# docker run  --publish=7474:7474 --publish=7687:7687  --env=NEO4J_AUTH=none --volume=$HOME/neo4j/data:/data neo4j
