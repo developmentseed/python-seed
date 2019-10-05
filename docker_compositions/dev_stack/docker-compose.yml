@@ -7,7 +7,7 @@ services:
     image: python:3
     volumes:
      - $HOME/isharp-core:/isharp-core
-    command: bin/bash; tail -f dev/null
+    command: bin/bash
 
 
   mongo:
