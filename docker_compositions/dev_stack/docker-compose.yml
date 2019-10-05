@@ -2,6 +2,14 @@ version: "2"
 services:
 
 
+ python:
+  container_name: isharp_python
+  image: python:3
+  volumes:
+    - $HOME/isharp-core:/isharp-core
+
+
+
   mongo:
     container_name: isharp_mongo
     image: mongo
@@ -16,6 +24,8 @@ services:
     ports:
       - "15672:15672"
       - "5672:5672"
+
+
 
 
   graph:
