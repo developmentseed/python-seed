@@ -2,13 +2,11 @@ version: "2"
 services:
 
 
- python:
-  container_name: isharp_python
-  image: python:3
-  volumes:
-    - $HOME/isharp-core:/isharp-core
-
-
+  python:
+    container_name: isharp_python
+    image: python:3
+    volumes:
+     - $HOME/isharp-core:/isharp-core
 
   mongo:
     container_name: isharp_mongo
