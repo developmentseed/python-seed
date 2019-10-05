@@ -6,7 +6,9 @@ services:
     container_name: isharp_python
     image: python:3
     volumes:
-     - $HOME/isharp-core:/isharp-core; tail -f dev/null
+     - $HOME/isharp-core:/isharp-core
+    command: bin/bash; tail -f dev/null
+
 
   mongo:
     container_name: isharp_mongo
