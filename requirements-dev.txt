@@ -2,11 +2,13 @@ arctic==1.74.0
 numpy==1.14.3
 pandas==0.24.2
 dataclasses==0.6
+python-dev
+python-devel
 nameko
 luigi
 neo4j
 py2neo
 pyyaml
 pymongo
-arctic
 expandvars
+
