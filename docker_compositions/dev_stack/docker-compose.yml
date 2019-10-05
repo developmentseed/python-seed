@@ -7,6 +7,7 @@ services:
     image: python:3
     volumes:
      - $HOME/isharp-core:/isharp-core
+    command: /bin/bash
 
   mongo:
     container_name: isharp_mongo
