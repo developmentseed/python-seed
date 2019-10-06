@@ -8,6 +8,8 @@ services:
     volumes:
      - $HOME/isharp-core:/isharp-core
     command: bin/bash
+    stdin_open: true
+    tty: true
     depends_on:
       - mongo
 
