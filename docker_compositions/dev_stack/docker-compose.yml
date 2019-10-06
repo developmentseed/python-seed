@@ -8,6 +8,8 @@ services:
     volumes:
      - $HOME/isharp-core:/isharp-core
     command: bin/bash
+    depends_on:
+      - mongo
 
 
   mongo:
@@ -16,6 +18,8 @@ services:
     restart: always
     ports:
       - "27017:27017"
+    depends_on:
+      - rabbit
 
 
   rabbit:
@@ -24,6 +28,8 @@ services:
     ports:
       - "15672:15672"
       - "5672:5672"
+    depends_on:
+      - graph
 
 
 
@@ -36,9 +42,12 @@ services:
     environment:
       NEO4J_AUTH: 'none'
 
+    depends_on:
+      - rabbit
     ports:
       - "7474:7474"
       - "7687:7687"
+
 
 #  jupyter:
 #    container_name: isharp-demo-jupyter
