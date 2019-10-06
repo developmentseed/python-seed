@@ -7,9 +7,7 @@ services:
     image: python:3
     volumes:
      - $HOME/isharp-core:/isharp-core
-    command: bin/bash
-    stdin_open: true
-    tty: true
+    command: tail -f /dev/null:
     depends_on:
       - mongo
 
