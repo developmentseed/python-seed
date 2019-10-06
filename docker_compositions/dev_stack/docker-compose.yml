@@ -11,6 +11,10 @@ services:
     depends_on:
       - mongo
 
+    ports:
+      - "8888:8888"
+
+
 
   mongo:
     container_name: isharp_mongo
