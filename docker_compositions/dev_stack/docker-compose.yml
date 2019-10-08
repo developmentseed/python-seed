@@ -3,8 +3,8 @@ services:
 
 
   python:
-    container_name: isharp_python
-    image: python:3
+    container_name: isharp-python-dev
+    image: isharp-python-dev
     volumes:
      - $HOME/isharp-core:/isharp-core
     command: tail -f /dev/null
