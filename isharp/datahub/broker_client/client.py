@@ -18,9 +18,9 @@ logger = logging.getLogger(__name__)
 
 logger.info("hello from logging")
 
-aws_rpc_host = "ec2-54-158-255-146.compute-1.amazonaws.com"
+aws_rpc_host = "52.90.27.143"
 local_host = "localhost"
-rpc_host = local_host
+rpc_host = aws_rpc_host
 with BrokerConnectionPool() as broker:
     # broker.releaseAll()
     # mtx = broker.checkout("file://datahub:5672/file_name_1.csv?format=CSV")
@@ -43,7 +43,7 @@ with BrokerConnectionPool() as broker:
 
 
 
-    mtx = broker.view('file://{}:5672/subdir_2/subdir_2/file_name_1.csv'.format(rpc_host))
+    # mtx = broker.view('file://{}:5672/subdir_2/subdir_2/file_name_1.csv'.format(rpc_host))
     # print(broker.peek('arctic://{}:5672/InvestCo/CLOSING/SP/EOD'.format(rpc_host)))
     #
     # print(broker.peek('arctic://{}:5672/InvestCo/CLOSING/SPX/EOD'.format(rpc_host)))
