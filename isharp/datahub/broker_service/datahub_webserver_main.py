@@ -8,7 +8,7 @@ import isharp.datahub.web.webconsole as web
 from multiprocessing import Process
 
 def main():
-    web.app.run(port=80)
+    web.app.run(host='0.0.0.0',port=80)
 
 if __name__== "__main__" :
     main()
