@@ -25,9 +25,6 @@ data_brokers:
       !ArcticBroker
         mongo_host: ${mongo_host:-mongo}
 
-    file:
-      !SimpleFileBroker
-        root_directory: ${file_broker_root:-/demo_broker_data}
 
 
 
