@@ -5,7 +5,7 @@ COPY requirements.txt ./
 
 RUN pip install --no-cache-dir -r requirements.txt
 ENV PYTHONPATH "/isharp-core"
-
+ENV isharp_hub_host "rabbit:5672"
 CMD tail -f dev/null
 
 

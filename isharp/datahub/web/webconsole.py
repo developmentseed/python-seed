@@ -1,10 +1,12 @@
 from isharp.datahub.broker_client.remote_proxy import BrokerConnectionPool
 from flask import Flask, render_template
+import os
 import socket
 hostname=socket.gethostname()
 from flask import request
 app = Flask(__name__)
-hub_host = "localhost:5672"
+
+hub_host =  os.getenv('isharp_hub_host', 'localhost:5672')
 
 @app.route('/')
 def listing():
