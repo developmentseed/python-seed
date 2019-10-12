@@ -1,2 +1,2 @@
-docker-compose exec -it isharp-python-dev /bin/bash
+docker exec -it isharp-python-dev /bin/bash
 
