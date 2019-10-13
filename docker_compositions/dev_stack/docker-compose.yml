@@ -7,6 +7,7 @@ services:
     environment:
       mongo_host: mongo
       isharp_hub_host: rabbit:5672
+      isharp_home: /isharp-core
 
     image: isharp-python-dev
     volumes:
