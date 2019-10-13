@@ -1,0 +1,10 @@
+[console_scripts]
+arctic_copy_data = arctic.scripts.arctic_copy_data:main
+arctic_create_user = arctic.scripts.arctic_create_user:main
+arctic_delete_library = arctic.scripts.arctic_delete_library:main
+arctic_enable_sharding = arctic.scripts.arctic_enable_sharding:main
+arctic_fsck = arctic.scripts.arctic_fsck:main
+arctic_init_library = arctic.scripts.arctic_init_library:main
+arctic_list_libraries = arctic.scripts.arctic_list_libraries:main
+arctic_prune_versions = arctic.scripts.arctic_prune_versions:main
+

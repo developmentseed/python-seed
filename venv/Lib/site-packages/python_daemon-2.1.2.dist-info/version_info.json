@@ -1,0 +1,6 @@
+{
+    "release_date": "2016-10-26",
+    "version": "2.1.2",
+    "maintainer": "Ben Finney <ben+python@benfinney.id.au>",
+    "body": "Additions:* Add a README document for the code base.\nChanges:* Migrate code project hosting to Pagure. Record the change of homepage URL in\n  PyPI metadata.\n* Raise a warning that the \u2018runner\u2019 module is pending deprecation. This has been\n  an unofficial example module from the beginning, and it will be removed in a\n  future version.\nBug Fixes:* Ensure custom types are part of the Python type hierarchy.\n* Avoid a circular dependency for the version string at install time. Thanks to\n  Maarten van Gompel for the reproducible test case.\n"
+}

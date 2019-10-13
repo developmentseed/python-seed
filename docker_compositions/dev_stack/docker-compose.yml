@@ -4,6 +4,9 @@ services:
 
   python:
     container_name: isharp-python-dev
+    environment:
+      mongo_host: mongo
+
     image: isharp-python-dev
     volumes:
      - $HOME/isharp-core:/isharp-core
@@ -14,7 +17,6 @@ services:
     ports:
       - "8888:8888"
       - "80:80"
-
 
 
   mongo:

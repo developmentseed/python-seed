@@ -1,0 +1,26 @@
+Metadata-Version: 2.0
+Name: nameko-proxy
+Version: 0.0.5
+Summary: Standalone async proxy to communicate with Nameko microservices 
+Home-page: https://github.com/fraglab/nameko-proxy
+Author: Sergey Suglobov
+Author-email: s.suglobov@gmail.com
+License: UNKNOWN
+Keywords: nameko,standalone,proxy
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3 :: Only
+Requires-Dist: nameko
+Requires-Dist: setuptools
+
+UNKNOWN
+
+
