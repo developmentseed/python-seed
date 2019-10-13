@@ -9,6 +9,7 @@ import numpy as np
 import pandas as pd
 import datetime
 import random
+import sys
 
 logging.basicConfig()
 logger = logging.getLogger()
@@ -76,7 +77,7 @@ def load_data_file(file_name, ticker_name,arctic_library):
     arctic_library.write(ticker_name,df)
 
 
-conf = yaml.load(open('arctic_demo.yaml','r'))
+conf = yaml.load(open(sys.argv[1],'r'))
 env_substitution(conf['mongo_db'])
 
 if expandvars.expandvars(conf['skip']):
