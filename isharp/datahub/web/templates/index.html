@@ -30,7 +30,7 @@
 
         {% for n in my_list %}
         <tr>
-            {% set url="http://localhost/datahub/view/{}?protocol={}".format(n.path,n.storage_method)%}
+            {% set url="/datahub/view/{}?protocol={}".format(n.path,n.storage_method)%}
             <td>{{n.name}}</td>
             <td>{{n.path}}</td>
             <td>{{n.revision_id}}</td>
