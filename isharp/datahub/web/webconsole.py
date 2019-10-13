@@ -5,7 +5,6 @@ import socket
 hostname=socket.gethostname()
 from flask import request
 app = Flask(__name__)
-app.config['SERVER_NAME'] ='*:80'
 
 hub_host =  os.getenv('isharp_hub_host', 'localhost:5672')
 
