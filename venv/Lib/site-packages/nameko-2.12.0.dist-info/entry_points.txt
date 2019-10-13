@@ -1,6 +1,0 @@
-[console_scripts]
-nameko = nameko.cli.main:main
-
-[pytest11]
-pytest_nameko = nameko.testing.pytest
-
