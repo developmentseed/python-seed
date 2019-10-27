@@ -68,6 +68,13 @@ class DataBrokerService(DataBroker):
         logger.debug("delegate about to peek")
         return self.delegate.peek(url)
 
+    @rpc
+    def history(self,url: str) -> List[Revision]:
+        logger.debug("delegate history call")
+        return self.delegate.history(url)
+
+
+
 
 
 
