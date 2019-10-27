@@ -1,6 +1,8 @@
-from isharp.datahub.core import StorageMethod,MatrixHeader,Revision,AcquireContentReturnValue,MemStyles
+from isharp.datahub.core import StorageMethod,MatrixHeader,Revision,AcquireContentReturnValue,MemStyles,RevisionInfo
 from typing import List
 import logging
+import dataclasses
+import datetime
 logging.basicConfig(level=logging.INFO)
 class ArcticStorageMethod(StorageMethod):
 
@@ -48,7 +50,22 @@ class ArcticStorageMethod(StorageMethod):
     def storeContent(self, path, params, content,revision_info)->Revision:
         library, ticker = self._lib_ticker(path)
         lib = self.store[library]
-        lib.write(ticker,content )
+        original_meta_d = lib.read_metadata(ticker).metadata
+
+        old_revisions = get_revisions_from_metadata(original_meta_d)
+        last_revision = old_revisions[-1]
+        next_revision_id = str(int(last_revision.id)+1)
+        new_revision = Revision(next_revision_id,revision_info)
+        add_revision_to_metadata(new_revision,original_meta_d)
+        v =lib.write(ticker,content,original_meta_d)
+        return new_revision
+
+    def history(self,matrix_url)->List[Revision]:
+        library, ticker = self._lib_ticker(matrix_url.url_components.path)
+        lib = self.store[library]
+        meta = lib.read_metadata(ticker)
+        return get_revisions_from_metadata(meta.metadata)
+
 
     def list(self) -> List[MatrixHeader]:
         ret_val = []
@@ -70,9 +87,29 @@ class ArcticStorageMethod(StorageMethod):
 
 
 
+history_tag = "revision_history"
+def add_revision_to_metadata(revision:Revision,metadata:dict,dict_key:str=history_tag):
+    if metadata.get(dict_key) is None:
+        metadata[dict_key] = []
+
+    metadata[dict_key].append(dataclasses.asdict(revision))
+
+def _revision_from_dict(dict:dict)->Revision:
+    #todo ... there must be a better whay of doing this !
+    revision_id = dict['id']
+    revision_info = dict["revision_info"]
+    return Revision(revision_id,RevisionInfo(who=revision_info['who'],what=revision_info['what'],when=revision_info['when']))
+
+
+def get_revisions_from_metadata(metadata:dict,dict_key:str=history_tag)->List[Revision]:
+    revision_list = metadata[dict_key]
+    return [_revision_from_dict(i) for i in revision_list]
 
 
 
-
+def import_pandas(lib, pd, symbol_name,revision_info):
+    meta = {}
+    add_revision_to_metadata(Revision('1', revision_info), meta)
+    lib.write(symbol_name, pd, meta)
 
 

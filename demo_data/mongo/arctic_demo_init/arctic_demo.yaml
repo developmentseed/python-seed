@@ -7,14 +7,14 @@ mongo_db:
 
 lib_name: isharp
 data_files:
-  MSFT: /isharp-core/demo_data/mongo/arctic_demo_init/data/msft.csv
-  ORCL: /isharp-core/demo_data/mongo/arctic_demo_init/data/orcl.csv
-  AAPL: /isharp-core/demo_data/mongo/arctic_demo_init/data/aapl.csv
-  PRU: /isharp-core/demo_data/mongo/arctic_demo_init/data/PRU.L.csv
-  SDR: /isharp-core/demo_data/mongo/arctic_demo_init/data/SDR.L.csv
-  TSCO: /isharp-core/demo_data/mongo/arctic_demo_init/data/TSCO.L.csv
-  VOD: /isharp-core/demo_data/mongo/arctic_demo_init/data/VOD.L.csv
-  RR: /isharp-core/demo_data/mongo/arctic_demo_init/data/RR.L.csv
+  MSFT: ${isharp_home:-}/demo_data/mongo/arctic_demo_init/data/msft.csv
+  ORCL: ${isharp_home:-}/demo_data/mongo/arctic_demo_init/data/orcl.csv
+  AAPL: ${isharp_home:-}/demo_data/mongo/arctic_demo_init/data/aapl.csv
+  PRU: ${isharp_home:-}/demo_data/mongo/arctic_demo_init/data/PRU.L.csv
+  SDR: ${isharp_home:-}/demo_data/mongo/arctic_demo_init/data/SDR.L.csv
+  TSCO: ${isharp_home:-}/demo_data/mongo/arctic_demo_init/data/TSCO.L.csv
+  VOD: ${isharp_home:-}/demo_data/mongo/arctic_demo_init/data/VOD.L.csv
+  RR: ${isharp_home:-}/demo_data/mongo/arctic_demo_init/data/RR.L.csv
 
 
 

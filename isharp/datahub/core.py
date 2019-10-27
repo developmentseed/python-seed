@@ -21,6 +21,30 @@ class MemStyles(Enum):
     TREE = 2
 
 
+@dataclasses.dataclass(frozen=True)
+class RevisionInfo:
+    who: str
+    what: str
+    when: datetime.datetime
+
+
+
+
+
+@dataclasses.dataclass(frozen=True)
+class Revision:
+    id: str
+    revision_info: RevisionInfo
+
+
+
+
+
+
+
+
+
+
 
 
 class MatrixUrl:
@@ -75,18 +99,6 @@ class Matrix:
         return Matrix(matrix_header=self.matrix_header,url=self.url,content=new_content)
 
 
-@dataclasses.dataclass(frozen=True)
-class RevisionInfo:
-    who: str
-    what: str
-    when: datetime.datetime
-
-
-@dataclasses.dataclass(frozen=True)
-class Revision:
-    id: str
-    revision_info: RevisionInfo
-
 
 class DataBroker(abc.ABC):
 
@@ -104,6 +116,10 @@ class DataBroker(abc.ABC):
     def view(self, url:str, version_id=None)->Matrix:
         pass
 
+    @abc.abstractmethod
+    def history(selfurl:str)->List[Revision]:
+        pass
+
 
     @abc.abstractmethod
     def commit(self,matrix:Matrix,revisionInfo:RevisionInfo)->Revision:
@@ -117,9 +133,11 @@ class DataBroker(abc.ABC):
     def list(self)->List[MatrixHeader]:
         pass
 
+
     @abc.abstractmethod
     def peek(self,url)->MatrixPreview:
         pass
+
 
     @abc.abstractmethod
     def releaseAll(self)->None:
@@ -147,7 +165,6 @@ class StorageMethod(abc.ABC):
     @abc.abstractmethod
     def storeContent(self,path,params,content,revision_info)->Revision:
         pass
-
 
 
     @abc.abstractmethod
@@ -188,6 +205,12 @@ class AbstractDataBroker(DataBroker):
     def checkout(self, matrix_url_str,version=None):
         return self._open(matrix_url_str,True,version)
 
+
+    def history(self,url: str) -> List[Revision]:
+        matrix_url = MatrixUrl(url)
+        self._check_schema(matrix_url)
+        return self.storage_method.history(matrix_url)
+
     def view(self, matrix_url_str,version=None):
         return self._open(matrix_url_str, False,version)
 
@@ -225,6 +248,10 @@ class CombiBroker(DataBroker):
         logger.info("combi broker called with {}".format(url))
         parsed_url = MatrixUrl(url)
         return self._delegate(parsed_url.scheme()).checkout(url,version_id)
+
+    def history(self ,url:str ) -> List:
+        logger.info("combi broker history called with {}",url)
+        return self._delegate(url).history(url)
 
     def view(self, url, version_id=None) -> Matrix:
         logger.info("combi broker View called with {}".format(url))

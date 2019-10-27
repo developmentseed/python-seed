@@ -71,14 +71,23 @@ def env_substitution(dict_in):
     for this_key,this_value in dict_in.items():
         dict_in[this_key] = expandvars.expandvars(this_value)
 
+
 def load_data_file(file_name, ticker_name,arctic_library):
+    logger.info("loading {} from file {}".format(ticker_name, file_name))
     df = pd.read_csv(file_name,converters={0:toDate}, index_col=0)
-    logger.info("loading {} from file {}".format(ticker_name,file_name))
-    arctic_library.write(ticker_name,df)
+    df_len,df_width = df.shape
+    base_df = df.iloc[:df_len-20]
+    delta_df = df.iloc[df_len-20:]
+    arctic_library.write(ticker_name,base_df)
+    for index,row in delta_df.iterrows():
+        stored_df = arctic_library.read(ticker_name,None).data
+        new_df = stored_df.append(row)
+        arctic_library.write(ticker_name, new_df)
 
 
 conf = yaml.load(open(sys.argv[1],'r'))
 env_substitution(conf['mongo_db'])
+env_substitution(conf['data_files'])
 
 if expandvars.expandvars(conf['skip']):
     logger.info("skipping wihtout loading since skip parameter is not empty")

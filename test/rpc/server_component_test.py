@@ -19,7 +19,6 @@ class ServerComponentTest(TestCase):
     def tearDown(self):
         pass
 
-
     def test_service_checkout(self):
         testurl = "test:///file_name_1.csv?format=CSV"
         self.mock_storage_method.acquireContent=MagicMock(return_value=(AcquireContentReturnValue(header=test_header, content=test_content)))
