@@ -2,7 +2,6 @@ from isharp.datahub.core import StorageMethod,MatrixHeader,Revision,AcquireConte
 from typing import List
 import logging
 import dataclasses
-import datetime
 logging.basicConfig(level=logging.INFO)
 class ArcticStorageMethod(StorageMethod):
 
@@ -64,7 +63,11 @@ class ArcticStorageMethod(StorageMethod):
         library, ticker = self._lib_ticker(matrix_url.url_components.path)
         lib = self.store[library]
         meta = lib.read_metadata(ticker)
-        return get_revisions_from_metadata(meta.metadata)
+        logging.info("attempted to get history for : {},{} result = [{}]".format(library, ticker,meta))
+        if meta.metadata is None:
+            return []
+        else:
+            return get_revisions_from_metadata(meta.metadata)
 
 
     def list(self) -> List[MatrixHeader]:
@@ -91,7 +94,6 @@ history_tag = "revision_history"
 def add_revision_to_metadata(revision:Revision,metadata:dict,dict_key:str=history_tag):
     if metadata.get(dict_key) is None:
         metadata[dict_key] = []
-
     metadata[dict_key].append(dataclasses.asdict(revision))
 
 def _revision_from_dict(dict:dict)->Revision:
@@ -103,7 +105,11 @@ def _revision_from_dict(dict:dict)->Revision:
 
 def get_revisions_from_metadata(metadata:dict,dict_key:str=history_tag)->List[Revision]:
     revision_list = metadata[dict_key]
-    return [_revision_from_dict(i) for i in revision_list]
+    logging.info("retrieved revision list from  metadata: {}".format(revision_list))
+    if revision_list is not  None:
+        return [_revision_from_dict(i) for i in revision_list]
+    else:
+        return []
 
 
 

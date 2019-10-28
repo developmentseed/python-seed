@@ -3,18 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+
+    <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.min.noStyle.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-grid.css">
+    <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-theme-balham.css">
+
+
+    <style>
+
+        body {
+            font-family: "Arial Black";
+            color: #555555;
+            padding: 4%;
+            background: lightgrey;
+        }
+
+
+    </style>
+
+
 </head>
 <body>
-   <H2>Matrix {{matrix.matrix_header.name}}</H2>
-    <table>
-        <tr><td>Revision</td><td>{{matrix.matrix_header.revision_id}}</td></tr></tr>
-        <tr><td>Path</td><td>{{matrix.matrix_header.path}}</td></tr></tr>
-    </table>
-   <p></p>
-
-   {{matrix.content.to_html()|safe}}
 
 
+<div style="display: flex ; flex-direction: row">
+
+
+    <div style="flex-grow: 0.1">
+        <div style="flex-direction: column">
+            <H3>Revision History</H3>
+            <table class="table  table-striped">
+                <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>who</th>
+                    <th>what</th>
+                    <th>when</th>
+                </tr>
+
+                </thead>
+                <tbody>
+                {% for r in revision_list %}
+                <tr>
+
+                    <td>{{r.id}}</td>
+                    <td>{{r.revision_info.who}}</td>
+                    <td>{{r.revision_info.what}}</td>
+                    <td>{{r.revision_info.when}}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+
+
+            </table>
+        </div>
+    </div>
+
+
+    <div id="myGrid" style="width: 1600px; height: 600px" class="ag-theme-balham"></div>
+
+
+</div>
+
+
+<script type="text/javascript" charset="utf-8">
+    // python -> javascript  hacks
+    var columnNames = {{column_headers | tojson}}
+    var rowData = {{row_data | tojson}}
+
+</script>
+
+
+<script type="text/javascript" charset="utf-8">
+    // specify the columns
+    var conlumnDefs = []
+
+    columnNames.forEach(function (thisName) {
+        conlumnDefs.push({headerName: thisName, field: thisName})
+    })
+
+
+    // let the grid know which columns and what data to use
+    var gridOptions = {
+        columnDefs: conlumnDefs,
+        rowData: rowData
+    };
+
+    // lookup the container we want the Grid to use
+    var eGridDiv = document.querySelector('#myGrid');
+
+    // create the grid passing in the div to use together with the columns & data we want to use
+    new agGrid.Grid(eGridDiv, gridOptions);
+
+</script>
 
 
 </body>

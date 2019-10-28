@@ -10,6 +10,8 @@ import pandas as pd
 import datetime
 import random
 import sys
+import isharp.datahub.core
+from isharp.datahub.arctic_broker.broker_impl.arctic_storage_method import import_pandas
 
 logging.basicConfig()
 logger = logging.getLogger()
@@ -129,8 +131,10 @@ time_slot_interval = "15min"
 
 
 lib_name = 'YahooFinance'
+
 arctic_connection.initialize_library(lib_name)
-arctic_connection[lib_name].write("SPOT.FTSE.0500", series.to_df())
+import_pandas(arctic_connection[lib_name],series.to_df(),"SPOT.FTSE.0500",isharp.datahub.core.RevisionInfo(who="inital committer", what="initial commit", when = datetime.datetime.now()))
+
 
 lib_name = 'InvestCo'
 arctic_connection.initialize_library(lib_name)

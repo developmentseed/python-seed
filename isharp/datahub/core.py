@@ -251,7 +251,8 @@ class CombiBroker(DataBroker):
 
     def history(self ,url:str ) -> List:
         logger.info("combi broker history called with {}",url)
-        return self._delegate(url).history(url)
+        parsed_url = MatrixUrl(url)
+        return self._delegate(parsed_url.scheme()).history(url)
 
     def view(self, url, version_id=None) -> Matrix:
         logger.info("combi broker View called with {}".format(url))
@@ -268,7 +269,7 @@ class CombiBroker(DataBroker):
         if (scheme in self.registry):
             return self.registry[scheme]
         else:
-            raise DataBroker.ProtocolException("invalid protocol")
+            raise DataBroker.ProtocolException("invalid protocol: {}".format(scheme))
 
 
     def commit(self, matrix: Matrix, revisionInfo: RevisionInfo) -> Revision:

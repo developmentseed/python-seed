@@ -2,6 +2,7 @@
 from isharp.datahub.broker_client.remote_proxy import BrokerConnectionPool
 from  isharp.datahub.broker_client.client_utils import mtx_headers_as_dataframe as to_df
 import logging
+import json
 logging.basicConfig()
 logger = logging.getLogger()
 
@@ -20,7 +21,7 @@ logger.info("hello from logging")
 
 aws_rpc_host = "52.90.27.143"
 local_host = "localhost"
-rpc_host = aws_rpc_host
+rpc_host = local_host
 with BrokerConnectionPool() as broker:
     # broker.releaseAll()
     # mtx = broker.checkout("file://datahub:5672/file_name_1.csv?format=CSV")
@@ -38,15 +39,30 @@ with BrokerConnectionPool() as broker:
     print (mtx.matrix_header.path)
 
     mtx = broker.view('arctic://{}:5672/InvestCo/CLOSING/SP/EOD'.format(rpc_host))
-    print(mtx.matrix_header.path)
-    print (mtx.matrix_header.name)
 
 
 
-    # mtx = broker.view('file://{}:5672/subdir_2/subdir_2/file_name_1.csv'.format(rpc_host))
-    # print(broker.peek('arctic://{}:5672/InvestCo/CLOSING/SP/EOD'.format(rpc_host)))
-    #
-    # print(broker.peek('arctic://{}:5672/InvestCo/CLOSING/SPX/EOD'.format(rpc_host)))
+    row_data = []
+    dict_array = mtx.content.to_dict(orient='records')
+    for idx, row in enumerate(dict_array):
+        row["date"]=mtx.content.index[idx].strftime("%d %b %Y")
+        row_data.append(row)
+
+    column_headers = list(mtx.content)
+    column_headers.append("date")
+
+
+
+
+
+    print ("finidhse")
+
+
+
+
+
+
+
 
 
 

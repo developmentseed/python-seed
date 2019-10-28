@@ -1,6 +1,7 @@
-from isharp.datahub.core import StorageMethod, MatrixHeader, Matrix,MemStyles,AcquireContentReturnValue
+from isharp.datahub.core import StorageMethod, MatrixHeader, Revision,MemStyles,AcquireContentReturnValue
 import pandas as pd
 import os
+from typing import List
 import logging
 
 logger = logging.getLogger(__name__)
@@ -70,3 +71,6 @@ class FileStorageMethod(StorageMethod):
                 ret_val.append(header)
         return ret_val
         # def __init__(self, name, revision_id, storage_method, url, memory_style):
+
+    def history(self,matrix_url)->List[Revision]:
+        return []

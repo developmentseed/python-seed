@@ -1,7 +1,8 @@
 from isharp.datahub.broker_client.remote_proxy import BrokerConnectionPool
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 import os
 import socket
+import json
 hostname=socket.gethostname()
 from flask import request
 app = Flask(__name__)
@@ -25,10 +26,21 @@ def view(path):
     databroker = BrokerConnectionPool()
     protocol = request.args.get('protocol')
     url = "{}://{}/{}".format(protocol,hub_host,path)
+    mtx = databroker.view(url)
 
-    m = databroker.view(url)
-    return render_template('matrix.html',matrix=m)
+    row_data = []
+    dict_array = mtx.content.to_dict(orient='records')
+    for idx, row in enumerate(dict_array):
+        row["date"]=mtx.content.index[idx]
+        row_data.append(row)
+
+    column_headers = list(mtx.content)
+    column_headers.insert(0,"date")
 
 
 
+    return render_template('matrix.html',
+                           column_headers=column_headers,
+                           row_data = row_data,
+                           revision_list = databroker.history(url))
 
