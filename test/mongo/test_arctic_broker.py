@@ -8,16 +8,9 @@ from arctic import Arctic
 import pandas as pd
 import numpy as np
 import datetime
-from isharp.datahub.core import RevisionInfo,Revision
-
-
-
-
+from isharp.datahub.core import RevisionInfo
 
 class TestArcticBroker(unittest.TestCase):
-
-
-
 
     def setUp(self):
         self.robot_user = "robot"
@@ -31,6 +24,11 @@ class TestArcticBroker(unittest.TestCase):
 
         import_pandas(lib,simple_pd,"symbol",RevisionInfo(who=self.robot_user,what=self.import_comment, when = datetime.datetime.now()))
         import_pandas(lib,simple_pd,"ES.SETL.EOD",RevisionInfo(who=self.robot_user,what="import something else", when = datetime.datetime.now()))
+
+    def tearDown(self):
+        self.arctic.delete_library(self.library_name)
+        lu.logger.info("deleted test library {}".format(self.library_name))
+
 
     def test_checkout_and_checkin_arctic(self):
         url = "arctic:///{}/symbol".format(self.library_name)
@@ -72,7 +70,7 @@ class TestArcticBroker(unittest.TestCase):
         broker = ArcticBroker(self.arctic)
         result = broker.list()
         self.assertEquals(2, len(result))
-        self.assertEqual("{}/ES.SETL.EOD".format(self.library_name),result[0].path)
+        self.assertEqual("{}/ES/SETL/EOD".format(self.library_name),result[0].path)
 
 
     def test_peek_with_existing_file(self):

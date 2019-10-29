@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+    <link rel="stylesheet" href="style.css"/>
+    <title>{% block title %}{% endblock %} - My Webpage</title>
+    {% endblock %}
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+
+    <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.min.noStyle.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-grid.css">
+    <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-theme-balham.css">
+
+
+    <style>
+
+        body {
+            font-family: "Arial Black";
+            color: #555555;
+            padding: 4%;
+            background: lightgrey;
+
+        }
+
+        .logo_ish {
+            background: #555555;
+            color: white;
+            font-size: 20em;
+            border-top-left-radius: 12px;
+            border-bottom-left-radius: 12px;
+            /*border-top-right-radius: 12px;*/
+            border-top-style: solid;
+            border-left-style: solid;
+            border-right-style: solid;
+            border-bottom-style: solid;
+            border-color: #555555;
+            height: 100%;
+
+        }
+
+        .legend_ish {
+            background: black;
+            color: white;
+            font-size: medium;
+            padding: 5px;
+
+        }
+
+        .fancy_menu {
+            border-style: solid;
+            border-top-style: none;
+            border-color: #555555;
+            border-radius: 12px;
+            border-top-left-radius: unset;
+            border-top-right-radius: unset;
+            border-bottom-right-radius: unset;
+            text-align: right;
+        }
+
+        .fancy_menu a {
+            font-size: 3em;
+            color: black;
+            padding-right: 5px;
+
+        }
+
+        .top_level_layout {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .sidebar_body {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            margin: 2px
+        }
+
+        /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
+        .row.content {
+            height: 1500px
+        }
+
+        .main_body {
+            display: flex;
+            flex-grow: 1.9;
+            flex-direction: row;
+            margin: 2px;
+            padding: 1px;
+
+        }
+
+        .body_bumpf {
+            background: white;
+            flex-grow: 5.9;
+            border-color: white;
+            border-style: solid;
+            border-radius: 12px;
+            border-top-right-radius: 12px;
+            border-bottom-right-radius: 12px;
+            border-top-left-radius: unset;
+            border-bottom-left-radius: unset;
+
+
+        }
+
+    </style>
+
+
+</head>
+
+<body>
+
+
+<div class="top_level_layout">
+    <span class="sidebar_body">
+
+        <span class="logo_ish">
+                    <span>i#</span>
+        </span>
+
+
+    </span>
+
+    <div class="main_body">
+        <div class="body_bumpf">
+            <div id="content">{% block center_content %}{% endblock %}</div>
+        </div>
+    </div>
+
+</div>
+</body>
+
+
+</html>

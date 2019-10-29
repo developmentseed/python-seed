@@ -78,12 +78,13 @@ class ArcticStorageMethod(StorageMethod):
                 versions = library.list_versions(this_symbol)
                 filtered = [version for version in versions if not version['deleted']]
                 max_version = max(map(lambda v: v['version'], filtered))
-                ret_val.append(MatrixHeader(name=this_symbol,
+                symbol_with_slashes = this_symbol.replace('.','/')
+                ret_val.append(MatrixHeader(name=symbol_with_slashes,
                                             description="don't know yet",
                                             storage_method = self.name,
                                             memory_style = MemStyles.DATA_FRAME,
                                             revision_id = str(max_version),
-                                            path="{}/{}".format(this_lib_name,this_symbol)))
+                                            path="{}/{}".format(this_lib_name,symbol_with_slashes)))
 
         return ret_val
 

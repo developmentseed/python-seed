@@ -16,8 +16,6 @@ def listing():
     with BrokerConnectionPool() as broker:
         for thisItem in broker.list(hub_host):
             listings.append(thisItem)
-
-
     return render_template('index.html',hostname=hostname, my_list=listings,hub_host=hub_host)
 
 
