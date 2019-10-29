@@ -1,40 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
 
-    <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.min.noStyle.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-grid.css">
-    <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-theme-balham.css">
 
 
-    <style>
-
-        body {
-            font-family: "Arial Black";
-            color: #555555;
-            padding: 4%;
-            background: lightgrey;
-        }
+</body>
+</html>
 
 
-    </style>
+{% extends "isharp_base.html" %}
+{% block title %}Datahub Matrix Details{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
 
+{% block side_menu %}
 
-</head>
-<body>
-
-
-<div style="display: flex ; flex-direction: row; height: 100vh">
-
-    <div style="flex-grow:3">
-        <div style="flex-direction: column">
             <H3>Revision History</H3>
             <table class="table  table-striped">
                 <thead class="thead-dark">
@@ -60,8 +39,8 @@
 
 
             </table>
-        </div>
-    </div>
+{% endblock %}
+{% block center_content %}
 
 
     <div id="myGrid" class="ag-theme-balham" style=" height: 100vh; flex-grow:7"></div>
@@ -102,6 +81,10 @@
 
 </script>
 
+{% endblock %}
 
-</body>
-</html>
+
+
+
+
+
