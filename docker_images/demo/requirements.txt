@@ -1,6 +1,6 @@
-arctic
 numpy
 pandas
 dataclasses
+arctic
 nameko
 isharp
