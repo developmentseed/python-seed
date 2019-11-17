@@ -46,18 +46,11 @@ class ArcticStorageMethod(StorageMethod):
         return AcquireContentReturnValue(content=versioned.data,header=header)
 
 
+
+
     def storeContent(self, path, params, content,revision_info)->Revision:
         library, ticker = self._lib_ticker(path)
-        lib = self.store[library]
-        original_meta_d = lib.read_metadata(ticker).metadata
-
-        old_revisions = get_revisions_from_metadata(original_meta_d)
-        last_revision = old_revisions[-1]
-        next_revision_id = str(int(last_revision.id)+1)
-        new_revision = Revision(next_revision_id,revision_info)
-        add_revision_to_metadata(new_revision,original_meta_d)
-        v =lib.write(ticker,content,original_meta_d)
-        return new_revision
+        _store_content(self.store[library],ticker,content,revision_info)
 
     def history(self,matrix_url)->List[Revision]:
         library, ticker = self._lib_ticker(matrix_url.url_components.path)
@@ -92,6 +85,7 @@ class ArcticStorageMethod(StorageMethod):
 
 
 history_tag = "revision_history"
+
 def add_revision_to_metadata(revision:Revision,metadata:dict,dict_key:str=history_tag):
     if metadata.get(dict_key) is None:
         metadata[dict_key] = []
@@ -119,4 +113,15 @@ def import_pandas(lib, pd, symbol_name,revision_info):
     add_revision_to_metadata(Revision('1', revision_info), meta)
     lib.write(symbol_name, pd, meta)
 
+
+def _store_content(lib,ticker,content,revision_info)->Revision:
+        original_meta_d = lib.read_metadata(ticker).metadata
+
+        old_revisions = get_revisions_from_metadata(original_meta_d)
+        last_revision = old_revisions[-1]
+        next_revision_id = str(int(last_revision.id)+1)
+        new_revision = Revision(next_revision_id,revision_info)
+        add_revision_to_metadata(new_revision,original_meta_d)
+        ret = lib.write(ticker,content,original_meta_d)
+        return new_revision
 

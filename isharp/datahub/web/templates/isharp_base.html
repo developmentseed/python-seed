@@ -17,95 +17,89 @@
 
 
     <style>
+        td {
+            font-family : "Arial";
+            font-size: small;
+        }
 
         body {
             font-family: "Arial Black";
             color: #555555;
-            padding: 4%;
+            padding-left: 2%;
+            padding-right:2%;
+            padding-top:5%;
+            padding-bottom:5%;
             background: lightgrey;
-
         }
 
-        .logo_ish {
-            background: #555555;
-            color: white;
-            font-size: 20em;
+        .side_handle{
             border-top-left-radius: 12px;
             border-bottom-left-radius: 12px;
-            /*border-top-right-radius: 12px;*/
+            border-top-right-radius: unset;
             border-top-style: solid;
             border-left-style: solid;
             border-right-style: solid;
             border-bottom-style: solid;
             border-color: #555555;
-            height: 100%;
-
+            display: flex;
+            flex-direction: column;
         }
 
-        .legend_ish {
-            background: black;
+        th {
+            background: #555555;
             color: white;
-            font-size: medium;
-            padding: 5px;
-
+            font-family: "Arial Black";
+            font-size: small;
         }
 
-        .fancy_menu {
-            border-style: solid;
-            border-top-style: none;
-            border-color: #555555;
-            border-radius: 12px;
-            border-top-left-radius: unset;
-            border-top-right-radius: unset;
-            border-bottom-right-radius: unset;
-            text-align: right;
+        .logo_ish {
+            color: white;
+            font-size: 6em;
         }
 
-        .fancy_menu a {
-            font-size: 3em;
-            color: black;
-            padding-right: 5px;
-
-        }
 
         .top_level_layout {
             display: flex;
             flex-direction: row;
-        }
-
-        .sidebar_body {
-            display: flex;
-            flex-direction: column;
             align-items: stretch;
-            margin: 2px
         }
 
-        /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
-        .row.content {
-            height: 1500px
+
+        .sidebar_content {
+            background: lightgrey;
+            border-top-style: solid;
+            border-bottom-style: solid;
         }
+
 
         .main_body {
+            font-family: "Arial";
+            font-size: medium;
             display: flex;
-            flex-grow: 1.9;
+            flex-grow: 1.5;
             flex-direction: row;
-            margin: 2px;
-            padding: 1px;
+        }
 
+        .functional_heading {
+              writing-mode: vertical-rl;
+              text-orientation: upright;
+              font-size: 6em;
+              display: flex;
+        }
+        .handle_filler {
+            flex-grow: 10000;
         }
 
         .body_bumpf {
             background: white;
             flex-grow: 5.9;
-            border-color: white;
+            border-color: #555555;
             border-style: solid;
             border-radius: 12px;
             border-top-right-radius: 12px;
             border-bottom-right-radius: 12px;
             border-top-left-radius: unset;
             border-bottom-left-radius: unset;
-
-
         }
 
     </style>
@@ -117,16 +111,17 @@
 
 
 <div class="top_level_layout">
-    <span class="sidebar_body">
+    <div class="side_handle">
+        <div class="logo_ish">i#</div>
+        <div class="functional_heading">DataHub</div>
+        <div class="handle_filler">fill</div>
+    </div>
 
-        <span class="logo_ish">
-                    <span>i#</span>
 
-        </span>
 
-      <span> {% block side_menu %}  {% endblock %}</span>
+    <span class="sidebar_content"> {% block side_menu %}  {% endblock %}</span>
 
-    </span>
+
 
     <div class="main_body">
         <div class="body_bumpf">

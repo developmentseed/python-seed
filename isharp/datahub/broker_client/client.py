@@ -38,18 +38,25 @@ with BrokerConnectionPool() as broker:
     mtx = broker.checkout('arctic://{}:5672/YahooFinance/SPOT/FTSE/0500'.format(rpc_host))
     print (mtx.matrix_header.path)
 
-    mtx = broker.view('arctic://{}:5672/InvestCo/CLOSING/SP/EOD'.format(rpc_host))
+    broker.releaseAll()
+
+    hist = broker.history('arctic://{}:5672/YahooFinance/SPOT/FTSE/0500'.format(rpc_host))
+
+    hist = broker.history('arctic://{}:5672/isharp/AAPL'.format(rpc_host))
+    # mtx = broker.view('arctic://{}:5672/InvestCo/CLOSING/SP/EOD'.format(rpc_host))
 
 
 
-    row_data = []
-    dict_array = mtx.content.to_dict(orient='records')
-    for idx, row in enumerate(dict_array):
-        row["date"]=mtx.content.index[idx].strftime("%d %b %Y")
-        row_data.append(row)
 
-    column_headers = list(mtx.content)
-    column_headers.append("date")
+
+    # row_data = []
+    # dict_array = mtx.content.to_dict(orient='records')
+    # for idx, row in enumerate(dict_array):
+    #     row["date"]=mtx.content.index[idx].strftime("%d %b %Y")
+    #     row_data.append(row)
+    #
+    # column_headers = list(mtx.content)
+    # column_headers.append("date")
 
 
 

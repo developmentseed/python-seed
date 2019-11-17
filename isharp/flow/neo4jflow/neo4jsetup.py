@@ -127,7 +127,7 @@ with open(cypher_path, 'r') as cypher_file:
 
 yaml_path =  os.path.join(path, "neo4jsetup.cypher")
 
-setup = DbSetup("bolt://ec2-34-205-159-121.compute-1.amazonaws.com:7687", user="", password="")
+setup = DbSetup("bolt://isharpdemo:7687", user="", password="")
 
 setup.clean()
 setup.setUp()

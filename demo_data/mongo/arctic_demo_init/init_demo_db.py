@@ -10,8 +10,9 @@ import pandas as pd
 import datetime
 import random
 import sys
-import isharp.datahub.core
+import isharp.datahub.core as dhubcore
 from isharp.datahub.arctic_broker.broker_impl.arctic_storage_method import import_pandas
+from isharp.datahub.arctic_broker.broker_impl import arctic_storage_method
 
 logging.basicConfig()
 logger = logging.getLogger()
@@ -74,17 +75,28 @@ def env_substitution(dict_in):
         dict_in[this_key] = expandvars.expandvars(this_value)
 
 
-def load_data_file(file_name, ticker_name,arctic_library):
-    logger.info("loading {} from file {}".format(ticker_name, file_name))
-    df = pd.read_csv(file_name,converters={0:toDate}, index_col=0)
+def load_arctic_dataframe_with_versions(df, ticker_name, arctic_library):
     df_len,df_width = df.shape
     base_df = df.iloc[:df_len-20]
     delta_df = df.iloc[df_len-20:]
-    arctic_library.write(ticker_name,base_df)
+
+    last_base_time = df.index[-1]
+    commit_message = "Initial import for dataframe {}: Historical backfill up to {}".format(ticker_name,last_base_time)
+    rev_info = dhubcore.RevisionInfo(who="demo_sys", what=commit_message, when=last_base_time)
+    arctic_storage_method.import_pandas(arctic_library,base_df,ticker_name,rev_info)
     for index,row in delta_df.iterrows():
         stored_df = arctic_library.read(ticker_name,None).data
+        insert_date = delta_df.index[-1]
         new_df = stored_df.append(row)
-        arctic_library.write(ticker_name, new_df)
+        commit_message = "Auto-feeed inserted data for {} []".format(ticker_name,insert_date)
+        rev_info = dhubcore.RevisionInfo(who="auto-feed", when=insert_date,what=commit_message)
+        arctic_storage_method._store_content(arctic_library,ticker_name,new_df,rev_info)
+
+
+def load_data_file(file_name, ticker_name,arctic_library):
+    logger.info("loading {} from file {}".format(ticker_name, file_name))
+    df = pd.read_csv(file_name,converters={0:toDate}, index_col=0)
+    load_arctic_dataframe_with_versions(df,ticker_name,arctic_library)
 
 
 conf = yaml.load(open(sys.argv[1],'r'))
@@ -133,7 +145,7 @@ time_slot_interval = "15min"
 lib_name = 'YahooFinance'
 
 arctic_connection.initialize_library(lib_name)
-import_pandas(arctic_connection[lib_name],series.to_df(),"SPOT.FTSE.0500",isharp.datahub.core.RevisionInfo(who="inital committer", what="initial commit", when = datetime.datetime.now()))
+import_pandas(arctic_connection[lib_name],series.to_df(),"SPOT.FTSE.0500",dhubcore.RevisionInfo(who="inital committer", what="initial commit", when = datetime.datetime.now()))
 
 
 lib_name = 'InvestCo'
