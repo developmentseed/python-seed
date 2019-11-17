@@ -1,6 +1,6 @@
-arctic==1.74.0
-numpy==1.16.1
-pandas==0.24.2
-dataclasses==0.6
+arctic
+numpy
+pandas
+dataclasses
 nameko
 isharp
