@@ -12,12 +12,12 @@ hub_host =  os.getenv('isharp_hub_host', 'localhost:5672')
 
 @app.route('/')
 def listing():
-    brokers = [["broker1","desxr 1"],["broker2","descr 2"]]
+    brokers = [["Demo Broker","Prod parallel demo broker"],["UAT","UAT broker"],["DEV","Dev broker"]]
     listings = []
     with BrokerConnectionPool() as broker:
         for thisItem in broker.list(hub_host):
             listings.append(thisItem)
-    return render_template('index.html',hostname=hostname, my_list=listings,hub_host=hub_host, brokers=brokers)
+    return render_template('index.html',hostname="prod.broker.com", my_list=listings,hub_host="Demo  Data Broker", brokers=brokers)
 
 
 @app.route('/datahub/view/<path:path>', methods=['GET'])

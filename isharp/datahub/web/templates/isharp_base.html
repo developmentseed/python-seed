@@ -17,90 +17,63 @@
 
 
     <style>
-        td {
-            font-family : "Arial";
-            font-size: small;
-        }
 
-        body {
+   body {
             font-family: "Arial Black";
             color: #555555;
-            padding-left: 2%;
-            padding-right:2%;
-            padding-top:5%;
-            padding-bottom:5%;
             background: lightgrey;
         }
 
-        .side_handle{
-            border-top-left-radius: 12px;
-            border-bottom-left-radius: 12px;
-            border-top-right-radius: unset;
-            border-top-style: solid;
-            border-left-style: solid;
-            border-right-style: solid;
-            border-bottom-style: solid;
-            border-color: #555555;
+        .top_level_layout {
+            height: 100%;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
         }
 
-        th {
-            background: #555555;
-            color: white;
-            font-family: "Arial Black";
-            font-size: small;
+        .side_handle {
+            background-color: darkgray;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            border-right-style: solid;
+            border-color: black;
+        }
+
+        .functional_heading {
+            margin-top: 3vh;
+            writing-mode: vertical-rl;
+            text-orientation: sideways;
+            font-size: 6em;
+            flex-grow: 0;
         }
 
         .logo_ish {
             color: white;
             font-size: 6em;
+            flex-grow: 0;
+            border-bottom-style: solid;
+            border-color: black;
         }
-
-
-        .top_level_layout {
-            display: flex;
-            flex-direction: row;
-            align-items: stretch;
-        }
-
 
         .sidebar_content {
-            background: lightgrey;
-            border-top-style: solid;
-            border-bottom-style: solid;
+            width: 50vw;
+            height: 100vw;
+            border-color: black;
+            border-right-style: solid ;
+            overflow: auto;
+        }
+        .main_content {
+            background-color: white;
+            width:100vw;
+        }
+
+        td {
+            font-family : "Arial";
+            font-size: x-small;
         }
 
 
-        .main_body {
-            font-family: "Arial";
-            font-size: medium;
-            display: flex;
-            flex-grow: 1.5;
-            flex-direction: row;
-        }
-
-        .functional_heading {
-              writing-mode: vertical-rl;
-              text-orientation: upright;
-              font-size: 6em;
-              display: flex;
-        }
-        .handle_filler {
-            flex-grow: 10000;
-        }
-
-        .body_bumpf {
-            background: white;
-            flex-grow: 5.9;
-            border-color: #555555;
-            border-style: solid;
-            border-radius: 12px;
-            border-top-right-radius: 12px;
-            border-bottom-right-radius: 12px;
-            border-top-left-radius: unset;
-            border-bottom-left-radius: unset;
-        }
 
     </style>
 
@@ -108,28 +81,28 @@
 </head>
 
 <body>
-
-
 <div class="top_level_layout">
+
     <div class="side_handle">
         <div class="logo_ish">i#</div>
-        <div class="functional_heading">DataHub</div>
-        <div class="handle_filler">.</div>
+        <div class="functional_heading">Datahub</div>
+
     </div>
 
 
-
-    <span class="sidebar_content"> {% block side_menu %}  {% endblock %}</span>
-
+    <span class="sidebar_content">  {% block side_menu %}  {% endblock %}</span>
 
 
-    <div class="main_body">
-        <div class="body_bumpf">
-            <div id="content">{% block center_content %}{% endblock %}</div>
-        </div>
+    <div class="main_content">
+            <div id="content">
+                {% block center_content %}{% endblock %}
+            </div>
     </div>
 
 </div>
+
+
+
 </body>
 
 
