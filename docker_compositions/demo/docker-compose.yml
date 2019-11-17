@@ -19,7 +19,7 @@ services:
 
   datahub:
     container_name: isharp-datahub
-    image: jeremyward/datahub:2.58
+    image: jeremyward/datahub:2.59
     depends_on:
       - rabbit
       - mongo
