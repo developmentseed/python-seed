@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 logger.info("hello from logging")
 
-aws_rpc_host = "isharpdev"
+aws_rpc_host = "isharpdemo"
 local_host = "localhost"
 rpc_host = aws_rpc_host
 with BrokerConnectionPool() as broker:
