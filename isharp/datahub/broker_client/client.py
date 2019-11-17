@@ -19,9 +19,9 @@ logger = logging.getLogger(__name__)
 
 logger.info("hello from logging")
 
-aws_rpc_host = "52.90.27.143"
+aws_rpc_host = "isharpdev"
 local_host = "localhost"
-rpc_host = local_host
+rpc_host = aws_rpc_host
 with BrokerConnectionPool() as broker:
     # broker.releaseAll()
     # mtx = broker.checkout("file://datahub:5672/file_name_1.csv?format=CSV")
