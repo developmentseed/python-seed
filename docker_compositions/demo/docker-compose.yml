@@ -20,6 +20,9 @@ services:
   datahub:
     container_name: isharp-datahub
     image: datahub:demo
+    ports:
+      - "80:80"
+
     depends_on:
       - rabbit
       - mongo
