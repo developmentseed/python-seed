@@ -5,5 +5,6 @@ dataclasses
 nameko
 expandvars
 luigi
+flask
 isharp
 
