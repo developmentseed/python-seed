@@ -1,4 +1,4 @@
-version: "3"
+version: "2"
 services:
 
 
@@ -19,7 +19,7 @@ services:
 
   datahub:
     container_name: isharp-datahub
-    image: jeremyward/datahub:2.62
+    image: datahub:demo
     depends_on:
       - rabbit
       - mongo
