@@ -22,11 +22,11 @@ services:
     image: datahub:demo
     ports:
       - "80:80"
-
     depends_on:
       - rabbit
       - mongo
-
+    volumes:
+      -  $HOME/isharpdemo/isharp-core/isharp/datahub/web/templates:/templates
     links:
       - "rabbit:isharp-rabbitmq"
     environment:
