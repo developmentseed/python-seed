@@ -4,7 +4,7 @@ from setuptools import find_packages
 setup(
     name='isharp',
     packages=find_packages(),
-    version='2.64',
+    version='2.65',
     description='Algorithmic workbench',
     author='jeremycward',
     author_email='jeremycward@yahoo.co.uk',
