@@ -35,6 +35,7 @@ services:
       RABBIT_HOST: "rabbit"
       RABBIT_PORT: "5672"
       RABBIT_MANAGEMENT_PORT: "15672"
+      isharp_hub_host: rabbit:5672
 
   graph:
     container_name: isharp-graph
