@@ -11,9 +11,7 @@ env
 echo =======================================================================================
 
 
-datahub run --config ./config.yaml isharp.datahub.broker_service.server:DataBrokerService &
+datahub run --config ./config.yaml isharp.datahub.broker_service.server:DataBrokerService
 
-web &
 
-tail -f dev/null
 
