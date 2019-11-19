@@ -7,7 +7,7 @@ WORKDIR .
 # Copy the current directory contents into the container at /app
 COPY . .
 
-COPY ../isharp/datahub/web/templates /opt/templates
+COPY ../../isharp/datahub/web/templates /opt/templates
 
 
 # Install any needed packages specified in requirements.txt
