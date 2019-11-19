@@ -22,16 +22,3 @@ env:
         - secure: AIL0+V3RVx2ag+J1g1mD7KR3BEskWHAbzaQUL754Q77EgrutIgkHNaJ08Mwza63qzQ7hWsp6hPSP8bmdxzTReUaGPW8U982K3NRYfpteVKX3nLkypLimUdsf3QuvzzTftZotUiQ6FHBtMrYQMTTgHZmk/6NDOI9+eHmaRHGYljgPQc6fLh7jHhbn7k08K65q8CAF6E2dnPO8g+q8Z0g0FB5I+c/OjXUhEW1MGjkCoxNiFuY6L3ewpPyn3A3b3eCkavXlkwqTXjtd3f83dSen8is78+0WBiaKSWbZgKhGnsf+YkCVMjkAxVwRe5ODdq1/Wa8lD24rwhwD0h0Q0MVfcP+qECMQQDGn5njpWuO3ISph0z2ejf5xVOO6iQmf4M6LIvKx7BrWUtItqQIMQLgnE0tl5IRoav/pmVUKqvGStqn6adSOcdX4kwR8IU3JHmOleEQcN05+yzfjyj2jK08fnYlzOPopflXjq7v4DBORrjRn7KbcTyYmkBr172f7NOj4foCO5cnG9p56T7UiVF/AjXSlEm6X0JC63ZT0E7BWTG1Wso0PTvwvR6g4WSwLnQfZAojnZIQ5x+BNx7ROL8MaCD5cWzbedm8QnO3Apozj2IIq4ys2Q9k5YnVIm9hk5evacdlFRyP3MJzOHNMoBpbF5YY9iEzn7tY9Mz/lmKQ/Obc=
         - COMMIT=${TRAVIS_COMMIT::8}
 
-after_deploy:
-  - cd docker_images/datahub
-  - pwd
-  - echo $DOCKER_USER
-  - docker login -u $DOCKER_USER -p $DOCKER_PASS
-  - export REPO=jeremyward/datahub
-  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
-  - docker build -f Dockerfile -t $REPO:$COMMIT .
-  - docker tag $REPO:$COMMIT $REPO:$TAG
-  - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
-  - docker push $REPO
-  - cd ..
-  - cd ..
