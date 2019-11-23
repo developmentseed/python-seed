@@ -12,6 +12,7 @@ echo ===========================================================================
 
 
 datahub run --config ./config.yaml isharp.datahub.broker_service.server:DataBrokerService &
+jupyter notebook &
 web
 
 

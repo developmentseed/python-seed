@@ -6,5 +6,6 @@ nameko
 expandvars
 luigi
 flask
+jupyter
 isharp
 
