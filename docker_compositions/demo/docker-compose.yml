@@ -9,7 +9,6 @@ services:
     ports:
       - "27017:27017"
 
-
   rabbit:
     container_name: isharp-rabbitmq
     image: rabbitmq:3.7-management
@@ -36,6 +35,7 @@ services:
       RABBIT_PORT: "5672"
       RABBIT_MANAGEMENT_PORT: "15672"
       isharp_hub_host: rabbit:5672
+      isharp_web_templates: /templates
 
   graph:
     container_name: isharp-graph
