@@ -7,9 +7,9 @@ import json
 hostname=socket.gethostname()
 from flask import request
 
-templates_dir =  os.getenv('isharp_web_templates', None)
+templates_dir =  os.getenv('isharp_web_templates', 'templates')
 print ("templates_dir: {}".format(templates_dir))
-app = Flask(__name__,root_path=os.getenv('isharp_web_root',templates_dir))
+app = Flask(__name__,template_folder=templates_dir)
 
 hub_host =  os.getenv('isharp_hub_host', 'localhost:5672')
 
