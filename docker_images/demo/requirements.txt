@@ -4,3 +4,4 @@ dataclasses
 arctic
 nameko
 isharp
+matplotlib

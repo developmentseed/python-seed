@@ -8,4 +8,4 @@ luigi
 flask
 jupyter
 isharp
-
+matplotlib
