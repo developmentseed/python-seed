@@ -21,7 +21,7 @@ logger.info("hello from logging")
 
 aws_rpc_host = 'isharpdev'
 local_host = "localhost"
-rpc_host = 'isharpdemo'
+rpc_host = local_host
 with BrokerConnectionPool() as broker:
     # broker.releaseAll()
     # mtx = broker.checkout("file://datahub:5672/file_name_1.csv?format=CSV")

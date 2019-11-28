@@ -27,7 +27,7 @@ services:
       - mongo
     volumes:
       -  $HOME/isharpdemo/isharp-core/isharp/datahub/web/templates:/templates
-      -  $HOME/isharpdemo/isharp-core/demo/jupyter
+      -  $HOME/isharpdemo/isharp-core/demo/jupyter:/jupyter
     links:
       - "rabbit:isharp-rabbitmq"
     environment:
