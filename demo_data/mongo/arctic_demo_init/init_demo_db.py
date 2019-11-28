@@ -77,8 +77,8 @@ def env_substitution(dict_in):
 
 def load_arctic_dataframe_with_versions(df, ticker_name, arctic_library):
     df_len,df_width = df.shape
-    base_df = df.iloc[:df_len-20]
-    delta_df = df.iloc[df_len-20:]
+    base_df = df.iloc[:df_len-5]
+    delta_df = df.iloc[df_len-5:]
 
     last_base_time = df.index[-1]
     commit_message = "Initial import for dataframe {}: Historical backfill up to {}".format(ticker_name,last_base_time)
