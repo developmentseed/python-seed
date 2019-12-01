@@ -4,6 +4,7 @@ pandas
 dataclasses
 nameko
 expandvars
+python-daemon
 luigi
 flask
 jupyter
