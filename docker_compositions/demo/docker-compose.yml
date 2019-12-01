@@ -38,6 +38,9 @@ services:
       RABBIT_MANAGEMENT_PORT: "15672"
       isharp_hub_host: rabbit:5672
       isharp_web_templates: /templates
+      mongo_host: mongo
+      isharp_home: /isharp-core
+
 
   graph:
     container_name: isharp-graph
