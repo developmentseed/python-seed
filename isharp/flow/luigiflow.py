@@ -1,5 +1,6 @@
 import luigi
 import time
+import os
 from multiprocessing import Process
 from isharp.flow.core import CalculationTask
 from isharp.flow.neo4jflow.py2neoflow import  calcTasks
@@ -83,10 +84,12 @@ def submit(task:CalculationTask):
     luigi.build([task])
 
 
+graph_host = os.getenv("graph_host", "localhost")
+datahub_host = os.getenv("datahub_host", "localhost")
 
 if __name__ == '__main__':
     broker = BrokerConnectionPool()
-    for calc_task in calcTasks("datahub","5672"):
+    for calc_task in calcTasks(datahub_host,"5672", graph_host ):
         task = buildTask(calc_task,broker)
         p= Process(target=submit, args=(task,))
         p.start()

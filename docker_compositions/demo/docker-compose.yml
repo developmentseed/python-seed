@@ -41,6 +41,7 @@ services:
       isharp_web_templates: /templates
       mongo_host: mongo
       isharp_home: /isharp-core
+      graph_host: graph
 
 
   graph:

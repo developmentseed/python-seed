@@ -1,14 +1,14 @@
 
 from py2neo import  Graph
 from isharp.flow.core import CalculationTask, DatahubRequirement
+import os
 
 
 
 
-url = "bolt://ec2-34-205-159-121.compute-1.amazonaws.com:7687"
+def calcTasks(data_hub_host_name, data_hub_port,  graph_host):
 
-
-def calcTasks(data_hub_host_name, data_hub_port):
+    url = "bolt://{}:7687".format(graph_host)
     ret_val = []
     graph = Graph(url)
     strategies = graph.nodes.match('Strategy')
