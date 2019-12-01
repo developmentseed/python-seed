@@ -1,0 +1,5 @@
+=========
+show all exchanges
+MATCH (n1)-[r:TRADES_ON]->(n2) RETURN r, n1, n2 LIMIT 25
+
+

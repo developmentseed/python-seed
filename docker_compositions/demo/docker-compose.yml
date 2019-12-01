@@ -22,6 +22,7 @@ services:
     ports:
       - "80:80"
       - "8888:8888"
+      - "8082:8082"
     depends_on:
       - rabbit
       - mongo
