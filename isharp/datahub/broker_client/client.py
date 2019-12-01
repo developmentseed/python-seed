@@ -1,7 +1,9 @@
 
 from isharp.datahub.broker_client.remote_proxy import BrokerConnectionPool
 from  isharp.datahub.broker_client.client_utils import mtx_headers_as_dataframe as to_df
+import datetime
 import logging
+from isharp.datahub.core import RevisionInfo
 import json
 logging.basicConfig()
 logger = logging.getLogger()
@@ -19,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 logger.info("hello from logging")
 
-aws_rpc_host = 'isharpdev'
+aws_rpc_host = 'isharpdemo'
 local_host = "localhost"
 rpc_host = local_host
 with BrokerConnectionPool() as broker:
@@ -42,9 +44,20 @@ with BrokerConnectionPool() as broker:
 
     hist = broker.history('arctic://{}:5672/YahooFinance/SPOT/FTSE/0500'.format(rpc_host))
 
-    hist = broker.history('arctic://{}:5672/isharp/AAPL'.format(rpc_host))
+    #hist = broker.history('arctic://{}:5672/isharp/AAPL'.format(rpc_host))
     # mtx = broker.view('arctic://{}:5672/InvestCo/CLOSING/SP/EOD'.format(rpc_host))
 
+
+    appl_mtx = broker.checkout('arctic://{}:5672/isharp/AAPL'.format(rpc_host))
+    results_mtx = broker.checkout('arctic://{}:5672/evaluations_isharp/AAPL'.format(rpc_host))
+    results_mtx.replace_content(appl_mtx.content.drop(['Low','Close','Open','High','Adj Close'], axis=1))
+    revision_info = RevisionInfo(who="Jupyter eval", what="latest results on saturday morning", when=datetime.datetime.now())
+    broker.commit(results_mtx,revision_info)
+
+
+    broker.releaseAll()
+    hist = broker.history('arctic://{}:5672/evaluations_isharp/AAPL'.format(rpc_host))
+    print(hist)
 
 
 
@@ -60,9 +73,7 @@ with BrokerConnectionPool() as broker:
 
 
 
-
-
-    print ("finidhse")
+    print ("end")
 
 
 

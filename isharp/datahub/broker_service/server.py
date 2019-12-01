@@ -42,8 +42,8 @@ class DataBrokerService(DataBroker):
 
     @rpc
     def commit(self, matrix: Matrix, revisionInfo: RevisionInfo) -> Revision:
-        logger.debug("delegate received commit call")
-        return super().commit(matrix, revisionInfo)
+        logger.debug("delegate received commit call call")
+        self.delegate.commit(matrix,revisionInfo)
     @rpc
     def release(self, matrix) -> None:
         logger.debug("delegate received release call")

@@ -39,14 +39,6 @@ class Revision:
 
 
 
-
-
-
-
-
-
-
-
 class MatrixUrl:
     def __init__(self,url):
         self.url = url
@@ -132,6 +124,7 @@ class DataBroker(abc.ABC):
     @abc.abstractmethod
     def list(self)->List[MatrixHeader]:
         pass
+
 
 
     @abc.abstractmethod
@@ -243,6 +236,7 @@ class AbstractDataBroker(DataBroker):
 class CombiBroker(DataBroker):
     def __init__(self,registry):
         self.registry = registry
+
 
     def checkout(self, url, version_id=None) -> Matrix:
         logger.info("combi broker called with {}".format(url))

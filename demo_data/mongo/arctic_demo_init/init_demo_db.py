@@ -26,7 +26,8 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger = logging.getLogger(__name__)
 
-
+empty_results = pd.DataFrame(
+    columns=['Volume', 'L14', 'H14', '%K', '%D', 'Sell Entry', 'Sell Exit', 'Short', 'Buy Entry', 'Buy Exit', 'Long','Position', 'Market Returns', 'Strategy Returns'])
 
 @dataclasses.dataclass(frozen=True)
 class RandomMatrix(object):
@@ -75,28 +76,34 @@ def env_substitution(dict_in):
         dict_in[this_key] = expandvars.expandvars(this_value)
 
 
-def load_arctic_dataframe_with_versions(df, ticker_name, arctic_library):
+def load_arctic_dataframe_with_versions(df, ticker_name, arctic_library,evaluations_library):
     df_len,df_width = df.shape
     base_df = df.iloc[:df_len-5]
     delta_df = df.iloc[df_len-5:]
 
     last_base_time = df.index[-1]
     commit_message = "Initial import for dataframe {}: Historical backfill up to {}".format(ticker_name,last_base_time)
+    eval_commit_message = "Initial import for eval dataframe {}".format(ticker_name)
+    eval_rev_info = dhubcore.RevisionInfo(who="demo_sys", what=eval_commit_message, when=last_base_time)
     rev_info = dhubcore.RevisionInfo(who="demo_sys", what=commit_message, when=last_base_time)
     arctic_storage_method.import_pandas(arctic_library,base_df,ticker_name,rev_info)
+
+    arctic_storage_method.import_pandas(evaluations_library,empty_results,ticker_name,eval_rev_info)
+
     for index,row in delta_df.iterrows():
         stored_df = arctic_library.read(ticker_name,None).data
         insert_date = delta_df.index[-1]
         new_df = stored_df.append(row)
-        commit_message = "Auto-feeed inserted data for {} []".format(ticker_name,insert_date)
+        commit_message = "Auto-feeed inserted data for  [{}]".format(ticker_name,insert_date)
         rev_info = dhubcore.RevisionInfo(who="auto-feed", when=insert_date,what=commit_message)
         arctic_storage_method._store_content(arctic_library,ticker_name,new_df,rev_info)
 
 
-def load_data_file(file_name, ticker_name,arctic_library):
+def load_data_file(file_name, ticker_name,arctic_library,eval_library):
     logger.info("loading {} from file {}".format(ticker_name, file_name))
     df = pd.read_csv(file_name,converters={0:toDate}, index_col=0)
-    load_arctic_dataframe_with_versions(df,ticker_name,arctic_library)
+    load_arctic_dataframe_with_versions(df,ticker_name,arctic_library,eval_library)
+
 
 
 conf = yaml.load(open(sys.argv[1],'r'))
@@ -112,6 +119,7 @@ if expandvars.expandvars(conf['skip']):
 m_host= conf['mongo_db']['host']
 client = MongoClient(m_host)
 lib_name = conf['lib_name']
+evaluations_lib_name =  ("evaluations_{}".format(conf['lib_name']))
 
 if conf['mongo_db']['user']:
     mongo_user = conf['mongo_db']['user']
@@ -124,9 +132,11 @@ arctic_connection = Arctic(m_host)
 logger.info ("started Arctic on {}".format(m_host))
 
 arctic_connection.initialize_library(lib_name)
+arctic_connection.initialize_library(evaluations_lib_name)
+
 dat_files = conf['data_files']
 for key,value in dat_files.items():
-    load_data_file(value,key,arctic_connection[lib_name])
+    load_data_file(value,key,arctic_connection[lib_name],arctic_connection[evaluations_lib_name])
 
 
 
