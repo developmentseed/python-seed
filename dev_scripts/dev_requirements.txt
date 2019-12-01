@@ -3,6 +3,7 @@ numpy==1.14.3
 pandas==0.24.2
 dataclasses==0.6
 nameko
+python-daemon
 luigi
 neo4j
 py2neo
