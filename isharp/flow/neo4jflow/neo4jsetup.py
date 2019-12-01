@@ -126,8 +126,8 @@ with open(cypher_path, 'r') as cypher_file:
 
 
 yaml_path =  os.path.join(path, "neo4jsetup.cypher")
-
-setup = DbSetup("bolt://isharpdemo:7687", user="", password="")
+neo4j_host = os.environ("graph_host","graph")
+setup = DbSetup("bolt://{}:7687".format(neo4j_host), user="", password="")
 
 setup.clean()
 setup.setUp()
