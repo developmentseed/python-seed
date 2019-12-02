@@ -13,7 +13,7 @@ def calcTasks(data_hub_host_name, data_hub_port,  graph_host):
     graph = Graph(url)
     strategies = graph.nodes.match('Strategy')
     for strategy in strategies:
-        jobs = graph.match((strategy,), r_type='EVAL_JOB')
+        jobs = graph.match((strategy,), r_type='EVAL')
         for j in jobs:
             deps = []
             job_node = j.end_node
