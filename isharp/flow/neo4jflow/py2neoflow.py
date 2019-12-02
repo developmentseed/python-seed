@@ -9,8 +9,8 @@ import os
 def calcTasks(data_hub_host_name, data_hub_port,  graph_host):
 
     url = "bolt://{}:7687".format(graph_host)
-    print ('using graph host {}'.format(graph_host) )
-    print('using datahub host {}'.format(data_hub_port))
+    print ('................using graph host {}'.format(graph_host) )
+    print('.................    using datahub host {}'.format(data_hub_host_name))
     ret_val = []
     graph = Graph(url)
     strategies = graph.nodes.match('Strategy')
