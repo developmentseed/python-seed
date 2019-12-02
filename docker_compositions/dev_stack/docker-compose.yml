@@ -9,6 +9,7 @@ services:
       isharp_hub_host: rabbit:5672
       datahub_host: localhost
       isharp_home: /isharp-core
+      graph_host: graph
 
     image: isharp-python-dev
     volumes:
