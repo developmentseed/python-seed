@@ -1,1 +1,1 @@
-jupyter notebook --ip=0.0.0.0  --allow-root --notebook-dir='/jupyter' &
+jupyter notebook --ip=0.0.0.0  --allow-root --notebook-dir='../demo/jupyter/' &
