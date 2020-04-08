@@ -12,3 +12,4 @@ expandvars
 flask
 jupyter
 matplotlib
+numba

@@ -6,3 +6,4 @@ nameko
 luigi
 neo4j
 py2neo
+numba
