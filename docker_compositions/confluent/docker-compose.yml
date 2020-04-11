@@ -1,6 +1,15 @@
 ---
 version: '2'
 services:
+
+  rabbit:
+    container_name: isharp-rabbitmq
+    image: rabbitmq:3.7-management
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+
+
   zookeeper:
     image: ${REPOSITORY}/cp-zookeeper:${TAG}
     hostname: zookeeper
@@ -10,6 +19,7 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+
 
   broker:
     image: ${REPOSITORY}/cp-server:${TAG}
