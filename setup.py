@@ -4,7 +4,7 @@ from imp import load_source
 from os import path
 import io
 
-__version__ = load_source('object-detection-seed.version', 'object-detection-seed/version.py').__version__
+__version__ = load_source('PACKAGENAME.version', 'PACKAGENAME/version.py').__version__
 
 here = path.abspath(path.dirname(__file__))
 

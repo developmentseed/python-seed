@@ -1,3 +1,0 @@
-tensorflow==1.15.2
-object_detection
-pandas
