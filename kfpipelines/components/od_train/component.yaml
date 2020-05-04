@@ -1,0 +1,31 @@
+name: TF Object Detection Train Model
+description: Trains object detection model using TF Object Detection API
+inputs:
+  - {name: pipeline_config_path,        type: GCSPath,  description: 'Local or GCS path to the TF OD API model config.'}
+  - {name: model_dir,                   type: GCSPath,  description: 'Local or GCS path to location for saving model checkpoints.'}
+  - {name: num_train_steps,             type: Integer,  description: 'Total number of training steps to take.'}
+  - {name: sample_1_of_n_eval_examples, type: Integer,  description: 'During evaluation, sample 1/n of the total samples. E.g., "4" means use a quarter of the samples.'}
+  - {name: eval_dir,                    type: GCSPath,  description: 'Local or GCS path to location for saving model checkpoints.'}
+  - {name: eval_checkpoint_metric,      type: GCSPath,  description: 'Name of metric to use for determining best checkpoint.'}
+  - {name: metric_objective_type,       type: String,   description: 'Use `min` or `max` to determine "best" metric.'}
+outputs:
+  - {name: MLPipeline UI metadata,    type: UI metadata}
+  - {name: MLPipeline Metrics,    type: Metrics}
+  - {name: best_checkpoint,           type: GCSPath}
+implementation:
+  container:
+    image: gcr.io/voltaire-266718/voltaire-training:v1-gpu
+    command: [
+      python, /launch.py,
+      --pipeline_config_path,         {inputValue: pipeline_config_path},
+      --model_dir,                    {inputValue: model_dir},
+      --num_train_steps,              {inputValue: num_train_steps},
+      --sample_1_of_n_eval_examples,  {inputValue: sample_1_of_n_eval_examples},
+      --eval_dir,                     {inputValue: eval_dir},
+      --eval_checkpoint_metric,       {inputValue: eval_checkpoint_metric},
+      --metric_objective_type,        {inputValue: metric_objective_type},
+    ]
+    fileOutputs:
+      MLPipeline UI metadata:  /mlpipeline-ui-metadata.json
+      MLPipeline Metrics:  /mlpipeline-metrics.json
+      best_checkpoint:  /output.txt

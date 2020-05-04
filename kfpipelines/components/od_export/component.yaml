@@ -1,0 +1,17 @@
+name: TF Object Detection Export Model for Inference
+description: Exports a model (trained with TF Object Detection API) for Inference. Uses the `od_train` Docker image.
+inputs:
+  - {name: inference_input_type,        type: String,   description: 'Format of image provided for inference. Can be `image_tensor`, `encoded_image_string_tensor`, or `tf_example`.'}
+  - {name: pipeline_config_path,        type: GCSPath,  description: 'Local or GCS path to the TF OD API model config.'}
+  - {name: trained_checkpoint_prefix,   type: GCSPath,  description: 'Local or GCS path prefix to trained model checkpoint. E.g., `/path/to/model.ckpt-50000`'}
+  - {name: inference_output_directory,  type: GCSPath,  description: 'Local or GCS file path to directory for inference-ready model. E.g., `/path/to/export/dir/001`'}
+implementation:
+  container:
+    image: gcr.io/voltaire-266718/voltaire-training:v1-gpu
+    command: [python, /tensorflow/models/research/object_detection/export_inference_graph.py]
+    args: [
+      --input_type,                 {inputValue: inference_input_type},
+      --pipeline_config_path,       {inputValue: pipeline_config_path},
+      --trained_checkpoint_prefix,  {inputValue: trained_checkpoint_prefix},
+      --output_directory,           {inputValue: inference_output_directory},
+      ]

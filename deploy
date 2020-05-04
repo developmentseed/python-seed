@@ -1,0 +1,84 @@
+#! /bin/bash
+
+if [[ -z $1 ]]; then
+    echo ""
+    echo "Usage: ./deploy <subcommand>"
+    echo ""
+    echo "  ./deploy kf"
+    echo "      Create a new Kubeflow instace"
+    echo ""
+    exit
+fi
+
+if [[ -z ${CLIENT_ID} ]] || [[ -z ${CLIENT_SECRET} ]]; then
+    echo "Google Cloud: CLIENT_ID & CLIENT_SECRET environment vars not set"
+    exit 1
+fi
+
+set -euo pipefail
+
+if [[ "$1" == "kf" ]]; then
+    type kfctl >/dev/null 2>&1 || (echo "The KFCTL CLI must be installed - https://www.kubeflow.org/docs/gke/deploy/deploy-cli/" && exit 1)
+    type yq >/dev/null 2>&1 || (echo "yq must be installed" && exit 1)
+
+    MD5=""
+    type md5    2>/dev/null >/dev/null && MD5="md5"
+    type md5sum 2>/dev/null >/dev/null && MD5="md5sum"
+
+    if [[ -z $MD5 ]]; then
+        echo "md5 or md5 sum must be installed"
+        exit 1
+    fi
+
+    export PATH=$PATH:${HOME}/.kfctl
+    export CONFIG_URI="https://raw.githubusercontent.com/kubeflow/manifests/v0.7-branch/kfdef/kfctl_gcp_iap.0.7.1.yaml"
+
+    export PROJECT=PROJECT
+    export ZONE=us-east1-c
+
+    gcloud config set compute/zone ${ZONE}
+
+    # KF_NAME can't be a full directory path, just a directory name
+    # Increment the version for each cluster you create. Otherwise, the cluster may have issues deploying
+    export KF_NAME="kubeflow-app-$(date +%s | $MD5 | head -c 8)"
+
+    # Set local deployment directory
+    #
+    # This can be a custom location or one
+    # can simply place builds in the home directory
+    export BUILDS_DIR=${BUILDS_DIR:-~/builds}
+    mkdir ${BUILDS_DIR} || true
+
+    export BASE_DIR=${BUILDS_DIR}/${PROJECT}
+    export KF_DIR=${BASE_DIR}/${KF_NAME}
+
+    # Create directory of configuration files
+    gcloud config set project ${PROJECT}
+    mkdir -p ${KF_DIR}
+    cd ${KF_DIR}
+    kfctl build -V -f ${CONFIG_URI}
+
+    # Make some changes to your GCP config if necessary (here, turning down master resources and turning off GPUs)- we will create out own GPU compute node.
+    # `brew install yq` if you don't have it installed
+    export GCP_CONFIG_FILE=${KF_DIR}/gcp_config/cluster-kubeflow.yaml
+    yq w -i ${GCP_CONFIG_FILE} resources[0].properties.cpu-pool-enable-autoscaling false
+    yq w -i ${GCP_CONFIG_FILE} resources[0].properties.gpu-pool-enable-autoscaling false
+    yq w -i ${GCP_CONFIG_FILE} resources[0].properties.cpu-pool-machine-type n1-standard-4
+    yq w -i ${GCP_CONFIG_FILE} resources[0].properties.autoprovisioning-config.enabled false
+
+    # Update the Google service account to have access to cloud storage
+    export IAM_CONFIG_FILE=${KF_DIR}/gcp_config/iam_bindings.yaml
+    yq w -i ${IAM_CONFIG_FILE} bindings[2].roles[3] roles/storage.admin
+
+    # Deploy to GCP
+    export CONFIG_FILE=${KF_DIR}/kfctl_gcp_iap.0.7.1.yaml
+    kfctl apply -V -f ${CONFIG_FILE}
+
+    echo "Paste the following to continue using the env vars"
+    echo ""
+    echo "export KF_NAME=\"${KF_NAME}\""
+    echo "export KF_DIR=\"${KF_DIR}\""
+else
+    echo "Command not found"
+    exit 1
+fi
