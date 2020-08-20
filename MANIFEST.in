@@ -1,0 +1,3 @@
+include python_seed/template/*
+include python_seed/template/pyseed/*
+include python_seed/template/tests/*
