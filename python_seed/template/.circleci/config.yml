@@ -8,7 +8,7 @@
 version: 2
 
 common: &common
-  working_directory: ~/python-seed
+  working_directory: ~/pyseed
   steps:
     # Get Code from github
     - checkout
@@ -70,7 +70,7 @@ jobs:
         - image: circleci/python:3.7.2
           environment:
             - TOXENV=release
-      working_directory: ~/python-seed
+      working_directory: ~/pyseed
       steps:
         - checkout
 
