@@ -4,7 +4,7 @@
   <img src="https://user-images.githubusercontent.com/10407788/90814089-905bf800-e2f6-11ea-8bd7-2639fa1177af.png" style="max-width: 800px;" alt="python-seed"></a>
 </p>
 <p align="center">
-  <em>Rasterio plugin to read mercator tiles from Cloud Optimized GeoTIFF.</em>
+  <em>Starter kit for creating a new python package.</em>
 </p>
 <p align="center">
   <a href="https://circleci.com/gh/developmentseed/python-seed" target="_blank">
@@ -23,8 +23,6 @@
 
 This is a starter repo for creating a new python package. Included are templates for standard files as well as best practices.
 
-
-
 ## Install
 
 You can install python-seed using pip
@@ -42,7 +40,6 @@ $ cd python-seed
 $ pip install -U pip
 $ pip install -e .
 ```
-
 
 ## Usage
 
