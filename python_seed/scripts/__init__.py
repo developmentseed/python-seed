@@ -1,1 +1,1 @@
-"""lambda_pyskel scripts."""
+"""python_seed scripts."""
