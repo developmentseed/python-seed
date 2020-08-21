@@ -58,24 +58,24 @@ Commands:
 ```
 
 ```
-$ pyseed create --help
+pyseed create --help
 Usage: pyseed create [OPTIONS] NAME
 
   Create new python seed skeleton.
 
 Options:
-  --help  Show this message and exit.
+  --ci [circleci|github]  Add CI configuration
+  --help                  Show this message and exit.
 ```
 
 Create a new python project
 
 ```bash
-# Create a project
+# Create a project without CI
 $ pyseed create awesomepythonproject
 
 # List files created
 $ ls -1 awesomepythonproject
-.circleci/
 .pre-commit-config.yaml
 README.md
 awesomepythonproject/
@@ -90,14 +90,15 @@ tox.ini
 
 ```
 my-project/
- ├── .circleci/                  - CircleCI configuration.
+ ├── .circleci/ or .github/      - CI configuration.
+ ├── codecov.yml                 - codecov configuration (only if CI is added).
  ├── .pre-commit-config.yaml     - pre-commit configuration.
  ├── README.md                   - project readme.
  ├── my_project/                 - core python module.
  ├── tests/                      - tests suite placeholder for your module.
  ├── requirements.txt            - python requirements (!!! by default requirements are written in setup.py)
  ├── requirements-dev.txt        - python dev requirements (!!! by default requirements are written in setup.py)
- ├──tox.ini                      - TOX configuration.
+ └──tox.ini                      - TOX configuration.
 ```
 
 
