@@ -1,2 +1,11 @@
-0.1.0:
+1.0.0 (2020-08-21)
+------------------
+Refactor
+    - add CLI for project generator
+    - add tox
+    - add github CI
+    - add pre-commit
+
+0.1.0
+------------------
 - initial release
