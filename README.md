@@ -7,8 +7,8 @@
   <em>Starter kit for creating a new python package.</em>
 </p>
 <p align="center">
-  <a href="https://circleci.com/gh/developmentseed/python-seed" target="_blank">
-      <img src="https://circleci.com/gh/developmentseed/python-seed.svg?style=svg" alt="Test">
+  <a href="https://github.com/developmentseed/python-seed/actions?query=workflow%3ACI" target="_blank">
+      <img src="https://github.com/developmentseed/python-seed/workflows/CI/badge.svg" alt="Test">
   </a>
   <a href="https://codecov.io/gh/developmentseed/python-seed" target="_blank">
       <img src="https://codecov.io/gh/developmentseed/python-seed/branch/master/graph/badge.svg" alt="Coverage">
@@ -64,18 +64,38 @@ Usage: pyseed create [OPTIONS] NAME
   Create new python seed skeleton.
 
 Options:
-  --help  Show this message and exit.
+  --ci [circleci|github]  Add CI configuration
+  --help                  Show this message and exit.
 ```
 
 Create a new python project
 
 ```bash
-# Create a project
+# Create a project without CI
 $ pyseed create awesomepythonproject
 
 # List files created
 $ ls -1 awesomepythonproject
-.circleci/
+.pre-commit-config.yaml
+README.md
+awesomepythonproject/
+requirements-dev.txt
+requirements.txt
+setup.py
+tests/
+tox.ini
+```
+
+With CI framework
+
+```bash
+# Create a project github actions
+$ pyseed create awesomepythonproject --ci github
+
+# List files created
+$ ls -1 awesomepythonproject
+.github/workflows/ci.yml
+codecov.yml
 .pre-commit-config.yaml
 README.md
 awesomepythonproject/
@@ -90,14 +110,15 @@ tox.ini
 
 ```
 my-project/
- ├── .circleci/                  - CircleCI configuration.
+ ├── .circleci/ or .github/      - CI configuration.
+ ├── codecov.yml                 - codecov configuration (only if CI is added).
  ├── .pre-commit-config.yaml     - pre-commit configuration.
  ├── README.md                   - project readme.
  ├── my_project/                 - core python module.
  ├── tests/                      - tests suite placeholder for your module.
  ├── requirements.txt            - python requirements (!!! by default requirements are written in setup.py)
  ├── requirements-dev.txt        - python dev requirements (!!! by default requirements are written in setup.py)
- ├──tox.ini                      - TOX configuration.
+ └──tox.ini                      - TOX configuration.
 ```
 
 

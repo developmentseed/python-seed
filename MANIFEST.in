@@ -1,3 +1,5 @@
-include python_seed/template/*
-include python_seed/template/pyseed/*
-include python_seed/template/tests/*
+include python_seed/template/ci/*
+include python_seed/template/cov/*
+include python_seed/template/module/pyseed/*
+include python_seed/template/module/tests/*
+include python_seed/template/module/*
