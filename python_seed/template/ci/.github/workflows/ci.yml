@@ -60,21 +60,17 @@ jobs:
         # https://stackoverflow.com/questions/58177786/get-the-current-pushed-tag-in-github-actions
         run: echo ::set-env name=RELEASE_VERSION::${GITHUB_REF#refs/*/}
       
-      - name: Check Version
+      - name: Check git tag vs. version
         # We Only deploy to PyPi if github tag match the python version
-        run:
-          name: verify git tag vs. version
-          command: |
+        run: |
             VERSION=$(python setup.py --version)
             if [ "$VERSION" = "$RELEASE_VERSION" ]; then exit 0; else exit 3; fi
 
-      - run:
-          name: init .pypirc
-          command: |
-            echo -e "[pypi]" >> ~/.pypirc
-            echo -e "username = $PYPI_USER" >> ~/.pypirc
-            echo -e "password = $PYPI_PASSWORD" >> ~/.pypirc
+      - name: init .pypirc
+        run: |
+          echo -e "[pypi]" >> ~/.pypirc
+          echo -e "username = $PYPI_USER" >> ~/.pypirc
+          echo -e "password = $PYPI_PASSWORD" >> ~/.pypirc
 
-      - run:
-          name: run tox
-          command: ~/.local/bin/tox
+      - name: run tox
+        run: ~/.local/bin/tox
