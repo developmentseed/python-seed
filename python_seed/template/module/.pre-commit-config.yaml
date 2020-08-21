@@ -40,5 +40,5 @@ repos:
         repo: https://github.com/pre-commit/mirrors-mypy
         rev: 'v0.782'
         hooks:
-            -   id: mypy
-                args: [--no-strict-optional, --ignore-missing-imports]s
+            - id: mypy
+              args: ['--no-strict-optional', '--ignore-missing-imports']
