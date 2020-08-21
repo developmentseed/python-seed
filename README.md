@@ -58,7 +58,7 @@ Commands:
 ```
 
 ```
-pyseed create --help
+$ pyseed create --help
 Usage: pyseed create [OPTIONS] NAME
 
   Create new python seed skeleton.
@@ -76,6 +76,26 @@ $ pyseed create awesomepythonproject
 
 # List files created
 $ ls -1 awesomepythonproject
+.pre-commit-config.yaml
+README.md
+awesomepythonproject/
+requirements-dev.txt
+requirements.txt
+setup.py
+tests/
+tox.ini
+```
+
+With CI framework
+
+```bash
+# Create a project github actions
+$ pyseed create awesomepythonproject --ci github
+
+# List files created
+$ ls -1 awesomepythonproject
+.github/workflows/ci.yml
+codecov.yml
 .pre-commit-config.yaml
 README.md
 awesomepythonproject/
