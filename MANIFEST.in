@@ -1,4 +1,6 @@
 include python_seed/template/ci/*
+include python_seed/template/ci/.github/workflows/*
+include python_seed/template/ci/.circleci/*
 include python_seed/template/cov/*
 include python_seed/template/module/pyseed/*
 include python_seed/template/module/tests/*

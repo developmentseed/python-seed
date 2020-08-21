@@ -15,8 +15,10 @@ extra_reqs = {
 
 setup(
     name="python-seed",
-    version="1.0.0",
+    version="1.0.0.post1",
     description="Create skeleton of python project",
+    long_description=readme,
+    long_description_content_type="text/markdown",
     author=u"Vincent Sarago",
     author_email="vincent@developmentseed.com",
     url="https://github.com/developementseed/python-seed",
