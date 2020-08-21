@@ -7,8 +7,8 @@
   <em>Starter kit for creating a new python package.</em>
 </p>
 <p align="center">
-  <a href="https://circleci.com/gh/developmentseed/python-seed" target="_blank">
-      <img src="https://circleci.com/gh/developmentseed/python-seed.svg?style=svg" alt="Test">
+  <a href="https://github.com/developmentseed/python-seed/actions?query=workflow%3ACI" target="_blank">
+      <img src="https://github.com/developmentseed/python-seed/workflows/CI/badge.svg" alt="Test">
   </a>
   <a href="https://codecov.io/gh/developmentseed/python-seed" target="_blank">
       <img src="https://codecov.io/gh/developmentseed/python-seed/branch/master/graph/badge.svg" alt="Coverage">

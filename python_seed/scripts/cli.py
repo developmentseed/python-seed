@@ -33,6 +33,11 @@ def create(name, ci):
         )
         shutil.copytree(template_dir, f"{name}/.{ci}")
 
+        covconfig = pkg_resources.resource_filename(
+            "python_seed", "template/cov/codecov.yml"
+        )
+        shutil.copy2(covconfig, f"{name}/codecov.yml")
+
     new_dir = name
     name = name.replace("-", "_")
     for root, _, files in os.walk(new_dir):
