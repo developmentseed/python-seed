@@ -4,6 +4,7 @@ import os
 import shutil
 
 import click
+import pkg_resources
 
 from .. import version
 
@@ -17,11 +18,20 @@ def pyseed():
 
 @pyseed.command(short_help="Create new python seed skeleton")
 @click.argument("name", type=str, nargs=1)
-def create(name):
+@click.option(
+    "--ci", type=click.Choice(["circleci", "github"]), help="Add CI configuration"
+)
+def create(name, ci):
     """Create new python seed skeleton."""
-    template_dir = os.path.join(os.path.dirname(__file__), "../template")
+    template_dir = pkg_resources.resource_filename("python_seed", "template/module")
 
     shutil.copytree(template_dir, name)
+
+    if ci:
+        template_dir = pkg_resources.resource_filename(
+            "python_seed", f"template/ci/.{ci}"
+        )
+        shutil.copytree(template_dir, f"{name}/.{ci}")
 
     new_dir = name
     name = name.replace("-", "_")
