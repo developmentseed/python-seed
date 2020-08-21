@@ -1,0 +1,1 @@
+"""pyseed tests suite."""
