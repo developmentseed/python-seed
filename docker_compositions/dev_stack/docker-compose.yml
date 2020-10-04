@@ -11,7 +11,7 @@ services:
       isharp_home: /isharp-core
       graph_host: graph
 
-    image: isharp-python-dev
+    image: jeremyward/isharp-python-dev
     volumes:
      - $HOME/isharp-core:/isharp-core
     command: tail -f /dev/null
