@@ -87,7 +87,7 @@ def inject_feeds_tx(tx, feed_points):
 
 class DbSetup():
     def __init__(self, uri, user, password):
-        self._driver = GraphDatabase.driver(uri, auth=(user, password))
+        self._driver = GraphDatabase.driver(uri, auth=(user, password), encrypted=False)
 
     def close(self):
         self._driver.close()
