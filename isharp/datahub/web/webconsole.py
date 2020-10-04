@@ -9,11 +9,24 @@ hostname=socket.gethostname()
 from flask import request
 
 templates_dir =  os.getenv('isharp_web_templates', 'templates')
+static_dir = os.getenv('isharp_web_static', '/isharp-core/docs')
+
+
+
+
 print ("templates_dir: {}".format(templates_dir))
-app = Flask(__name__,template_folder=templates_dir, static_folder='/isharp-core/docs')
+print ("static_dir: {}  ? {}".format(static_dir,os.path.exists(static_dir)))
+
+app = Flask(__name__,template_folder=templates_dir, static_folder=static_dir)
+app.config["CACHE_TYPE"] = 'null'
+
 
 hub_host =  os.getenv('isharp_hub_host', 'localhost:5672')
 
+@app.route('/')
+def static_content():
+
+    return app.send_static_file('index.html')
 
 @app.route('/datahub')
 def listing():
