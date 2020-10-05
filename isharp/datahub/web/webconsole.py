@@ -74,7 +74,7 @@ def listing():
     with BrokerConnectionPool() as broker:
         for thisItem in broker.list(hub_host):
             listings.append(thisItem)
-    return render_template('datahub_index.html',hostname="Equities[PROD]", my_list=listings,hub_host="Demo  Data Broker", brokers=brokers)
+    return render_template('datahub_index.html',hostname="rabbit", my_list=listings,hub_host="Demo  Data Broker", brokers=brokers)
 
 
 @app.route('/datahub/view/<path:path>', methods=['GET'])
