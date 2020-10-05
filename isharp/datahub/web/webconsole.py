@@ -61,11 +61,12 @@ app.config["CACHE_TYPE"] = 'null'
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 hub_host =  os.getenv('isharp_hub_host', 'localhost:5672')
+isharp_dev_hostname =  os.getenv('isharp_dev_hostname', 'isharpdev')
 
 @app.route('/')
 def static_content():
 
-    return render_template("index.html",table_images = tableContent)
+    return render_template("index.html",table_images = tableContent, isharp_hostname=isharp_dev_hostname)
 
 @app.route('/datahub')
 def listing():
