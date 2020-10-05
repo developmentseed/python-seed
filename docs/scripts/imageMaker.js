@@ -1,10 +1,7 @@
 
 
-
-
-
 function fancyMenuHover(evt){
-    alert('hello')
+    alert(evt)
     $("#agriculture_table img").each(function (){
         sourceFile = $(this).attr("src")
         if (sourceFile.includes("/"+ evt + "/")){
