@@ -1,0 +1,74 @@
+{% extends "isharp_base.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+
+
+{% block side_menu%}
+
+<H3>Broker List</H3>
+<table class="table table-bordered table-striped">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for n in brokers %}
+    <tr>
+        <td>{{ n[0] }}</td>
+        <td>{{ n[1] }}</td>
+    </tr>
+
+    {% endfor %}
+    </tbody>
+</table>
+
+    {% endblock %}
+    {% block center_content %}
+
+    <div class="container">
+        <H3>Broker Listing: {{hostname}}</H3>
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Path</th>
+                <th>Revision</th>
+                <th>Storage Method</th>
+                <th>Style</th>
+                <th>Description</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+
+
+            {% for n in my_list %}
+            <tr>
+                {% set url="/datahub/view/{}?protocol={}".format(n.path,n.storage_method)%}
+                <td>{{n.name}}</td>
+                <td>{{n.path}}</td>
+                <td>{{n.revision_id}}</td>
+                <td>{{n.storage_method}}</td>
+                <td>{{n.memory_style}}</td>
+                <td>{{n.description}}</td>
+                <td><a href="{{url}}">View</a></td>
+
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+
+    {% endblock %}
+
+
+
+
