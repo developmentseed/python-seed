@@ -68,7 +68,7 @@ services:
       - schema-registry
     ports:
       - "8083:8083"
-    command: "bash -c 'echo Waiting for Kafka to be ready... && \
+    command: "bash -c 'echo Waiting for Kafka to be ready...' && \
         cub kafka-ready -b broker:9092 1 20 && \
              kafka-topics --create --if-not-exists --zookeeper zookeeper:2181 --partitions 1 --replication-factor 1 --topic pol.tickers && \
              kafka-topics --create --if-not-exists --zookeeper zookeeper:2181 --partitions 1 --replication-factor 1 --topic pol.tickers.flattened && \
