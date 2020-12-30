@@ -203,7 +203,7 @@ services:
       - $PWD/dashboard:/tmp/dashboard
 
 
-    command: "tail -f /dev/bin"
+    command: "tail -f /dev/null"
 
 
 #    command:           "bash -c 'echo Waiting for Kafka to be ready...' && \
