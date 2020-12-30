@@ -192,7 +192,7 @@ services:
 
 
   kafka-setup:
-    image: confluentinc/cp-kafka:5.1.1
+    image: ${REPOSITORY}/cp-kafka:${TAG}
     hostname: kafka-setup
     container_name: kafka-setup
     depends_on:
