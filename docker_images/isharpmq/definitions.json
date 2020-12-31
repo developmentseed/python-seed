@@ -3,7 +3,7 @@
     {
       "name": "pol.tickers",
       "vhost": "/",
-      "durable": false,
+      "durable": true,
       "auto_delete": false,
       "arguments": {}
     }
