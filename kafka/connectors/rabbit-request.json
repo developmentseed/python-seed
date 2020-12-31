@@ -9,15 +9,5 @@
     "confluent.topic.bootstrap.servers": "broker:29092",
     "kafka.topic": "pol.tickers",
     "rabbitmq.queue": "pol.tickers"
-  },
-  "tasks": [
-    {
-      "connector": "rmq-source-task",
-      "task": 1
-    },
-    {
-      "connector": "rmq-source-task",
-      "task": 2
-    }
-  ]
+  }
 }
