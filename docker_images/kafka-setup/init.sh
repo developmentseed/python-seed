@@ -6,7 +6,7 @@ kafka-topics --create --if-not-exists --zookeeper zookeeper:2181 --partitions 1 
 echo topics created OK
 echo Waiting for queues to be created
 
-curl -X POST http://connect:8083//connectors -d @rabbit-request.json --header  "Content-Type: application/json"
+curl -X POST http://connect:8083//connectors -d @rabbit_request.json --header  "Content-Type: application/json"
 
 
 while :; do sleep 2073600; done
