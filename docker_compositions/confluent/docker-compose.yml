@@ -192,7 +192,7 @@ services:
 
 
   kafka-setup:
-    image: ${REPOSITORY}/cp-kafka:${TAG}
+    image: jeremyward/isharp-kafka-setup
     hostname: kafka-setup
     container_name: kafka-setup
     depends_on:
