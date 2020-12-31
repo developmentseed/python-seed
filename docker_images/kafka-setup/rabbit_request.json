@@ -1,0 +1,13 @@
+{
+  "name": "rabbitmq-source-connector",
+  "config": {
+    "connector.class": "io.confluent.connect.rabbitmq.RabbitMQSourceConnector",
+    "tasks.max": "2",
+    "rabbitmq.host": "rabbit",
+    "rabbitmq.username": "guest",
+    "rabbitmq.password": "guest",
+    "confluent.topic.bootstrap.servers": "broker:29092",
+    "kafka.topic": "pol.tickers",
+    "rabbitmq.queue": "pol.tickers"
+  }
+}
