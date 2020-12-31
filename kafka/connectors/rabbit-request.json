@@ -6,13 +6,9 @@
     "rabbitmq.host": "rabbit",
     "rabbitmq.username": "guest",
     "rabbitmq.password": "guest",
-    "confluent.topic.bootstrap.servers": [
-      "broker:29092"
-    ],
+    "confluent.topic.bootstrap.servers": "broker:29092",
     "kafka.topic": "pol.tickers",
-    "rabbitmq.queue": [
-      "pol.tickers"
-    ]
+    "rabbitmq.queue": "pol.tickers"
   },
   "tasks": [
     {
