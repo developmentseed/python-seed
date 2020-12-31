@@ -5,5 +5,5 @@ EXPOSE 15672
 ADD rabbitmq.conf /etc/rabbitmq/
 ADD definitions.json /etc/rabbitmq/
 
-
+CMD tail -f /dev/null
 
