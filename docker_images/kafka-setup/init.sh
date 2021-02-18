@@ -15,6 +15,6 @@ curl -X POST http://connect:8083/connectors -d @rabbit_request.json --header  "C
 sleep 20
 
 curl  http://connect:8083/connectors
-
+jerem
 
 while :; do sleep 2073600; done
