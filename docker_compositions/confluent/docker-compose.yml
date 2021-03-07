@@ -59,7 +59,7 @@ services:
       SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: 'zookeeper:2181'
 
   connect:
-    image: jeremyward/connect-datagen-rabbitmq
+    image: jeremyward/connect-isharp
     hostname: connect
     container_name: connect
     depends_on:
