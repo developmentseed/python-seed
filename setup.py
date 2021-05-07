@@ -18,7 +18,7 @@ extra_reqs = {
 
 setup(
     name="python-seed",
-    version="1.0.1",
+    version="1.1.0",
     description="Create skeleton of python project",
     long_description=readme,
     long_description_content_type="text/markdown",
