@@ -6,7 +6,10 @@ with open("README.md") as f:
     readme = f.read()
 
 # Runtime requirements.
-inst_reqs = ["click"]
+inst_reqs = [
+    "click",
+    "importlib_resources>=1.1.0;python_version<'3.9'",
+]
 
 extra_reqs = {
     "test": ["pytest", "pytest-cov"],
@@ -31,9 +34,10 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
     ],
     keywords="Python Generator tox pre-commit",
-    packages=find_packages(exclude=["ez_setup", "examples", "tests"]),
+    packages=find_packages(exclude=["tests"]),
     include_package_data=True,
     zip_safe=False,
     install_requires=inst_reqs,

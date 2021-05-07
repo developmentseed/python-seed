@@ -4,13 +4,18 @@ import os
 import shutil
 
 import click
-import pkg_resources
 
-from .. import version
+from .. import __version__
+
+try:
+    from importlib.resources import files as resources_files  # type: ignore
+except ImportError:
+    # Try backported to PY<39 `importlib_resources`.
+    from importlib_resources import files as resources_files  # type: ignore
 
 
 @click.group(short_help="python-seed CLI")
-@click.version_option(version=version, message="%(version)s")
+@click.version_option(version=__version__, message="%(version)s")
 def pyseed():
     """python-seed subcommands."""
     pass
@@ -23,18 +28,18 @@ def pyseed():
 )
 def create(name, ci):
     """Create new python seed skeleton."""
-    template_dir = pkg_resources.resource_filename("python_seed", "template/module")
-
+    template_dir = str(resources_files("python_seed") / "template" / "module")
+    print(template_dir)
     shutil.copytree(template_dir, name)
 
     if ci:
-        template_dir = pkg_resources.resource_filename(
-            "python_seed", f"template/ci/.{ci}"
+        template_dir = str(
+            resources_files("python_seed") / "template" / "ci" / f".{ci}"
         )
         shutil.copytree(template_dir, f"{name}/.{ci}")
 
-        covconfig = pkg_resources.resource_filename(
-            "python_seed", "template/cov/codecov.yml"
+        covconfig = str(
+            resources_files("python_seed") / "template" / "cov" / "codecov.yml"
         )
         shutil.copy2(covconfig, f"{name}/codecov.yml")
 
