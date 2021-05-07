@@ -2,11 +2,11 @@
 
 import click
 
-from .. import version
+from .. import __version__
 
 
 @click.group(short_help="pyseed CLI")
-@click.version_option(version=version, message="%(version)s")
+@click.version_option(version=__version__, message="%(version)s")
 def pyseed():
     """pyseed subcommands."""
     pass

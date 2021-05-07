@@ -46,14 +46,14 @@ jobs:
   "python-3.6":
     <<: *common
     docker:
-      - image: circleci/python:3.6.5
+      - image: cimg/python:3.6.13
         environment:
           - TOXENV=py36
 
   "python-3.7":
     <<: *common
     docker:
-      - image: circleci/python:3.7.2
+      - image: cimg/python:3.7.10
         environment:
           - TOXENV=py37
           - UPLOAD_COVERAGE=1
@@ -61,13 +61,20 @@ jobs:
   "python-3.8":
     <<: *common
     docker:
-      - image: circleci/python:3.8.4
+      - image: cimg/python:3.8.10
         environment:
           - TOXENV=py38
 
+  "python-3.9":
+    <<: *common
+    docker:
+      - image: cimg/python:3.9.5
+        environment:
+          - TOXENV=py39
+
   deploy:
       docker:
-        - image: circleci/python:3.7.2
+        - image: cimg/python:3.7.10
           environment:
             - TOXENV=release
       working_directory: ~/pyseed
@@ -99,6 +106,7 @@ workflows:
             tags:
               only: /.*/
       - "python-3.8"
+      - "python-3.9"
       - deploy:
           requires:
             - "python-3.7"

@@ -1,5 +1,3 @@
 """python_seed."""
 
-import pkg_resources
-
-version = pkg_resources.get_distribution(__package__).version
+__version__ = "1.0.1"
