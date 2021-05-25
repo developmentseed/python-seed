@@ -29,7 +29,6 @@ def pyseed():
 def create(name, ci):
     """Create new python seed skeleton."""
     template_dir = str(resources_files("python_seed") / "template" / "module")
-    print(template_dir)
     shutil.copytree(template_dir, name)
 
     if ci:
