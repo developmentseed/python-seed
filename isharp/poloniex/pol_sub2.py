@@ -7,7 +7,7 @@ from datetime import datetime, timezone,timedelta
 
 start_millis = int(round(time.time() * 1000))
 msg_key = start_millis
-connection = pika.BlockingConnection(pika.ConnectionParameters(host='confluent'))
+connection = pika.BlockingConnection(pika.ConnectionParameters(host='daphne174'))
 offset =  timezone(timedelta(hours=0))
 format = "%Y-%m-%dT%H:%M:%S.%f %Z"
 
@@ -25,13 +25,13 @@ def on_message(ws, message):
                                  expiration="60000",
                                  headers=[],
                                  priority=1,
-                                 reply_to="n/a",
+                                 reply_to="n/a"
 
     )
 
     if (message!='[1002,1]'):
       msg_with_timestamp =   '{}{}'.format(now.strftime(format), message)
-      #print(msg_with_timestamp)
+      print(msg_with_timestamp)
       channel.basic_publish(exchange='', routing_key="pol.tickers", body=msg_with_timestamp,properties=props)
 
 def on_error(ws, error):
@@ -59,7 +59,7 @@ def on_open(ws):
 if __name__ == "__main__":
 
     channel = connection.channel()
-    channel.queue_declare("pol.tickers", durable=True)
+    channel.queue_declare("pol.tickers", durable=False)
 
     ws = websocket.WebSocketApp("wss://api2.poloniex.com/",
                               on_message = on_message,

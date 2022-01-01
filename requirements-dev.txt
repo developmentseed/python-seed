@@ -9,4 +9,5 @@ py2neo
 pyyaml
 pymongo
 expandvars
+PyGithub
 
