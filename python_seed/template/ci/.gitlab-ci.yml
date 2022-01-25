@@ -1,0 +1,79 @@
+
+
+# Change pip's cache directory to be inside the project directory since we can
+# only cache local items.
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+# Pip's cache doesn't store the python packages
+# https://pip.pypa.io/en/stable/reference/pip_install/#caching
+#
+# If you want to also cache the installed packages, you have to install
+# them in a virtualenv and cache it as well.
+# cache:
+#   paths:
+#     - .cache/pip
+#     - venv/
+
+before_script:
+  - python --version  # For debugging
+  - pip install virtualenv
+  - virtualenv venv
+  - source venv/bin/activate
+
+.test:
+  script:
+    - pip install tox codecov pre-commit
+    - tox
+
+.run:
+  script:
+    - python setup.py bdist_wheel
+    # an alternative approach is to install and run:
+    - pip install dist/*
+    # run the command here
+  artifacts:
+    paths:
+      - dist/*.whl
+
+
+pages:
+  image: python:3.9
+  script:
+    - pip install sphinx sphinx-rtd-theme recommonmark
+    - cd docs ; make html
+    - mv _build/html/ ../public/
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+
+# py3.6-test:
+#   extends: .test
+#   image: python:3.6
+#   variables:
+#     TOXENV: py36
+
+# py3.7-test:
+#   extends: .test
+#   image: python:3.7
+#   variables:
+#     TOXENV: py37
+
+# py3.8-test:
+#   extends: .test
+#   image: python:3.8
+#   variables:
+#     TOXENV: py38
+
+py3.9-test:
+  extends: .test
+  image: python:3.9
+  variables:
+    TOXENV: py39
+
+# py3.9-run:
+#   extends: .run
+#   image: python:3.9

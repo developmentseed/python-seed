@@ -131,7 +131,7 @@ Issues and pull requests are more than welcome.
 ```bash
 $ git clone https://github.com/developmentseed/python-seed.git
 $ cd python-seed
-$ pip install -e .[dev]
+$ pip install -e ".[dev]"
 ```
 
 **Python3.7 only**

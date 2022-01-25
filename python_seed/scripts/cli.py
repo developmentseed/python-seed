@@ -21,26 +21,42 @@ def pyseed():
     pass
 
 
+CI_CHOICES = ["circleci", "github", "gitlab"]
+
 @pyseed.command(short_help="Create new python seed skeleton")
 @click.argument("name", type=str, nargs=1)
 @click.option(
-    "--ci", type=click.Choice(["circleci", "github"]), help="Add CI configuration"
+    "--ci", type=click.Choice(CI_CHOICES), help="Add CI configuration"
 )
 def create(name, ci):
     """Create new python seed skeleton."""
     template_dir = str(resources_files("python_seed") / "template" / "module")
-    shutil.copytree(template_dir, name)
+    shutil.rmtree(f"{name}/{name}", ignore_errors=True)
+    shutil.rmtree(f"{name}/docs", ignore_errors=True)
+    shutil.copytree(template_dir, name, dirs_exist_ok=True)
 
     if ci:
-        template_dir = str(
-            resources_files("python_seed") / "template" / "ci" / f".{ci}"
-        )
-        shutil.copytree(template_dir, f"{name}/.{ci}")
+        # acommodate gitlab's single file ci config
+        if ci == 'gitlab':
+            template_file = str(
+                resources_files("python_seed") / "template" / "ci" / ".gitlab-ci.yml"
+            )
+            shutil.copy2(template_file, f"{name}/.gitlab-ci.yml")
+        else:
+            template_dir = str(
+                resources_files("python_seed") / "template" / "ci" / f".{ci}"
+            )
+            shutil.copytree(template_dir, f"{name}/.{ci}", dirs_exist_ok=True)
 
         covconfig = str(
             resources_files("python_seed") / "template" / "cov" / "codecov.yml"
         )
         shutil.copy2(covconfig, f"{name}/codecov.yml")
+
+        gitignore = str(resources_files("python_seed") /  "template" / ".gitignore")
+        shutil.copy2(gitignore, f"{name}/.gitignore")
+
+
 
     new_dir = name
     name = name.replace("-", "_")
@@ -52,8 +68,17 @@ def create(name, ci):
         for filename in files:
             if filename.endswith(".pyc"):
                 continue
-            with open(f"{root}/{filename}", "r", encoding="utf-8") as f:
-                s = f.read().replace("pyseed", name)
+            if filename.endswith(".pyc"):
+                continue
+            try:
+                with open(f"{root}/{filename}", "r", encoding="utf-8") as f:
+                    s = f.read().replace("pyseed", name)
 
-            with open(f"{root}/{filename}", "w", encoding="utf-8") as f:
-                f.write(s)
+                with open(f"{root}/{filename}", "w", encoding="utf-8") as f:
+                    f.write(s)
+            except UnicodeDecodeError:
+                pass
+
+    if ci == 'gitlab':
+        stream = os.popen(f'sphinx-quickstart {name}/docs -p {name} -a aofl-data -v 0.0.1 -l en --no-sep -q --ext-autodoc --ext-doctest')
+        print(stream.read())
