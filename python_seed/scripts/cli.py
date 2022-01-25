@@ -28,12 +28,18 @@ CI_CHOICES = ["circleci", "github", "gitlab"]
 @click.option(
     "--ci", type=click.Choice(CI_CHOICES), help="Add CI configuration"
 )
-def create(name, ci):
+@click.option(
+    "--docs", is_flag=True, help="Add Sphinx Docs"
+)
+def create(name, ci, docs):
     """Create new python seed skeleton."""
     template_dir = str(resources_files("python_seed") / "template" / "module")
     shutil.rmtree(f"{name}/{name}", ignore_errors=True)
     shutil.rmtree(f"{name}/docs", ignore_errors=True)
     shutil.copytree(template_dir, name, dirs_exist_ok=True)
+
+    gitignore = str(resources_files("python_seed") /  "template" / ".gitignore")
+    shutil.copy2(gitignore, f"{name}/.gitignore")
 
     if ci:
         # acommodate gitlab's single file ci config
@@ -52,9 +58,14 @@ def create(name, ci):
             resources_files("python_seed") / "template" / "cov" / "codecov.yml"
         )
         shutil.copy2(covconfig, f"{name}/codecov.yml")
+    
+    if docs:
+        docs_dir = str(
+            resources_files("python_seed") / "template" / "docs"
+        )
+        shutil.copytree(docs_dir, f"{name}/docs", dirs_exist_ok=True)
 
-        gitignore = str(resources_files("python_seed") /  "template" / ".gitignore")
-        shutil.copy2(gitignore, f"{name}/.gitignore")
+
 
 
 
@@ -66,10 +77,6 @@ def create(name, ci):
 
     for root, _, files in os.walk(new_dir):
         for filename in files:
-            if filename.endswith(".pyc"):
-                continue
-            if filename.endswith(".pyc"):
-                continue
             try:
                 with open(f"{root}/{filename}", "r", encoding="utf-8") as f:
                     s = f.read().replace("pyseed", name)
@@ -78,7 +85,3 @@ def create(name, ci):
                     f.write(s)
             except UnicodeDecodeError:
                 pass
-
-    if ci == 'gitlab':
-        stream = os.popen(f'sphinx-quickstart {name}/docs -p {name} -a aofl-data -v 0.0.1 -l en --no-sep -q --ext-autodoc --ext-doctest')
-        print(stream.read())
