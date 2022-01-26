@@ -5,6 +5,8 @@
 variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
 
+image: python:3.9
+
 # Pip's cache doesn't store the python packages
 # https://pip.pypa.io/en/stable/reference/pip_install/#caching
 #
@@ -26,19 +28,23 @@ before_script:
     - pip install tox codecov pre-commit
     - tox
 
-.run:
+test:
+  extends: .test
+  variables:
+    TOXENV: py39
+
+deploy:
+  environment: deploy
   script:
-    - python setup.py bdist_wheel
-    # an alternative approach is to install and run:
-    - pip install dist/*
-    # run the command here
+    - cp $PYPIRC $HOME/.pypirc # get your specific pypi config
+    - python setup.py bdist_wheel upload -r local-da
   artifacts:
     paths:
       - dist/*.whl
-
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 pages:
-  image: python:3.9
   script:
     - pip install sphinx sphinx-rtd-theme myst-parser
     - cd docs ; make html
@@ -68,12 +74,5 @@ pages:
 #   variables:
 #     TOXENV: py38
 
-py3.9-test:
-  extends: .test
-  image: python:3.9
-  variables:
-    TOXENV: py39
 
-# py3.9-run:
-#   extends: .run
-#   image: python:3.9
+
