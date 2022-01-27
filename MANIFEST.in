@@ -6,3 +6,4 @@ include python_seed/template/cov/*
 include python_seed/template/module/pyseed/*
 include python_seed/template/module/tests/*
 include python_seed/template/module/*
+include python_seed/template/docs/*
