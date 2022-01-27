@@ -1,21 +1,5 @@
 
-
-# Change pip's cache directory to be inside the project directory since we can
-# only cache local items.
-variables:
-  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
-
 image: python:3.9
-
-# Pip's cache doesn't store the python packages
-# https://pip.pypa.io/en/stable/reference/pip_install/#caching
-#
-# If you want to also cache the installed packages, you have to install
-# them in a virtualenv and cache it as well.
-# cache:
-#   paths:
-#     - .cache/pip
-#     - venv/
 
 before_script:
   - python --version  # For debugging
@@ -37,7 +21,7 @@ deploy:
   environment: deploy
   script:
     - cp $PYPIRC $HOME/.pypirc # get your specific pypi config
-    - python setup.py bdist_wheel upload -r local-da
+    - python setup.py bdist_wheel upload -r local-da # replace local-da with your pypi setting
   artifacts:
     paths:
       - dist/*.whl

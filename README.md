@@ -64,7 +64,8 @@ Usage: pyseed create [OPTIONS] NAME
   Create new python seed skeleton.
 
 Options:
-  --ci [circleci|github]  Add CI configuration
+  --ci [circleci|github|gitlab]  Add CI configuration.
+  --docs                  Add sphinx docs starter.
   --help                  Show this message and exit.
 ```
 
