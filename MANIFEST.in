@@ -1,3 +1,4 @@
+include python_seed/template/*
 include python_seed/template/ci/*
 include python_seed/template/ci/.github/workflows/*
 include python_seed/template/ci/.circleci/*
