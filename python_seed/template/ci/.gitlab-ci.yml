@@ -1,0 +1,62 @@
+
+image: python:3.9
+
+before_script:
+  - python --version  # For debugging
+  - pip install virtualenv
+  - virtualenv venv
+  - source venv/bin/activate
+
+.test:
+  script:
+    - pip install tox codecov pre-commit
+    - tox
+
+test:
+  extends: .test
+  variables:
+    TOXENV: py39
+
+deploy:
+  environment: deploy
+  script:
+    - cp $PYPIRC $HOME/.pypirc # get your specific pypi config
+    - python setup.py bdist_wheel upload -r local-da # replace local-da with your pypi setting
+  artifacts:
+    paths:
+      - dist/*.whl
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+pages:
+  script:
+    - pip install sphinx sphinx-rtd-theme myst-parser
+    - cd docs ; make html
+    - mv _build/html/ ../public/
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+
+# py3.6-test:
+#   extends: .test
+#   image: python:3.6
+#   variables:
+#     TOXENV: py36
+
+# py3.7-test:
+#   extends: .test
+#   image: python:3.7
+#   variables:
+#     TOXENV: py37
+
+# py3.8-test:
+#   extends: .test
+#   image: python:3.8
+#   variables:
+#     TOXENV: py38
+
+
+

@@ -4,5 +4,5 @@ from pyseed import app
 
 
 def test_app():
-    """Test app.main function."""
-    assert app.main("ah ", 3) == "ah ah ah "
+    """Test app.dup_strings function."""
+    assert app.dup_strings("ah ", 3) == "ah ah ah "

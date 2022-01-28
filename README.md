@@ -64,7 +64,8 @@ Usage: pyseed create [OPTIONS] NAME
   Create new python seed skeleton.
 
 Options:
-  --ci [circleci|github]  Add CI configuration
+  --ci [circleci|github|gitlab]  Add CI configuration.
+  --docs                  Add sphinx docs starter.
   --help                  Show this message and exit.
 ```
 
@@ -131,7 +132,7 @@ Issues and pull requests are more than welcome.
 ```bash
 $ git clone https://github.com/developmentseed/python-seed.git
 $ cd python-seed
-$ pip install -e .[dev]
+$ pip install -e ".[dev]"
 ```
 
 **Python3.7 only**

@@ -9,7 +9,7 @@ from .. import __version__
 @click.version_option(version=__version__, message="%(version)s")
 def pyseed():
     """pyseed subcommands."""
-    pass
+    print(f"pyseed {__version__} is installed.")
 
 
 # @pyseed.command(short_help="Validate COGEO")
