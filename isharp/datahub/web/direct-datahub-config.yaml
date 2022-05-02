@@ -1,0 +1,13 @@
+serializer: pickle
+
+data_brokers:
+#    file:
+#      !SimpleFileBroker
+#         root_directory: /Users/jerem/dev/ipp-core/demo_data/demo_broker
+#
+    arctic:
+      !ArcticBroker
+        mongo_host: localhost
+
+
+

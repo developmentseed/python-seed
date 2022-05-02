@@ -14,3 +14,4 @@ jupyter
 matplotlib
 numba
 PyGithub
+grpcio

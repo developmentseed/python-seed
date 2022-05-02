@@ -1,8 +1,47 @@
-from isharp.datahub.core import StorageMethod,MatrixHeader,Revision,AcquireContentReturnValue,MemStyles,RevisionInfo
+from isharp.datahub.core import *
 from typing import List
 import logging
 import dataclasses
 logging.basicConfig(level=logging.INFO)
+
+
+
+def tokenize_path(path) -> List[str]:
+    tokens = [i for i in list(path.split('/')) if len(i) > 0]
+    return tokens
+
+
+
+
+class TreeBuilder:
+    def __init__(self,tickers,library_name,initial_path) -> None:
+        super().__init__()
+        self.tickers = tickers
+        self.library_name = library_name
+        self.initial_path = initial_path
+
+
+    def build(self)->DirectoryNode:
+        tokenized_initial_path = tokenize_path(self.initial_path)
+        filtered_tickers = self.tickers
+        child_list = []
+        if tokenized_initial_path :
+            target_path = '.'.join(tokenized_initial_path)
+            filtered_tickers = filter(lambda thisTicker : target_path in thisTicker,self.tickers)
+
+        strip_element_pos = len(tokenized_initial_path)
+        for this_ticker in filtered_tickers:
+            ticker_tokens = [i for i in list(this_ticker.split('.')) if len(i) > 0]
+            if len(ticker_tokens) > strip_element_pos:
+                child_list.append(ticker_tokens[strip_element_pos])
+
+        sorted_deduped_children = list(set(child_list))
+        sorted_deduped_children.sort()
+
+        return  DirectoryNode(children=sorted_deduped_children,path = ([self.library_name] + tokenized_initial_path))
+
+
+
 class ArcticStorageMethod(StorageMethod):
 
     def __init__(self,store):
@@ -10,7 +49,7 @@ class ArcticStorageMethod(StorageMethod):
         super().__init__("arctic")
 
     def _lib_ticker(self,path):
-        tokens  = [ i for i in list(path.split('/')) if len(i)>0]
+        tokens = tokenize_path(path)
         library = tokens[0]
         ticker = '.'.join(tokens[1:])
         logging.info("Arctic storage method converted path to libaray [{}], ticker [{}]".format(library,ticker))
@@ -64,6 +103,26 @@ class ArcticStorageMethod(StorageMethod):
         else:
             return get_revisions_from_metadata(meta.metadata)
 
+    def dir(self,path)->DirectoryNode:
+        logging.info("arctic getting diir for {}".format(path))
+        tokens = tokenize_path(path)
+        if tokens:
+            library_name = tokens.pop(0)
+            library = self.store[library_name]
+            tickers = library.list_symbols()
+            t= TreeBuilder(tickers,library_name,"/".join(tokens))
+            ret_val:DirectoryNode = t.build()
+
+
+            return ret_val
+
+        else:
+            logging.info("arctic getting root directory for {}".format(path))
+            libs = self.store.list_libraries()
+            logging.info("arctic  gpt libraries {}".format(len(libs)))
+            ret_val = DirectoryNode(children=libs,path=[])
+            logging.info("returning directory node {}".format(len(ret_val.children)))
+            return ret_val
 
     def list(self) -> List[MatrixHeader]:
         ret_val = []
@@ -82,6 +141,8 @@ class ArcticStorageMethod(StorageMethod):
                                             path="{}/{}".format(this_lib_name,symbol_with_slashes)))
 
         return ret_val
+
+
 
 
 

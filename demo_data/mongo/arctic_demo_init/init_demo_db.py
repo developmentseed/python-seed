@@ -29,6 +29,15 @@ logger = logging.getLogger(__name__)
 empty_results = pd.DataFrame(
     columns=['Volume', 'L14', 'H14', '%K', '%D', 'Sell Entry', 'Sell Exit', 'Short', 'Buy Entry', 'Buy Exit', 'Long','Position', 'Market Returns', 'Strategy Returns'])
 
+
+def time_range_timeslots(time_slot_interval):
+    time_range = pd.date_range("00:00", "23:59", freq=time_slot_interval)
+    columns = [d.strftime("%H%M") for d in time_range]
+    columns.append('EOD')
+    return columns
+
+
+
 @dataclasses.dataclass(frozen=True)
 class RandomMatrix(object):
     drift_pc: int
@@ -36,17 +45,12 @@ class RandomMatrix(object):
     start_value : float
     start_date : str
     end_date : str
-    time_slot_interval : str
 
 
-    def to_df(self):
+
+    def to_df(self,columns):
         index = pd.date_range(start=self.start_date, end=self.end_date)
-
-        time_range = pd.date_range("00:00", "23:59", freq=self.time_slot_interval)
-        time_slots = [d.strftime("%H%M") for d in time_range]
-        time_slots.append('EOD')
-
-        base_array = np.zeros((len(index), len(time_slots)))
+        base_array = np.zeros((len(index), len(columns)))
         base_array[0].fill(self.start_value)
 
         for i in range(1, len(base_array)):
@@ -65,7 +69,7 @@ class RandomMatrix(object):
                     adj = adj * -1
                 row[i] = row[i - 1] + adj
 
-        return  pd.DataFrame(data=base_array, index=index, columns=time_slots)
+        return  pd.DataFrame(data=base_array, index=index, columns=columns)
 
 
 def toDate(str):
@@ -141,13 +145,14 @@ for key,value in dat_files.items():
 
 
 
+time_slots = time_range_timeslots("15min")
+
 series = RandomMatrix(
 drift_pc = 10,
 step_size=0.01,
 start_value=7,
 start_date='1/1/2015',
 end_date = '1/1/2019',
-time_slot_interval = "15min"
 )
 
 
@@ -155,12 +160,49 @@ time_slot_interval = "15min"
 lib_name = 'YahooFinance'
 
 arctic_connection.initialize_library(lib_name)
-import_pandas(arctic_connection[lib_name],series.to_df(),"SPOT.FTSE.0500",dhubcore.RevisionInfo(who="inital committer", what="initial commit", when = datetime.datetime.now()))
+import_pandas(arctic_connection[lib_name],series.to_df(time_slots),"SPOT.FTSE.0500",dhubcore.RevisionInfo(who="inital committer", what="initial commit", when = datetime.datetime.now()))
 
 
 lib_name = 'InvestCo'
 arctic_connection.initialize_library(lib_name)
-arctic_connection[lib_name].write("CLOSING.SP.EOD", series.to_df())
+arctic_connection[lib_name].write("CLOSING.SP.EOD", series.to_df(time_slots))
+
+
+
+lib_name = 'Poloniex'
+arctic_connection.initialize_library(lib_name)
+
+
+
+
+poloniex_spot_series = RandomMatrix(
+drift_pc = 10,
+step_size=0.01,
+start_value=0.37,
+start_date='1/6/2021',
+end_date = '1/1/2022',
+)
+
+
+
+for poltick in conf["poloniex_tickers"]:
+    for hour in range(23):
+        for min in [00,15,30,45]:
+            path  = f'snaps.{poltick}.{hour:02d}{min:02d}.lastTradePrice'
+            import_pandas(arctic_connection[lib_name], series.to_df(['value']), path,dhubcore.RevisionInfo(who="jeremyward", what="initial commit historic data",when=datetime.datetime.now()))
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

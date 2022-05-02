@@ -1,8 +1,9 @@
-from isharp.datahub.core import StorageMethod,MatrixHeader,Revision,AcquireContentReturnValue,MemStyles,RevisionInfo
+from isharp.datahub.core import StorageMethod,MatrixHeader,Revision,AcquireContentReturnValue,MemStyles,RevisionInfo,DirectoryNode
 from typing import List
 import logging
 import dataclasses
 import pandas as pd
+
 from io import StringIO
 logging.basicConfig(level=logging.INFO)
 from github import Github, InputGitAuthor
@@ -67,6 +68,11 @@ class GithubStorageMethod(StorageMethod):
                                             path="{}/{}".format(this_lib_name,symbol_with_slashes)))
 
         return ret_val
+
+
+    def dir(self,path)->DirectoryNode:
+        raise NotImplementedError
+
 
 
 

@@ -8,3 +8,6 @@ MANIFEST
 .DS_Store
 .coverage
 .cache
+/venv
+/.pytest_cache
+/.idea

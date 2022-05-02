@@ -1,10 +1,12 @@
+import logging
 from typing import List
-from isharp.datahub.core import DataBroker, MatrixHeader, Matrix, AcquireContentReturnValue, Revision
+from urllib.parse import urlparse
+
+from nameko.standalone.rpc import ClusterRpcProxy
+
+from isharp.datahub.core import DataBroker, MatrixHeader, Matrix, Revision, DirectoryNode
 from isharp.datahub.core import MatrixPreview
 from isharp.datahub.core import RevisionInfo
-from urllib.parse import urlparse
-from nameko.standalone.rpc import ClusterRpcProxy
-import logging
 
 logger = logging.getLogger(__name__)
 
@@ -45,6 +47,13 @@ class PooledBrokerConnection(DataBroker):
 
     def list(self) -> List[MatrixHeader]:
         return self.proxy.data_broker_service.list()
+
+    def dir(self,path) -> DirectoryNode:
+        logger.info("about to call proxy dir method for {}".format(path))
+        node:DirectoryNode = self.proxy.data_broker_service.dir(path)
+        logger.info("called proxy dir method")
+        return node
+
 
     def checkout(self, url: str, version_id=None) -> Matrix:
         return self.proxy.data_broker_service.checkout(url)
@@ -91,6 +100,7 @@ class BrokerConnectionPool(DataBroker):
         return self._connect(url).history(url)
 
 
+
     def view(self, url: str, version_id=None) -> Matrix:
         return self._connect(url).view(url, version_id)
 
@@ -109,6 +119,10 @@ class BrokerConnectionPool(DataBroker):
 
     def list(self, network_location):
         return self._acquire_connection(network_location).list()
+
+    def dir(self, path,network_location)->DirectoryNode:
+        return self._acquire_connection(network_location).dir(path)
+
 
 
 

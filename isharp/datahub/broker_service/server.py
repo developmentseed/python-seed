@@ -1,6 +1,6 @@
 from nameko.extensions import DependencyProvider
 from nameko.rpc import rpc, RpcProxy
-from isharp.datahub.core import  MatrixHeader,CombiBroker
+from isharp.datahub.core import  MatrixHeader,CombiBroker,DirectoryNode
 from typing import List
 from isharp.datahub.core import  DataBroker,Matrix,RevisionInfo,Revision
 import logging
@@ -18,7 +18,7 @@ class DataBrokerDelegate(DependencyProvider):
     def get_dependency(self, worker_ctx):
         print("getting data broker delegates")
         data_brokers =worker_ctx.container.config.get('data_brokers')
-        print("got {} data brokers".format(len(data_brokers)))
+        print("got {} data brokers from context".format(len(data_brokers)))
         return  CombiBroker(data_brokers)
 
 class DataBrokerService(DataBroker):
@@ -62,6 +62,14 @@ class DataBrokerService(DataBroker):
     def list(self) -> List[MatrixHeader]:
         logger.debug("delegate about to retrieve listing")
         return self.delegate.list()
+
+    @rpc
+    def dir(self,path) -> DirectoryNode:
+        logger.debug("delegate about to retrieve dir")
+        ret_val = self.delegate.dir(path)
+        logger.debug("delegate retrieved dir")
+        return ret_val
+
 
     @rpc
     def peek(self, url) -> MatrixHeader:

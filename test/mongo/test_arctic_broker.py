@@ -3,7 +3,7 @@ import test.testutil.mongo_arctic_utils as marc
 import test.testutil.log_utils as lu
 import test.testutil.pandas_utils as pu
 from isharp.datahub.arctic_broker.broker_impl.arctic_data_broker import ArcticBroker
-from isharp.datahub.arctic_broker.broker_impl.arctic_storage_method import  add_revision_to_metadata,get_revisions_from_metadata,history_tag,import_pandas
+from isharp.datahub.arctic_broker.broker_impl.arctic_storage_method import  add_revision_to_metadata,get_revisions_from_metadata,history_tag,import_pandas,TreeBuilder
 from arctic import Arctic
 import pandas as pd
 import numpy as np
@@ -50,7 +50,6 @@ class TestArcticBroker(unittest.TestCase):
         self.assertEqual("2", hist[1].id)
         matrix = broker.checkout(url)
 
-
         num_rows_original_version_2 = len(matrix.content.index)
         self.assertEquals(1, num_rows_original_version_2 - num_rows_original_version_1)
         broker.release(matrix)
@@ -71,6 +70,95 @@ class TestArcticBroker(unittest.TestCase):
         result = broker.list()
         self.assertEquals(2, len(result))
         self.assertEqual("{}/ES/SETL/EOD".format(self.library_name),result[0].path)
+
+
+    def test_dir(self):
+        broker = ArcticBroker(self.arctic)
+
+        dirResults =broker.dir("")
+        self.assertEqual(True,self.library_name in dirResults.children)
+        self.assertEquals(0,len(dirResults.path))
+
+        result_node = broker.dir("{}/ES/SETL".format(self.library_name))
+        self.assertListEqual(result_node.path,[self.library_name,'ES','SETL'])
+        self.assertTrue("EOD" in result_node.children)
+
+
+        result_node = broker.dir("{}".format(self.library_name))
+        self.assertListEqual(result_node.path,[self.library_name])
+        self.assertTrue("ES" in result_node.children)
+
+        result_node = broker.dir("{}/ES".format(self.library_name))
+        self.assertListEqual([self.library_name,'ES'],result_node.path)
+        self.assertEquals(len(result_node.children),1)
+        self.assertTrue("SETL" in result_node.children)
+
+
+
+
+
+
+    def test_tree_builder_with_jagged_tree(self):
+        lib_name = 'lib'
+        ticker_list = [
+            "A.1.5.ii",
+            "A.1.5.iii",
+            "A.1.5.iv",
+            "A.2.1",
+            "B"
+        ]
+        t = TreeBuilder(ticker_list, lib_name, 'A')
+        result_node = t.build();
+
+        self.assertListEqual(result_node.path, [lib_name,'A'])
+        self.assertListEqual(result_node.children, ['1', '2'])
+
+        t = TreeBuilder(ticker_list, lib_name, 'B')
+        result_node = t.build();
+        self.assertListEqual(result_node.path, [lib_name,'B'])
+        self.assertListEqual(result_node.children, [])
+
+
+        t = TreeBuilder(ticker_list, lib_name, 'A/2')
+        result_node = t.build();
+
+        self.assertListEqual(result_node.path, [lib_name,'A','2'])
+        self.assertListEqual(result_node.children, ['1'])
+
+        t = TreeBuilder(ticker_list, lib_name, 'A/1')
+        result_node = t.build();
+        self.assertListEqual(result_node.path, [lib_name,'A','1'])
+        self.assertListEqual(result_node.children, ['5'])
+
+
+
+
+    def test_tree_builder(self):
+        lib_name = 'lib'
+        ticker_list = []
+        for tierA in ['A','B','C']:
+            for tierB in ["1","2","3","4","5"]:
+                for tierC in ["i","ii","iii"]:
+                    ticker_list.append("{}.{}.{}".format(tierA,tierB,tierC))
+
+        t = TreeBuilder(ticker_list,lib_name,'')
+        result_node  =  t.build()
+
+        self.assertListEqual(result_node.path,[lib_name])
+        self.assertListEqual(result_node.children,['A','B','C'])
+
+
+        t = TreeBuilder(ticker_list,lib_name,'A')
+        result_node = t.build()
+        self.assertListEqual(result_node.path,[lib_name,'A'])
+        self.assertListEqual(result_node.children, ["1","2","3","4","5"])
+
+
+
+        t = TreeBuilder(ticker_list,lib_name,'A/1')
+        result_node = t.build()
+        self.assertListEqual(result_node.path,[lib_name,"A","1"])
+        self.assertListEqual(result_node.children, ["i","ii","iii"])
 
 
     def test_peek_with_existing_file(self):

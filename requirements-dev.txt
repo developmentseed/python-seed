@@ -10,4 +10,5 @@ pyyaml
 pymongo
 expandvars
 PyGithub
+grpcio
 

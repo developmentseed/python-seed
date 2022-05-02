@@ -1,15 +1,39 @@
 from isharp.datahub.broker_client.remote_proxy import BrokerConnectionPool
 
+
 from flask import Flask, render_template
 import os
+import isharp.datahub.yaml_support  as iYaml
 import socket
-
+from isharp.datahub.core import CombiBroker, direct_combi_broker
 import json
+import argparse
 hostname=socket.gethostname()
 from flask import request
 
+iYaml.set_up_unsafe_loader()
+import sys
+
+
+
+
+
 templates_dir =  os.getenv('isharp_web_templates', 'templates')
 static_dir = os.getenv('isharp_web_static', '/isharp-core/docs')
+
+parser = argparse.ArgumentParser(
+    description='Find yaml file')
+parser.add_argument('--directconfig', help='yaml config file name')
+args = parser.parse_known_args(sys.argv)
+iYaml.set_up_unsafe_loader()
+
+
+databroker = direct_combi_broker()
+
+
+if databroker is None:
+    databroker = CombiBroker()
+
 
 tableContent = [
 
@@ -56,12 +80,15 @@ tableContent = [
 print ("templates_dir: {}".format(templates_dir))
 print ("static_dir: {}  ? {}".format(static_dir,os.path.exists(static_dir)))
 
+
 app = Flask(__name__,template_folder=templates_dir, static_folder=static_dir)
 app.config["CACHE_TYPE"] = 'null'
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 hub_host =  os.getenv('isharp_hub_host', 'localhost:5672')
 isharp_dev_hostname =  os.getenv('isharp_dev_hostname', 'isharpdev')
+
+
 
 @app.route('/')
 def static_content():
@@ -71,20 +98,33 @@ def static_content():
 @app.route('/datahub')
 def listing():
     brokers = [["Demo Broker","Prod parallel demo broker"],["UAT","UAT broker"],["DEV","Dev broker"]]
-    listings = []
-    with BrokerConnectionPool() as broker:
-        for thisItem in broker.list(hub_host):
-            listings.append(thisItem)
-    return render_template('datahub_index.html',hostname="rabbit", my_list=listings,hub_host="Demo  Data Broker", brokers=brokers)
+    dn = None
+    dn = databroker.dir("")
+    return render_template('datahub_directory.html',directory_node=dn)
+
+
+@app.route('/datahub/dir/<path:path>', methods=['GET'])
+def dir(path):
+
+    dn = databroker.dir(path)
+    if (dn.children):
+        return render_template('datahub_directory.html',directory_node=dn)
+    else:
+        return _view_page(databroker,'/'.join(dn.path),'arctic')
+
 
 
 @app.route('/datahub/view/<path:path>', methods=['GET'])
 def view(path):
-    databroker = BrokerConnectionPool()
     protocol = request.args.get('protocol')
     url = "{}://{}/{}".format(protocol,hub_host,path)
-    mtx = databroker.view(url)
+    return _view_page(databroker,path,protocol)
 
+
+
+def _view_page(databroker,path,protocol):
+    url = "{}://{}/{}".format(protocol,hub_host,path)
+    mtx = databroker.view(url)
     row_data = []
     dict_array = mtx.content.to_dict(orient='records')
     for idx, row in enumerate(dict_array):

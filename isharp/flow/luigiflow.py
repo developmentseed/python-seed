@@ -2,6 +2,8 @@ import luigi
 import time
 import os
 from multiprocessing import Process
+
+from isharp.datahub.core import direct_combi_broker
 from isharp.flow.core import CalculationTask
 from isharp.flow.neo4jflow.py2neoflow import  calcTasks
 from isharp.datahub.broker_client.remote_proxy import  BrokerConnectionPool
@@ -88,7 +90,10 @@ graph_host = os.getenv("graph_host", "localhost")
 datahub_host = os.getenv("datahub_host", "localhost")
 
 if __name__ == '__main__':
-    broker = BrokerConnectionPool()
+
+    broker = direct_combi_broker()
+    if (broker is None):
+        broker = BrokerConnectionPool()
     for calc_task in calcTasks(datahub_host,"5672", graph_host ):
         task = buildTask(calc_task,broker)
         p= Process(target=submit, args=(task,))

@@ -1,0 +1,32 @@
+{% extends "isharp_base.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block side_menu%}
+
+    <H5>Directory of {{ directory_node.display_name()}}</H5>
+
+    {% if directory_node.has_parent_url() %}
+        {% set parent_url="/datahub/dir/{}".format(directory_node.parent_url()) %}
+        <p><a href="{{parent_url}}">..</a> </p>
+    {% endif %}
+    {% for n in directory_node.children %}
+        {% set url="/datahub/dir/{}".format(directory_node.child_url(n)) %}
+        <p><a href="{{url}}">{{n}}</a> </p>
+    {% endfor %}
+    {% endblock %}
+    {% block center_content %}
+
+    <div class="container">
+        {% if directory_node.children %}
+        <H3>Broker Listing: {{hostname}}</H3>
+        {% endif %}
+    </div>
+
+
+    {% endblock %}
+
+
+
+

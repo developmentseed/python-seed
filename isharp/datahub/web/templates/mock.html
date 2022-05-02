@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <link rel="stylesheet" href="style.css"/>
+    <title>{% block title %}{% endblock %} - My Webpage</title>
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+
+    <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.min.noStyle.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-grid.css">
+    <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-theme-balham.css">
+
+
+    <style>
+
+   body {
+            font-family: "Arial Black";
+            color: #555555;
+            background: lightgrey;
+        }
+
+
+        .top_level_layout {
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+
+        }
+
+        .side_handle {
+            background-color: darkgray;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            border-right-style: solid;
+            border-color: black;
+        }
+
+        .functional_heading {
+            margin-top: 3vh;
+            writing-mode: vertical-rl;
+            text-orientation: sideways;
+            font-size: 6em;
+            flex-grow: 0;
+        }
+
+        .logo_ish {
+            color: white;
+            font-size: 6em;
+            flex-grow: 0;
+            border-bottom-style: solid;
+            border-color: black;
+        }
+
+        .sidebar_content {
+            width: 35vw;
+            border-color: black;
+            border-right-style: solid ;
+        }
+        .main_content {
+            background-color: white;
+            width:100vw;
+        }
+
+
+
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="top_level_layout">
+
+    <div class="side_handle">
+        <div class="logo_ish">i#</div>
+        <div class="functional_heading">Datahub</div>
+
+    </div>
+
+
+    <span class="sidebar_content"> sidebar</span>
+
+
+    <div class="main_content">
+            <div id="content">center_content</div>
+    </div>
+
+</div>
+</body>
+
+
+</html>

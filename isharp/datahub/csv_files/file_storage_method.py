@@ -1,4 +1,4 @@
-from isharp.datahub.core import StorageMethod, MatrixHeader, Revision,MemStyles,AcquireContentReturnValue
+from isharp.datahub.core import StorageMethod, MatrixHeader, Revision,MemStyles,AcquireContentReturnValue,DirectoryNode
 import pandas as pd
 import os
 from typing import List
@@ -74,3 +74,6 @@ class FileStorageMethod(StorageMethod):
 
     def history(self,matrix_url)->List[Revision]:
         return []
+
+    def dir(selfself,path)->DirectoryNode:
+        return None
