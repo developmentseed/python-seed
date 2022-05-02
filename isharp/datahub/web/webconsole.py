@@ -10,11 +10,20 @@ import json
 import argparse
 hostname=socket.gethostname()
 from flask import request
-
+import yaml
 iYaml.set_up_unsafe_loader()
 import sys
 
 
+databroker = None
+
+direct_broker_yaml = os.environ.get('directconfig')
+if direct_broker_yaml:
+    yamldoc = yaml.unsafe_load(open(direct_broker_yaml,"r"))
+    databroker = yamldoc['data_brokers']['file']
+
+
+# databroker = direct_combi_broker()
 
 
 
@@ -28,7 +37,7 @@ args = parser.parse_known_args(sys.argv)
 iYaml.set_up_unsafe_loader()
 
 
-databroker = direct_combi_broker()
+
 
 
 if databroker is None:
@@ -105,19 +114,18 @@ def listing():
 
 @app.route('/datahub/dir/<path:path>', methods=['GET'])
 def dir(path):
-
+    print(path)
     dn = databroker.dir(path)
     if (dn.children):
         return render_template('datahub_directory.html',directory_node=dn)
     else:
-        return _view_page(databroker,'/'.join(dn.path),'arctic')
+        return _view_page(databroker,'/'.join(dn.path),'file')
 
 
 
 @app.route('/datahub/view/<path:path>', methods=['GET'])
 def view(path):
     protocol = request.args.get('protocol')
-    url = "{}://{}/{}".format(protocol,hub_host,path)
     return _view_page(databroker,path,protocol)
 
 

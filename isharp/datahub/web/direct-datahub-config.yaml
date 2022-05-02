@@ -1,13 +1,13 @@
 serializer: pickle
 
 data_brokers:
-#    file:
-#      !SimpleFileBroker
-#         root_directory: /Users/jerem/dev/ipp-core/demo_data/demo_broker
-#
+    file:
+      !SimpleFileBroker
+         root_directory: c:\Users\jerem\dev\ipp-core\demo_data\sakura_market_data
+
     arctic:
-      !ArcticBroker
-        mongo_host: localhost
+#      !ArcticBroker
+#        mongo_host: localhost
 
 
 

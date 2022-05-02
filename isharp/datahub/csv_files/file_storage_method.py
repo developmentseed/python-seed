@@ -75,5 +75,18 @@ class FileStorageMethod(StorageMethod):
     def history(self,matrix_url)->List[Revision]:
         return []
 
-    def dir(selfself,path)->DirectoryNode:
-        return None
+    def dir(self,path)->DirectoryNode:
+        s = [self.base_directory,path]
+        dir_path = os.path.join(*s)
+        children = []
+        if (os.path.isfile(dir_path)):
+            path_array = [fname for fname in path.split("/") if len(fname) > 0]
+            return DirectoryNode(path=path_array, children= children )
+        else:
+            for dir in os.listdir(dir_path):
+                if (dir != 'index.txt'):
+                    children.append(dir)
+            pathList = [ fname  for fname in path.split("/") if len(fname)>0]
+            return DirectoryNode(path=pathList, children= children )
+
+

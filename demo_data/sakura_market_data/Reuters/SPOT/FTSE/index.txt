@@ -1,0 +1,3 @@
+path,name,description
+Reuters/SPOT/FTSE/0500.csv,0500.csv,0500  FTSE spot prices
+Reuters/SPOT/FTSE/1500.csv,1500.csv, 1500 FTSE spot prices

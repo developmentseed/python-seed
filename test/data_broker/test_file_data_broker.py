@@ -37,6 +37,39 @@ class TestFileDataBroker(unittest.TestCase):
         self.assertEqual("file_name_1.csv",m.matrix_header.name)
         self.assertEqual("subdir_1/file_name_1.csv", m.matrix_header.path)
 
+    def test_dir(self):
+        dirResults = self.broker.dir("")
+        self.assertEquals(0,len(dirResults.path))
+        self.assertEquals(4,len(dirResults.children))
+        self.assertTrue("file_name_1.csv" in dirResults.children)
+        self.assertTrue("file_name_2.csv" in dirResults.children)
+        self.assertTrue("subdir_1" in dirResults.children)
+        self.assertTrue("subdir_2" in dirResults.children)
+
+        dirResults = self.broker.dir("subdir_1")
+        self.assertEquals(1, len(dirResults.path))
+        self.assertEquals(4, len(dirResults.children))
+        self.assertTrue("file_name_1.csv" in dirResults.children)
+        self.assertTrue("file_name_2.csv" in dirResults.children)
+        self.assertTrue("subdir_1" in dirResults.children)
+        self.assertTrue("subdir_2" in dirResults.children)
+
+        dirResults = self.broker.dir("subdir_2/subdir_1")
+        self.assertEquals(2, len(dirResults.path))
+        self.assertEquals(2, len(dirResults.children))
+        self.assertTrue("file_name_1.csv" in dirResults.children)
+        self.assertTrue("file_name_2.csv" in dirResults.children)
+
+        dirResults = self.broker.dir("subdir_2/subdir_1/file_name_1.csv")
+        self.assertEquals(3, len(dirResults.path))
+        self.assertTrue(len(dirResults.children)==0)
+
+
+
+
+
+
+
 
 
     def test_peek_with_existing_file(self):
