@@ -1,0 +1,56 @@
+NIKKEI:
+  caption: Nikkei 250 index future
+  tradingCenter: TOK
+  feeds:
+    - Reuters:
+        - EOD:
+        - snap:
+            - '0500'
+            - '0900'
+            - '1530'
+        - twap:
+            - '1230_2MW_5SF'
+    - Bloomberg:
+        - EOD:
+            - 'EOD'
+        - snap:
+        - twap:
+
+
+RUSS:
+  caption: Russ 500 index future
+  tradingCenter: CMG
+  feeds:
+    - Reuters:
+        - EOD:
+        - snap:
+            - '0500'
+            - '0900'
+            - '1530'
+        - twap:
+            - '1230_2MW_5SF'
+    - Bloomberg:
+        - EOD:
+            - 'EOD'
+        - snap:
+        - twap:
+
+
+
+FTSE:
+  caption: FTSE 100 index future
+  tradingCenter: LON
+  feeds:
+    - Reuters:
+        - EOD:
+        - snap:
+            - '0500'
+            - '0900'
+            - '1530'
+        - twap:
+            - '1230_2MW_5SF'
+    - Bloomberg:
+        - EOD:
+            - 'EOD'
+        - snap:
+        - twap:

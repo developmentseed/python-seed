@@ -8,3 +8,4 @@ neo4j
 py2neo
 numba
 PyGithub
+neomodel

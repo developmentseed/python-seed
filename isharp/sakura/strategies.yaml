@@ -1,0 +1,59 @@
+G3_LongOnly_Returns:
+  components:
+      - 'RUSS'
+      - 'FTSE'
+      - 'NIKKEI'
+
+  workflows:
+      EOD :
+        workphases:
+          Data_Acquisition:
+            tasks:
+              Load_Market_Data:
+                requires:
+                  mkt_data:
+                    NIKKEI:
+                      source: 'Blooomberg'
+                      type: 'EOD'
+                      t: -1
+
+                    RUSS:
+                      source: 'Blooomberg'
+                      type: 'EOD'
+                      t: -1
+
+                    FTSE:
+                      source: 'Blooomberg'
+                      type: 'EOD'
+                      t: -1
+                produces:
+                  mkt: 'G3_EOD_PREPARED_MKT'
+
+
+
+          Eod_Calcs:
+            tasks:
+              Eod_Official_Calc:
+                requires:
+                produces:
+                  - 'G3_LOR_EOD_VERIFICATION'
+
+
+              Eod_Verification_Calc:
+                requires:
+                  mkt_data:
+                    - 'NIK'
+                    - 'BLOOMBERG'
+                    - 'EOD'
+                  t: -1
+
+                produces:
+                  - 'G3_LOR_EOD_VERIFICATION'
+
+
+
+
+
+
+
+
