@@ -15,7 +15,7 @@ class TimeSeries(Matrix):
 
 
 class Source(StructuredNode):
-    code = StringProperty()
+    code = StringProperty(required=True)
     EOD = RelationshipTo(TimeSeries,'EOD')
     twap=RelationshipTo(TimeSeries,'TWAP')
     snap=RelationshipTo(TimeSeries,'SNAP')
@@ -37,6 +37,7 @@ class Instrument(StructuredNode):
 class Task(StructuredNode):
     name=StringProperty(unique_index=False,required=True)
     nextTask = RelationshipTo(StructuredNode,"next")
+    requires = RelationshipTo(StructuredNode,"requires")
 
 
 

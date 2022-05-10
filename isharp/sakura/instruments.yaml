@@ -12,7 +12,7 @@ NIKKEI:
             - '1230_2MW_5SF'
     - Bloomberg:
         - EOD:
-            - 'EOD'
+            - 'LAST_TRD_PRICE'
         - snap:
         - twap:
 

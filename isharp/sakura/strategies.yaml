@@ -11,21 +11,6 @@ G3_LongOnly_Returns:
             tasks:
               Load_Market_Data:
                 requires:
-                  mkt_data:
-                    NIKKEI:
-                      source: 'Blooomberg'
-                      type: 'EOD'
-                      t: -1
-
-                    RUSS:
-                      source: 'Blooomberg'
-                      type: 'EOD'
-                      t: -1
-
-                    FTSE:
-                      source: 'Blooomberg'
-                      type: 'EOD'
-                      t: -1
                 produces:
                   mkt: 'G3_EOD_PREPARED_MKT'
 
@@ -35,6 +20,25 @@ G3_LongOnly_Returns:
             tasks:
               Eod_Official_Calc:
                 requires:
+                  mkt_data:
+                    NIKKEI:
+                     path:
+                        - 'Bloomberg'
+                        - 'EOD'
+                     t: -1
+                    RUSS:
+                      path:
+                        - 'Bloomberg'
+                        - 'EOD'
+                      t: 0
+
+                    FTSE:
+                      path:
+                        - 'Bloomberg'
+                        - 'EOD'
+                      t: 0
+
+
                 produces:
                   - 'G3_LOR_EOD_VERIFICATION'
 
@@ -42,10 +46,22 @@ G3_LongOnly_Returns:
               Eod_Verification_Calc:
                 requires:
                   mkt_data:
-                    - 'NIK'
-                    - 'BLOOMBERG'
-                    - 'EOD'
-                  t: -1
+                    NIKKEI:
+                     path:
+                        - 'Bloomberg'
+                        - 'EOD'
+                     t: -1
+                    RUSS:
+                      path:
+                        - 'Bloomberg'
+                        - 'EOD'
+                      t: 0
+
+                    FTSE:
+                      path:
+                        - 'Bloomberg'
+                        - 'EOD'
+                      t: 0
 
                 produces:
                   - 'G3_LOR_EOD_VERIFICATION'

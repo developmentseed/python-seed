@@ -14,6 +14,17 @@ def deleteData():
     db.cypher_query(query)
 
 
+def find_mkt_data_point(mkt_data_key, mkt_data_path):
+    instrument_node = sakuragraphmodel.Instrument.nodes.get(code= mkt_data_key)
+    feed_node = instrument_node.feed.search(code=mkt_data_path[0])
+    if mkt_data_path[1] =='EOD':
+        return feed_node[0].EOD.all()[0]
+    else:
+        return None
+
+    pass
+
+
 def build_strategies_from_yaml(file_name):
     with open(os.path.join(yaml_dir, file_name)) as f:
         strats = yaml.load(f, Loader=yaml.FullLoader)
@@ -41,6 +52,12 @@ def build_strategies_from_yaml(file_name):
                     for task_key,task_value in wkflow_phase_value['tasks'].items():
                         task_node = sakuragraphmodel.Task(name=task_key).save()
                         work_phase_node.tasks.connect(task_node)
+                        #find the mkt_data dependencies                         
+                        if task_value['requires'] is not None:
+                            for mkt_data_key, market_data_value in task_value['requires']['mkt_data'].items():
+                                data_point = find_mkt_data_point(mkt_data_key,market_data_value['path'])
+                                if data_point is not None:
+                                    task_node.requires.connect(data_point)
 
 
 
