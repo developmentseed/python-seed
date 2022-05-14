@@ -7,6 +7,7 @@ import QuantLib as ql
 import numpy as np
 import pandas as pd
 
+
 # This script will DELETE the contents of the existing neo4j server that is  pointed to
 # and and populate it with the instruments, strategies and trading centers that you will
 # find in the three yaml files in the same directory.
