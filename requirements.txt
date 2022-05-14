@@ -9,3 +9,4 @@ py2neo
 numba
 PyGithub
 neomodel
+QuantLib

@@ -1,12 +1,33 @@
 import os
+import datetime
 from neomodel import config,db
 import yaml
 from isharp.sakura import sakuragraphmodel
+import QuantLib as ql
+import numpy as np
+import pandas as pd
+
+# This script will DELETE the contents of the existing neo4j server that is  pointed to
+# and and populate it with the instruments, strategies and trading centers that you will
+# find in the three yaml files in the same directory.
+#
+# Please run with the following environmental values:
+#
+#     NEO4J_USERNAME =<user>
+#     NEO4J_PASSWORD =<password>
+#     NEO4J_BOLT_URL=bolt: //localhost: 7687
+#
+#
+from isharp.sakura.randomwalk import randomwalk1D
 
 yaml_dir = os.path.dirname(os.path.realpath(__file__))
+
 trading_center_nodes = {}
 instrument_nodes = {}
-db.set_connection("bolt://neo4j:guest@localhost:7687")
+
+bolt_url = "bolt://{}:{}@localhost:7687".format(os.getenv('NEO4J_USERNAME'),os.getenv('NEO4J_PASSWORD'))
+
+db.set_connection(bolt_url)
 
 def deleteData():
     print ('Delete all nodes and relationships...')
@@ -78,9 +99,27 @@ def build_instruments_from_yaml(file_name):
                             for capt_key,capt_list in capture.items():
                                 if (capt_list is not None):
                                     for capture_item in capt_list:
-                                        source_node.__getattribute__(capt_key).connect(sakuragraphmodel.TimeSeries(name=capture_item).save())
+                                        time_series = sakuragraphmodel.TimeSeries(name=capture_item).save()
+                                        source_node.__getattribute__(capt_key).connect(time_series)
+                                        next_revision = sakuragraphmodel.Revision(version='1', timestamp=datetime.datetime.now()).save()
+                                        time_series.history.connect(next_revision)
+                                        series = pd.date_range(start='2022-05-01', end='2022-05-07', freq='D')
+                                        #values = randomwalk1D(len(series)-1)
+                                        values = np.random.randint(0,43,size=len(series))
+                                        df = pd.DataFrame({'value': values}, index=series)
+                                        row_nodes = []
+                                        for index, row in df.iterrows():
+                                                new_row = sakuragraphmodel.Row(date=index,value=row['value']).save()
+                                                if (len(row_nodes)>0):
+                                                    row_nodes[-1].next.connect(new_row)
+                                                row_nodes.append(new_row)
 
+                                        next_revision.capture.connect(row_nodes[0])
 
+                                            # print (row['value'])
+                                            # print (index)
+                                        #series['nums'] =
+                                        # series['nums'] = randomwalk1D(len(series))
 
 
 def build_trading_ceters_from_yaml(file_name):
@@ -91,11 +130,30 @@ def build_trading_ceters_from_yaml(file_name):
 
 
 
+def build_calendar():
+    calendar_node = sakuragraphmodel.Calendar().save()
+    series = pd.date_range(start='2015-01-01', end='2015-12-31', freq='D')
+    current_date = series[0]
+    current_date_node = sakuragraphmodel.Date(date=series[0]).save()
+    calendar_node.next.connect(current_date_node)
+
+    for d in series[1:]:
+        next_date_node = sakuragraphmodel.Date(date=d).save()
+        current_date_node.next.connect(next_date_node)
+        current_date_node = next_date_node
+
+
+
+
+
+
+
 
 deleteData()
-build_trading_ceters_from_yaml('tradingcenters.yaml')
-build_instruments_from_yaml('instruments.yaml')
-build_strategies_from_yaml('strategies.yaml')
+build_calendar()
+# build_trading_ceters_from_yaml('tradingcenters.yaml')
+# build_instruments_from_yaml('instruments.yaml')
+# build_strategies_from_yaml('strategies.yaml')
 
 
 

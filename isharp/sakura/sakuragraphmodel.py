@@ -1,5 +1,28 @@
-from neomodel import (config, StructuredNode, StringProperty, IntegerProperty,
-    UniqueIdProperty, RelationshipTo)
+from neomodel import config, StructuredNode, StringProperty, IntegerProperty,DateProperty, FloatProperty,DateTimeProperty, RelationshipTo
+
+class Calendar(StructuredNode):
+    next = RelationshipTo(StructuredNode,"NEXT")
+
+
+
+class Date(StructuredNode):
+    date = DateProperty(required=True)
+    next = RelationshipTo(StructuredNode,"NEXT")
+
+
+
+class Row(StructuredNode):
+    date = DateProperty(required=True)
+    value= FloatProperty(required=True)
+    next = RelationshipTo(StructuredNode,"NEXT")
+
+class Revision(StructuredNode):
+    version = StringProperty(required=True)
+    timestamp = DateTimeProperty(required=True)
+    capture = RelationshipTo(Row, 'CAPTURE')
+    backload = RelationshipTo(Row,'BACKLOAD')
+    correction = RelationshipTo(Row,'CORRECTION')
+    next = RelationshipTo(StructuredNode,'NEXT')
 
 
 class TradingCenter(StructuredNode):
@@ -10,8 +33,13 @@ class TradingCenter(StructuredNode):
 class Matrix(StructuredNode):
     name=StringProperty(unique_index=True)
 
+
+
+
 class TimeSeries(Matrix):
-    pass
+    history = RelationshipTo(Revision,'HISTORY')
+
+
 
 
 class Source(StructuredNode):
