@@ -1,33 +1,53 @@
 from neomodel import config, StructuredNode, StringProperty, IntegerProperty,DateProperty, FloatProperty,DateTimeProperty, RelationshipTo
 
 class Calendar(StructuredNode):
+    name = StringProperty(default="CALENDAR")
     next = RelationshipTo(StructuredNode,"NEXT")
 
 
 
 class Date(StructuredNode):
+    caption=StringProperty(required=True)
     date = DateProperty(required=True)
     next = RelationshipTo(StructuredNode,"NEXT")
 
 
+
+
+
+class WeekDay(StructuredNode):
+    next = RelationshipTo(StructuredNode,'NEXT')
+    calendar_date = RelationshipTo(Date,'ON')
 
 class Row(StructuredNode):
-    date = DateProperty(required=True)
     value= FloatProperty(required=True)
     next = RelationshipTo(StructuredNode,"NEXT")
+    on = RelationshipTo(WeekDay,"ON")
 
 class Revision(StructuredNode):
     version = StringProperty(required=True)
     timestamp = DateTimeProperty(required=True)
+    comment = StringProperty(required=True)
+    userId = StringProperty(required=True)
     capture = RelationshipTo(Row, 'CAPTURE')
     backload = RelationshipTo(Row,'BACKLOAD')
     correction = RelationshipTo(Row,'CORRECTION')
     next = RelationshipTo(StructuredNode,'NEXT')
 
 
+
+class BizDay(WeekDay):
+    pass
+
+class Holiday(WeekDay):
+    pass
+
 class TradingCenter(StructuredNode):
     code = StringProperty(unique_index=True, required=True)
     tz = StringProperty(required=True)
+    next = RelationshipTo(WeekDay,'NEXT')
+
+
 
 
 class Matrix(StructuredNode):
@@ -37,7 +57,7 @@ class Matrix(StructuredNode):
 
 
 class TimeSeries(Matrix):
-    history = RelationshipTo(Revision,'HISTORY')
+    next = RelationshipTo(Revision,'NEXT')
 
 
 

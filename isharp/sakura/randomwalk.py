@@ -1,3 +1,4 @@
+
 import numpy as np
 import matplotlib.pyplot as plt
 import random
@@ -21,3 +22,9 @@ def randomwalk1D(n):
         # Keep track of the positions
         positions.append(y)
     return  positions
+
+
+
+
+
+

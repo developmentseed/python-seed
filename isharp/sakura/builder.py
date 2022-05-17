@@ -21,6 +21,12 @@ import pandas as pd
 #
 from isharp.sakura.randomwalk import randomwalk1D
 
+series = pd.date_range(start='2022-05-03', end='2022-06-07', freq='D')
+trading_calendars = [['TOK', 'Japan/Tokyo', ql.Japan(), []],
+                     ['LON', 'Europe/London', ql.UnitedKingdom(), []],
+                     ['CMG', 'US/New York', ql.UnitedStates(), []]
+                     ]
+
 yaml_dir = os.path.dirname(os.path.realpath(__file__))
 
 trading_center_nodes = {}
@@ -46,6 +52,9 @@ def find_mkt_data_point(mkt_data_key, mkt_data_path):
 
     pass
 
+
+def find_trading_calendar(calendar_code):
+    return next(obj for obj in trading_calendars if obj[0]==calendar_code)
 
 def build_strategies_from_yaml(file_name):
     with open(os.path.join(yaml_dir, file_name)) as f:
@@ -90,7 +99,8 @@ def build_instruments_from_yaml(file_name):
         instrs = yaml.load(f, Loader=yaml.FullLoader)
         for key, value in instrs.items():
             newNode = sakuragraphmodel.Instrument(code=key, caption = value['caption']).save()
-            newNode.tradingCenter.connect(trading_center_nodes[value['tradingCenter']])
+            trading_center_code = value['tradingCenter']
+            newNode.tradingCenter.connect(trading_center_nodes[trading_center_code])
             instrument_nodes[key] = newNode
             for  feed_map in value['feeds']:
                 for (key,value) in feed_map.items():
@@ -102,25 +112,27 @@ def build_instruments_from_yaml(file_name):
                                     for capture_item in capt_list:
                                         time_series = sakuragraphmodel.TimeSeries(name=capture_item).save()
                                         source_node.__getattribute__(capt_key).connect(time_series)
-                                        next_revision = sakuragraphmodel.Revision(version='1', timestamp=datetime.datetime.now()).save()
-                                        time_series.history.connect(next_revision)
-                                        series = pd.date_range(start='2022-05-01', end='2022-05-07', freq='D')
-                                        #values = randomwalk1D(len(series)-1)
-                                        values = np.random.randint(0,43,size=len(series))
-                                        df = pd.DataFrame({'value': values}, index=series)
-                                        row_nodes = []
-                                        for index, row in df.iterrows():
-                                                new_row = sakuragraphmodel.Row(date=index,value=row['value']).save()
-                                                if (len(row_nodes)>0):
-                                                    row_nodes[-1].next.connect(new_row)
-                                                row_nodes.append(new_row)
+                                        #iterate through trading days for this trading center
+                                        trading_days = find_trading_calendar(trading_center_code)[3]
 
-                                        next_revision.capture.connect(row_nodes[0])
+                                        previous_rev = time_series
+                                        for idx,trading_day in enumerate(trading_days):
+                                            if trading_day.__class__.__name__=='BizDay':
+                                                this_revision = sakuragraphmodel.Revision(version=idx,timestamp = datetime.datetime.now(),comment="added by auto loader", userId="loader").save()
+                                                previous_rev.next.connect(this_revision)
+                                                previous_rev = this_revision
+                                                row_node = sakuragraphmodel.Row(value=0.89).save()
+                                                this_revision.capture.connect(row_node)
+                                                row_node.on.connect(trading_day)
 
-                                            # print (row['value'])
-                                            # print (index)
-                                        #series['nums'] =
-                                        # series['nums'] = randomwalk1D(len(series))
+
+
+
+
+
+
+
+
 
 
 def build_trading_ceters_from_yaml(file_name):
@@ -132,19 +144,40 @@ def build_trading_ceters_from_yaml(file_name):
 
 
 def build_calendar():
+
+
+    calendar_date_nodes = []
     calendar_node = sakuragraphmodel.Calendar().save()
-    series = pd.date_range(start='2015-01-01', end='2015-12-31', freq='D')
-    current_date = series[0]
-    current_date_node = sakuragraphmodel.Date(date=series[0]).save()
-    calendar_node.next.connect(current_date_node)
-
-    for d in series[1:]:
-        next_date_node = sakuragraphmodel.Date(date=d).save()
-        current_date_node.next.connect(next_date_node)
-        current_date_node = next_date_node
 
 
+    for idx,d in enumerate(series):
+        current_date_node = sakuragraphmodel.Date(date=series[idx], caption=d.strftime('%a%d%b%y')).save()
+        calendar_date_nodes.append(current_date_node)
+        if idx==0:
+            calendar_node.next.connect(current_date_node)
+        else:
+            calendar_date_nodes[idx-1].next.connect(current_date_node)
 
+        ql_date = ql.Date(d.day, d.month, d.year)
+
+
+        for trading_calendar in trading_calendars:
+
+            is_weekend = trading_calendar[2].isWeekend(ql_date.weekday())
+            if is_weekend:
+                continue
+            if idx==0:
+                trading_center_node = sakuragraphmodel.TradingCenter(code=trading_calendar[0],tz=trading_calendar[1]).save()
+                trading_center_nodes[trading_calendar[0]]=trading_center_node
+            is_busday = trading_calendar[2].isBusinessDay(ql_date)
+            bus_day_node = sakuragraphmodel.BizDay().save() if is_busday else sakuragraphmodel.Holiday().save()
+            if len(trading_calendar[3])==0:
+                trading_center_node.next.connect(bus_day_node)
+            else:
+                trading_calendar[3][-1].next.connect(bus_day_node)
+
+            bus_day_node.calendar_date.connect(calendar_date_nodes[idx])
+            trading_calendar[3].append(bus_day_node)
 
 
 
@@ -153,7 +186,7 @@ def build_calendar():
 deleteData()
 build_calendar()
 # build_trading_ceters_from_yaml('tradingcenters.yaml')
-# build_instruments_from_yaml('instruments.yaml')
+build_instruments_from_yaml('instruments.yaml')
 # build_strategies_from_yaml('strategies.yaml')
 
 
