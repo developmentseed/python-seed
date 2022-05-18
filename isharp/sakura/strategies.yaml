@@ -1,4 +1,4 @@
-G3_LongOnly_Returns:
+G3LongOnlyReturns:
   components:
       - 'RUSS'
       - 'FTSE'
@@ -10,10 +10,28 @@ G3_LongOnly_Returns:
           Data_Acquisition:
             tasks:
               Load_Market_Data:
+                required_by: 1700
                 requires:
-                produces:
-                  mkt: 'G3_EOD_PREPARED_MKT'
+                  mkt_data:
+                    NIKKEI:
+                     path:
+                        - 'Bloomberg'
+                        - 'EOD'
+                     t: -1
+                    RUSS:
+                      path:
+                        - 'Bloomberg'
+                        - 'EOD'
+                      t: 0
 
+                    FTSE:
+                      path:
+                        - 'Bloomberg'
+                        - 'EOD'
+                      t: 0
+
+                produces:
+                  mkt: 'G3_LOR_EOD_PREPARED_MKT'
 
 
           Eod_Calcs:
@@ -21,29 +39,84 @@ G3_LongOnly_Returns:
               Eod_Official_Calc:
                 requires:
                   mkt_data:
-                    NIKKEI:
-                     path:
-                        - 'Bloomberg'
-                        - 'EOD'
-                     t: -1
-                    RUSS:
-                      path:
-                        - 'Bloomberg'
-                        - 'EOD'
-                      t: 0
-
-                    FTSE:
-                      path:
-                        - 'Bloomberg'
-                        - 'EOD'
-                      t: 0
-
-
+                  mkt: 'G3_LOR_EOD_PREPARED_MKT'
                 produces:
-                  - 'G3_LOR_EOD_VERIFICATION'
-
+                  mkt: 'G3_LOR_EOD_OFFICIAL'
 
               Eod_Verification_Calc:
+                requires:
+                  mkt_data:
+                  mkt: 'G3_LOR_EOD_PREPARED_MKT'
+                produces:
+                  mkt: 'G3_LOR_EOD_VERIFICATION'
+
+          Post_calc_verification:
+            tasks:
+              Eod_Verification:
+                requires:
+                  mkts:
+                    - 'G3_LOR_EOD_VERIFICATION'
+                    - 'G3_LOR_EOD_OFFICIAL'
+                produces:
+                  mkts:
+                    - 'G3_LOR_INDEX_PUBLICATION'
+                    - 'G3_LOR_EXPORT_DATA'
+
+
+G3Trend:
+  components:
+      - 'RUSS'
+      - 'FTSE'
+      - 'NIKKEI'
+
+  workflows:
+      EOD :
+        workphases:
+          Eod_Calcs:
+            tasks:
+              Eod_Official_Calc:
+                requires:
+                  mkt_data:
+                  mkt: 'G3_LOR_EXPORT_DATA'
+                produces:
+                  mkt: 'G3_TREND_EOD_OFFICIAL'
+
+              Eod_Verification_Calc:
+                requires:
+                  mkt_data:
+                  mkt: 'G3_LOR_EXPORT_DATA'
+                produces:
+                  mkt: 'G3_TREND_EOD_VERIFICATION'
+
+          Post_calc_verification:
+            tasks:
+              Eod_Verification:
+                requires:
+                  mkts:
+                    - 'G3_TREND_EOD_VERIFICATION'
+                    - 'G3_TREND_EOD_OFFICIAL'
+                produces:
+                  mkts:
+                    - 'G3_TREND_EOD_INDEX'
+
+
+
+VolBalance:
+  components:
+      - 'RUSS'
+      - 'FTSE'
+      - 'NIKKEI'
+      - 'CAC40'
+      - 'ASX200'
+      - 'SGX50'
+
+  workflows:
+      EOD :
+        workphases:
+          Data_Acquisition:
+            tasks:
+              Load_Market_Data:
+                required_by: 1700
                 requires:
                   mkt_data:
                     NIKKEI:
@@ -63,8 +136,58 @@ G3_LongOnly_Returns:
                         - 'EOD'
                       t: 0
 
+                    CAC40:
+                      path:
+                        - 'Bloomberg'
+                        - 'EOD'
+                      t: 0
+
+                    ASX200:
+                      path:
+                        - 'Bloomberg'
+                        - 'EOD'
+                      t: 0
+
+                    SGX50:
+                      path:
+                        - 'Bloomberg'
+                        - 'EOD'
+                      t: 0
+
                 produces:
-                  - 'G3_LOR_EOD_VERIFICATION'
+                  mkt: 'VOLBALANCE_EOD_PREPARED_MKT'
+
+
+          Eod_Calcs:
+            tasks:
+              Eod_Official_Calc:
+                requires:
+                  mkt_data:
+                  mkt: 'VOLBALANCE_EOD_PREPARED_MKT'
+                produces:
+                  mkt: 'VOLBALANCE_EOD_OFFICIAL'
+
+              Eod_Verification_Calc:
+                requires:
+                  mkt_data:
+                  mkt: 'VOLBALANCE_EOD_PREPARED_MKT'
+                produces:
+                  mkt: 'VOLBALANCE_EOD_VERIFICATION'
+
+          Post_calc_verification:
+            tasks:
+              Eod_Verification:
+                requires:
+                  mkts:
+                    - 'VOLBALANCE_EOD_VERIFICATION'
+                    - 'VOLBALANCE_EOD_OFFICIAL'
+                produces:
+                  mkts:
+                    - 'VOLBALANCE_EOD_PUBLICATION'
+
+
+
+
 
 
 

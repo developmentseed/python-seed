@@ -12,9 +12,6 @@ class Date(StructuredNode):
     next = RelationshipTo(StructuredNode,"NEXT")
 
 
-
-
-
 class WeekDay(StructuredNode):
     next = RelationshipTo(StructuredNode,'NEXT')
     calendar_date = RelationshipTo(Date,'ON')
@@ -54,6 +51,8 @@ class Matrix(StructuredNode):
     name=StringProperty(unique_index=True)
 
 
+class Market(Matrix):
+    pass
 
 
 class TimeSeries(Matrix):
@@ -86,7 +85,7 @@ class Task(StructuredNode):
     name=StringProperty(unique_index=False,required=True)
     nextTask = RelationshipTo(StructuredNode,"next")
     requires = RelationshipTo(StructuredNode,"requires")
-
+    produces = RelationshipTo(StructuredNode,"produces")
 
 
 class WorkPhase(StructuredNode):

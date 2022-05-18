@@ -54,3 +54,56 @@ FTSE:
             - 'EOD'
         - snap:
         - twap:
+
+
+CAC40:
+  caption: CAC40 Index Fut
+  tradingCenter: PAR
+  feeds:
+    - Reuters:
+        - EOD:
+        - snap:
+            - '0900'
+            - '1530'
+        - twap:
+            - '1635_2MW_5SF'
+    - Bloomberg:
+        - EOD:
+            - 'EOD'
+        - snap:
+        - twap:
+
+ASX200:
+  caption: ASX200
+  tradingCenter: SYD
+  feeds:
+    - Reuters:
+        - EOD:
+        - snap:
+            - '0900'
+            - '1530'
+        - twap:
+            - '1600_2MW_1MF'
+    - Bloomberg:
+        - EOD:
+            - 'EOD'
+        - snap:
+        - twap:
+
+SGX50:
+  caption: SGX Nifty 50
+  tradingCenter: SGX
+  feeds:
+    - Reuters:
+        - EOD:
+        - snap:
+            - '0900'
+            - '1530'
+        - twap:
+            - '1600_2MW_1MF'
+    - Bloomberg:
+        - EOD:
+            - 'EOD'
+        - snap:
+        - twap:
+
