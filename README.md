@@ -56,6 +56,16 @@ Let me know ASAP if you have any problems, then we can work together to refine t
 
 
 
+## Java stored procedure setup:
+- Get stored procedure shaded jar from :
+
+
+`https://github.com/jeremycward/neo4j-procedure-template/blob/4.4/target/procedure-template-1.0.0-SNAPSHOT-shaded.jar`
+
+- put this jar into the 'plugins' directory of your neo4j instance. (the easiet way to find the data directlry for your neo4j instance is to open a neo4j shell from the neo4j desktop. This will take you to the home directory for the neo4j instance. Create a 'plugins' directory here if one does not already exist)
+- The stored procedure can be run from neo4j browser by running cypher:
+`call sakura.timeseries('RUSS','Bloomberg','EOD')`
+
 
 
 
