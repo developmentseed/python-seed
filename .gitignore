@@ -11,4 +11,5 @@ MANIFEST
 /venv
 /.pytest_cache
 /.idea
+*.iml
 
