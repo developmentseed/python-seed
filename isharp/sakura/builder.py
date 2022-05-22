@@ -1,5 +1,6 @@
 import os
 import datetime
+from collections import defaultdict
 from neomodel import config, db
 import yaml
 from isharp.sakura import sakuragraphmodel
@@ -20,7 +21,7 @@ import pandas as pd
 #
 from isharp.sakura.randomwalk import randomwalk1D
 
-series = pd.date_range(start='2022-01-03', end='2022-01-17', freq='D')
+series = pd.date_range(start='2012-01-03', end='2012-01-05', freq='D')
 trading_calendars = [['TOK', 'Japan/Tokyo', ql.Japan(), []],
                      ['LON', 'Europe/London', ql.UnitedKingdom(), []],
                      ['CMG', 'US/New York', ql.UnitedStates(), []],
@@ -35,6 +36,7 @@ yaml_dir = os.path.dirname(os.path.realpath(__file__))
 trading_center_nodes = {}
 instrument_nodes = {}
 market_nodes = {}
+time_series = {}
 
 bolt_url = "bolt://{}:{}@localhost:7687".format(os.getenv('NEO4J_USERNAME'), os.getenv('NEO4J_PASSWORD'))
 
@@ -48,10 +50,8 @@ def deleteData():
 
 
 def find_mkt_data_point(mkt_data_key, mkt_data_path):
-    instrument_node = sakuragraphmodel.Instrument.nodes.get(code=mkt_data_key)
-    feed_node = instrument_node.feed.search(code=mkt_data_path[0])
     if mkt_data_path[1] == 'EOD':
-        return feed_node[0].EOD.all()[0]
+        return time_series[mkt_data_key][mkt_data_path[0]][mkt_data_path[1]]
     else:
         return None
 

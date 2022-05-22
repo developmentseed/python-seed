@@ -19,3 +19,6 @@ return n,strat
 // show workflow for a strategy
 MATCH (strat:Strategy {name: 'G3LongOnlyReturns'})-->(diary:DailySchedule)-[wfr:workflow]->(workflow:Workflow)-[:next*]->(phase:WorkPhase)-[:task*]->(task:Task)-[:produces]->(prod)<-[req:requires]-(requiredby)
 RETURN *
+
+// call timeseries stored proc
+call sakura.timeseries('RUSS','Bloomberg','EOD')
